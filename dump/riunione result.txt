@@ -1,0 +1,61 @@
+SCRUM: Obiettivi in ordine di priorità, la gente prende come gli pare.
+Waterfall: Modello rigido e vai.
+Agile: Arrivi alla goal ogni tot.
+
+Lista:
+	-Documentazione LaTeX
+	-JavaDoc
+	-Interfaccia Category
+		-Interfaccia Obj<E>
+		-Interfaccia Arr<Obj<E>,Obj<T>>
+			-Arr.src()
+			-Arr.trg()
+	-Main menu
+		-Save categoria
+			-Categorie create da utente
+		-Load categoria
+			-Proc. graph generator
+		-Catto
+	-Work page
+		-Infinite panning pane
+		-Page manager
+			-Obj creation and extensional definition
+			-Arr creation and definition
+			-Proofs arr feasibility
+			-Create Obj based on arr and arr.src()
+			-Contiene lista Obj, lista Arr
+			-Salva in .csv
+		-Help page
+
+
+Lista breve termine Week1-2:
+	Back-End:
+		0-Interfaccia category	-Davide
+			-...
+		1-Page Manager (test in terminal)	-Dario
+	Front-End:
+		1-Work page	-Tommaso
+			1-Infinite panning pane	-Davide
+			2-Help page	-Dario
+
+		
+1-Davide	1-Dario 	1-Tommaso
+2-Dario		2-Tommaso 	2-Davide 	-> 
+3-Tommaso	3-Davide	3-Dario
+
+
+Control Manager:
+	listaObj
+	listaArr
+	
+	boolean proofFeasibility(Obj A, Obj B, Arr f) ...
+	
+	Obj spawnFromArr(Obj A, Arr f) ...
+
+	void saveAsCSV() ...
+	
+	void loadFromCSV() ...
+
+
+
+
