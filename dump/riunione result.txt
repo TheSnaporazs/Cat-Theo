@@ -7,7 +7,7 @@ Lista:
 	-JavaDoc
 	-Interfaccia Category
 		-Interfaccia Obj<E>
-		-Interfaccia Arr<Obj<E>,Obj<T>>
+		-Interfaccia Arr<E,T>
 			-Arr.src()
 			-Arr.trg()
 	-Main menu

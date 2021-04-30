@@ -6,10 +6,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.CubicCurve?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Text?>
 
-
-<BorderPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgba(1,1,1,0);" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.PrimaryController">
+<BorderPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.PrimaryController">
    <right>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
@@ -21,11 +22,13 @@
       </VBox>
    </right>
    <center>
-      <ScrollPane hbarPolicy="NEVER" hvalue="0.5" pannable="true" prefHeight="400.0" prefWidth="488.0" style="-fx-background-color: rgba(1,1,1,0);" vbarPolicy="NEVER" vvalue="0.5" BorderPane.alignment="CENTER">
+      <ScrollPane hbarPolicy="NEVER" hvalue="0.5" pannable="true" prefHeight="400.0" prefWidth="488.0" vbarPolicy="NEVER" vvalue="0.5" BorderPane.alignment="CENTER">
          <content>
-            <Pane prefHeight="625.0" prefWidth="732.0" style="-fx-background-color: rgba(1,1,1,0);">
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0">
                <children>
-                  <Circle fill="#1f93ff00" layoutX="366.0" layoutY="313.0" radius="50.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
+                  <Circle fill="#1f93ff00" layoutX="960.0" layoutY="540.0" radius="50.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
+                  <Line endX="10.9141845703125" endY="64.0858154296875" layoutX="1141.0" layoutY="357.0" startX="-101.0" startY="175.0" />
+                  <CubicCurve controlX1="813.0" controlX2="827.0" controlY1="200.0" controlY2="200.0" endX="842.621337890625" endY="187.37872314453125" fill="#1f93ff00" layoutX="308.0" layoutY="234.0" startX="813.0" startY="200.0" stroke="BLACK" />
                </children>
             </Pane>
          </content>
