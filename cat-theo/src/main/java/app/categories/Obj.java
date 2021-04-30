@@ -1,12 +1,13 @@
 package app.categories;
 
-import java.util.List;
-import java.util.LinkedList;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Obj {
     private String name;
-    List<Arrow> arrowsIn = new LinkedList<Arrow>();
-    List<Arrow> arrowsOut = new LinkedList<Arrow>();
+    private boolean del = false;
+    Set<Arrow> arrowsIn = new HashSet<Arrow>();
+    Set<Arrow> arrowsOut = new HashSet<Arrow>();
 
     /**
      * Creates a new Obj instance
@@ -21,4 +22,16 @@ public class Obj {
      * @return
      */
     String getName() { return name; }
+
+    /**
+     * Flags the object for deletion, some things
+     * should be programmed with this in mind now.
+     */
+    void setDeletion() { del = true; }
+
+    /**
+     * Returns if the object has been flagged for deletion.
+     * @return
+     */
+    boolean toBeDeleted() { return del; }
 }

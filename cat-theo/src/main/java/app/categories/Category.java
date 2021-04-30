@@ -3,7 +3,6 @@ package app.categories;
 import app.exceptions.BadCompositionException;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.Iterator;
 
 public class Category {
     Set<Arrow> arrows = new HashSet<Arrow>();
@@ -34,58 +33,11 @@ public class Category {
      */
     void removeArrow(Arrow arr) {
         arrows.remove(arr);
-        arr.src().arrowsOut.remove(arr);
-        arr.trg().arrowsIn.remove(arr);
+        if(!arr.src().toBeDeleted())
+            arr.src().arrowsOut.remove(arr);
+        if(!arr.trg().toBeDeleted())
+            arr.trg().arrowsIn.remove(arr);
         removeCompositionsOfArrow(arr);
-    }
-
-    /**
-     * Removes all the arrows which compose from arr.
-     * @param arr
-     */
-    void removeCompositionsOfArrow(Arrow arr) {
-        for (Iterator<Arrow> i = arr.dependencies.iterator(); i.hasNext();) {
-            Arrow dep = i.next();
-            i.remove(); // This can be done since removal during iteration over a Set is permitted.
-            if (arrows.contains(dep))
-                removeArrow(dep);
-        }
-    }
-
-    /**
-     * Adds a new object to the category.
-     * @param name The name of the new object (may come useful for a LaTeX implementation)
-     * @return A reference to the new object
-     */
-    Obj addObject(String name) {
-        Obj obj = new Obj(name);
-        objects.add(obj);
-        return obj;
-    }
-
-    /**
-     * Removes an object from the category,
-     * removes also the arrows having the aforementioned
-     * object as either source or target.
-     * @param obj
-     */
-    void removeObject(Obj obj) {
-        objects.remove(obj);
-        while(!obj.arrowsOut.isEmpty())
-            removeArrow(obj.arrowsOut.get(0));
-        while(!obj.arrowsIn.isEmpty())
-            removeArrow(obj.arrowsIn.get(0));
-    }
-
-
-    /**
-     * Prints all the arrows currently present in the category
-     * to the terminal.
-     */
-    void printAllArrows() {
-        System.out.println("Snapshot of all the arrows:");
-        for (Arrow arr: arrows)
-            System.out.printf("\t%s\n",arr.represent());
     }
 
     /**
@@ -120,7 +72,65 @@ public class Category {
         return arr;
     }
 
+    /**
+     * Removes all the arrows which compose from arr.
+     * @param arr
+     */
+    void removeCompositionsOfArrow(Arrow arr) {
+        for (Arrow dep: arr.dependencies)
+            removeArrow(dep);
+        arr.dependencies.clear();
+    }
+
+    /**
+     * Prints all the arrows currently present in the category
+     * to the terminal.
+     */
+    void printAllArrows() {
+        System.out.println("Snapshot of all the arrows:");
+        for (Arrow arr: arrows)
+            System.out.printf("\t%s\n",arr.represent());
+    }
+
+    /**
+     * Adds a new object to the category.
+     * @param name The name of the new object (may come useful for a LaTeX implementation)
+     * @return A reference to the new object
+     */
+    Obj addObject(String name) {
+        Obj obj = new Obj(name);
+        objects.add(obj);
+        return obj;
+    }
+
+    /**
+     * Removes an object from the category,
+     * removes also the arrows having the aforementioned
+     * object as either source or target.
+     * @param obj
+     */
+    void removeObject(Obj obj) {
+        obj.setDeletion();
+        objects.remove(obj);
+        for(Arrow arr: obj.arrowsOut)
+            removeArrow(arr);
+        for(Arrow arr: obj.arrowsIn)
+            removeArrow(arr);
+    }
+
+    /**
+     * Prints all objects currently in the category
+     */
+    void printAllObjects() {
+        String str = "Snapshot of all the objects: ";
+        for(Obj obj: objects)
+            str = String.format("%s%s ", str, obj.getName());
+        
+        System.out.println(str);
+    }
+
     public static void main(String[] args) throws BadCompositionException {
+        // This is to test the model
         Category ct = new Category();
 
         Obj o1 = ct.addObject("A");
@@ -137,7 +147,9 @@ public class Category {
         Arrow c3 = ct.insertComposition(c2, a1);
 
         ct.printAllArrows();
+        ct.printAllObjects();
         ct.removeObject(o2);
         ct.printAllArrows();
+        ct.printAllObjects();
     }
 }
