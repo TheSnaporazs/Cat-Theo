@@ -51,7 +51,7 @@ public class Category {
     static Arrow compose(Arrow g, Arrow f) throws BadCompositionException {
         if (g.src() == f.trg())
             return new Arrow(String.format("%s ○ %s", g.getName(), f.getName()), f.src(), g.trg());
-        else throw new BadCompositionException();
+        else throw new BadCompositionException(String.format("Tried to compose %s(%s), conditions not met.", g.getName(), f.getName()));
     }
 
     /**
