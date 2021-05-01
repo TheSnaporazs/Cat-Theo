@@ -13,7 +13,7 @@ public class Obj {
      * Creates a new Obj instance
      * @param name Name of the object (may come useful for a LaTeX implementation)
      */
-    Obj(String name) {
+    public Obj(String name) {
         this.name = name;
     }
 

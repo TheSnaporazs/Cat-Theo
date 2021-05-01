@@ -5,6 +5,12 @@ import app.exceptions.BadCompositionException;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ *  Class implementing an abstract category
+ *
+ * @see Arrow
+ * @see Obj
+ */
 public class Category {
     Set<Arrow> arrows = new HashSet<Arrow>();
     Set<Obj> objects = new HashSet<Obj>();
@@ -18,7 +24,7 @@ public class Category {
      * @param trg Target object of the arrow
      * @return A reference to the new arrow
      */
-    Arrow addArrow(String name, Obj src, Obj trg) {
+    public Arrow addArrow(String name, Obj src, Obj trg) {
         Arrow arr = new Arrow(name, src, trg);
         arrows.add(arr);
         src.arrowsOut.add(arr);
@@ -98,7 +104,7 @@ public class Category {
      * @param name The name of the new object (may come useful for a LaTeX implementation)
      * @return A reference to the new object
      */
-    Obj addObject(String name) {
+    public Obj addObject(String name) {
         Obj obj = new Obj(name);
         objects.add(obj);
         return obj;
@@ -122,7 +128,7 @@ public class Category {
     /**
      * Prints all objects currently in the category
      */
-    void printAllObjects() {
+    public void printAllObjects() {
         String str = "Snapshot of all the objects: ";
         for(Obj obj: objects)
             str = String.format("%s%s ", str, obj.getName());
@@ -130,6 +136,11 @@ public class Category {
         System.out.println(str);
     }
 
+    /**
+     * Test for a category Model
+     * @param args
+     * @throws BadCompositionException
+     */
     public static void main(String[] args) throws BadCompositionException {
         // This is to test the model
         Category ct = new Category();
