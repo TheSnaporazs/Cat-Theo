@@ -4,11 +4,12 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 
 /**
- * Java-FX controller for the primary window panel
+ * Java-FX controller for the main menu page
  *
- * (Is this stuff deprecated?)
+ * @author Dario
+ * @since 30/04/2021
  */
-public class PrimaryController {
+public class MenuController {
 
     /**
      * Switches the view to the Secondary panel
@@ -16,6 +17,6 @@ public class PrimaryController {
      */
     @FXML
     private void switchToSecondary() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("workpage");
     }
 }

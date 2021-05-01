@@ -5,11 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a32b215-2bf7-41e4-bf38-f0540b652510" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/target/cat-theo-0.0.1-START.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/cat-theo-0.0.1-START.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/PrimaryController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/SecondaryController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/categories/Arrow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/categories/Arrow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/app/pannable_test.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/pannable_test.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/app/primary.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/app/secondary.fxml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/App.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/PrimaryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/PrimaryController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/SecondaryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/SecondaryController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/PrimaryController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/SecondaryController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/pannable_test.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/pannable_test.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
@@ -17,6 +26,13 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -30,6 +46,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

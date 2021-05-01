@@ -1,4 +1,4 @@
 app\App.class
 module-info.class
-app\PrimaryController.class
-app\SecondaryController.class
+app\WorkController.class
+app\MenuController.class
