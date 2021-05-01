@@ -1,13 +1,9 @@
 package app.categories;
 
-import java.util.Set;
-import java.util.HashSet;
-
 public class Arrow {
     private String name;
-    private Obj src;
-    private Obj trg;
-    Set<Arrow> dependencies = new HashSet<Arrow>();
+    private String src;
+    private String trg;
 
 
     /**
@@ -16,7 +12,7 @@ public class Arrow {
      * @param src The source Obj instance
      * @param trg The target Obj instance
      */
-    Arrow(String name, Obj src, Obj trg) {
+    Arrow(String name, String src, String trg) {
         this.name = name;
         this.src = src;
         this.trg = trg;
@@ -32,19 +28,19 @@ public class Arrow {
      * Returns source Obj of Arrow instance
      * @return
      */
-    Obj src() { return src; }
+    String src() { return src; }
 
     /**
      * Returns target Obj of Arrow instance
      * @return
      */
-    Obj trg() { return trg; }
+    String trg() { return trg; }
 
     /**
      * Function to easily compute a pretty print of the arrow
      * @return a string representing the function
      */
     String represent() {
-        return String.format("%s: %s→%s",getName(),src.getName(),trg.getName());
+        return String.format("%s: %s→%s",getName(),src,trg);
     }
 }
