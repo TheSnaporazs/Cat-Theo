@@ -4,9 +4,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.WorkController">
+<Pane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.WorkController">
    <children>
       <Label layoutX="116.0" layoutY="240.0" text="I'm shitposting" />
-      <Button fx:id="secondaryButton" layoutX="438.0" layoutY="49.0" onAction="#switchToPrimary" text="Switch to Primary View" />
+      <Button fx:id="secondaryButton" layoutX="438.0"
+              layoutY="49.0" onAction="#switchPage" text="Switch to Primary View" userData="mainmenu"/>
    </children>
 </Pane>

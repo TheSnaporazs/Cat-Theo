@@ -1,7 +1,7 @@
 package app.categories;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 public class Obj {
     private String name;
