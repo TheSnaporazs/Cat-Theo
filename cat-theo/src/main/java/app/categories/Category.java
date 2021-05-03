@@ -16,7 +16,7 @@ public class Category {
 
     HashMap<Arrow, Set<Arrow>> arrows = new HashMap<Arrow, Set<Arrow>>();
 
-    // Zeroth index of the array is meant for the outcoming arrows
+    // Zeroth index of the array is meant for the outcoming arrows.
     // One-th index is meant for the incoming arrows.
     HashMap<String, List<Set<Arrow>>> objects = new HashMap<String, List<Set<Arrow>>>();
 
@@ -303,6 +303,11 @@ public class Category {
         System.out.println(str);
     }
 
+    /**
+     * Prints all of an object's incoming and outcoming arrows
+     * @param obj Object to print the arrows of.
+     * @throws BadObjectNameException If the object does not exist.
+     */
     void printObjectsArrows(String obj) throws BadObjectNameException {
         List<Set<Arrow>> sets;
         try {
@@ -310,6 +315,7 @@ public class Category {
         } catch (NullPointerException e) {
             throw new BadObjectNameException("Object does not exist in the category.");
         }
+
         System.out.printf("Snapshot of all of %s's arrows:\n", obj);
         System.out.println("Outcoming: ");
         for(Arrow arr: sets.get(0))
@@ -342,6 +348,7 @@ public class Category {
         ct.printArrows();
         ct.printObjects();
         ct.printObjectsArrows("B");
+
         ct.removeObject("B");
         ct.printArrows();
         ct.printObjects();
