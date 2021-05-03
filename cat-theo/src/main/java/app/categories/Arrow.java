@@ -1,5 +1,7 @@
 package app.categories;
 
+import app.exceptions.ImpossibleArrowException;
+
 /**
  * Represents an Arrow from the Category Theory branch of mathematics.
  * @author Davide Marincione
@@ -21,7 +23,10 @@ public class Arrow {
      * @param type Type of the arrow.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
-    Arrow(String name, String src, String trg, MorphType type) {
+    Arrow(String name, String src, String trg, MorphType type) throws ImpossibleArrowException {
+        if (type == MorphType.IDENTITY && !src.equals(trg))
+            throw new ImpossibleArrowException("An identity has to have same source and target!");
+
         this.name = name;
         this.src = src;
         this.trg = trg;
@@ -35,7 +40,7 @@ public class Arrow {
      * @param trg Name of the target object.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
-    Arrow(String name, String src, String trg) {
+    Arrow(String name, String src, String trg) throws ImpossibleArrowException {
         this(name, src, trg, MorphType.MORPHISM);
     }
 
@@ -46,7 +51,7 @@ public class Arrow {
      * @param type Type of the endomorphism.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
-    Arrow(String name, String obj, MorphType type) {    //Creates an Endomorphism for obj
+    Arrow(String name, String obj, MorphType type) throws ImpossibleArrowException {    //Creates an Endomorphism for obj
         this(name, obj, obj, type);
     }
 
@@ -56,7 +61,7 @@ public class Arrow {
      * @param obj Name of the object.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
-    Arrow(String name, String obj) {                    //Creates an Identity for obj using custom name
+    Arrow(String name, String obj) throws ImpossibleArrowException {                    //Creates an Identity for obj using custom name
         this(name, obj, obj, MorphType.IDENTITY);
     }
 
@@ -66,7 +71,7 @@ public class Arrow {
      * @param obj Name of the object.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
-    Arrow(String obj) {                                 // Creates an Identity for obj using the standard IDENTITY_SYMBOL as template
+    Arrow(String obj) throws ImpossibleArrowException {                                 // Creates an Identity for obj using the standard IDENTITY_SYMBOL as template
         this(String.format(IDENTITY_SYMBOL, obj), obj, obj, MorphType.IDENTITY);
     }
 
@@ -87,6 +92,12 @@ public class Arrow {
      * @return Name of the target.
      */
     String trg() { return trg; }
+
+    /**
+     * Returns the arrow's type.
+     * @return Type of the arrow.
+     */
+    MorphType getType() { return type; }
 
     /**
      * Function to easily compute a pretty print of the arrow

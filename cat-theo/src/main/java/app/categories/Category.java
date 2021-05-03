@@ -16,16 +16,50 @@ public class Category {
     HashMap<String, Set<Arrow>> objects = new HashMap<String, Set<Arrow>>();
 
     /**
+     * Adds a new {@link app.categories.Arrow Arrow} with custom type
+     * to the {@link app.categories.Category Category}.
+     * @param name Name of the new arrow (watch out for a possible LaTeX implementation).
+     * @param src Name of the source object.
+     * @param trg Name of the target object.
+     * @param type Type of the arrow.
+     * @return Reference to the added arrow.
+     * @throws BadObjectNameException If the object does not exist.
+     * @throws ImpossibleArrowException
+     * @see #removeArrow(Arrow)
+     * @see app.categories.Arrow#Arrow(String, String, String, MorphType) Arrow(name, source, target, type)
+     */
+    Arrow addArrow(String name, String src, String trg, MorphType type) throws BadObjectNameException, ImpossibleArrowException {
+        Arrow arr = new Arrow(name, src, trg, type);
+
+        // Add reference to source
+        try {
+            objects.get(src).add(arr);
+        } catch (NullPointerException e) {
+            throw new BadObjectNameException("Source object does not exist in category.");
+        }
+
+        // Add reference to target
+        try {
+            objects.get(trg).add(arr);
+        } catch (NullPointerException e) {
+            throw new BadObjectNameException("Target object does not exist in category.");
+        }
+        arrows.put(arr, new HashSet<Arrow>());
+        return arr;
+    }
+
+    /**
      * Adds a new {@link app.categories.Arrow Arrow} to the {@link app.categories.Category Category}.
      * @param name Name of the new arrow (watch out for a possible LaTeX implementation).
      * @param src Name of the source object.
      * @param trg Name of the target object.
      * @return Reference to the added arrow.
-     * @throws BadObjectNameException
+     * @throws BadObjectNameException If the object does not exist.
+     * @throws ImpossibleArrowException
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(String, String, String) Arrow(name, source, target)
      */
-    Arrow addArrow(String name, String src, String trg) throws BadObjectNameException {
+    Arrow addArrow(String name, String src, String trg) throws BadObjectNameException, ImpossibleArrowException {
         Arrow arr = new Arrow(name, src, trg);
 
         // Add reference to source
@@ -41,6 +75,69 @@ public class Category {
         } catch (NullPointerException e) {
             throw new BadObjectNameException("Target object does not exist in category.");
         }
+        arrows.put(arr, new HashSet<Arrow>());
+        return arr;
+    }
+
+    /**
+     * Adds the identty {@link app.categories.Arrow Arrow} of an object to the {@link app.categories.Category Category}.
+     * @param name Name of the new arrow (watch out for a possible LaTeX implementation).
+     * @param obj Name of the source object.
+     * @return Reference to the identity.
+     * @throws BadObjectNameException If the object does not exist.
+     * @throws ImpossibleArrowException If the identity already is in the category
+     * @see #removeArrow(Arrow)
+     * @see app.categories.Arrow#Arrow(String, String) Arrow(name, obj)
+     */
+    Arrow addIdentity(String name, String obj) throws BadObjectNameException, ImpossibleArrowException {
+        Set<Arrow> objSet;
+        
+        try {
+            objSet = objects.get(obj);
+        } catch (NullPointerException e) {
+            throw new BadObjectNameException("Source object does not exist in category.");
+        }
+
+        for(Arrow dep: objSet)
+            if(dep.getType() == MorphType.IDENTITY)
+                throw new ImpossibleArrowException("An object's identity is unique.");
+
+        Arrow arr = new Arrow(name, obj);
+
+        // Add reference to object
+        objSet.add(arr);
+
+        arrows.put(arr, new HashSet<Arrow>());
+        return arr;
+    }
+
+    /**
+     * Adds a the identity {@link app.categories.Arrow Arrow} of an object to the {@link app.categories.Category Category}.
+     * @param obj Name of the object.
+     * @return Reference to the identity.
+     * @throws BadObjectNameException If the object does not exist.
+     * @throws ImpossibleArrowException If an identity of the object is already in the category.
+     * @see #removeArrow(Arrow)
+     * @see app.categories.Arrow#Arrow(String) Arrow(obj)
+     */
+    Arrow addIdentity(String obj) throws BadObjectNameException, ImpossibleArrowException {
+        Set<Arrow> objSet;
+        
+        try {
+            objSet = objects.get(obj);
+        } catch (NullPointerException e) {
+            throw new BadObjectNameException("Source object does not exist in category.");
+        }
+
+        for(Arrow dep: objSet)
+            if(dep.getType() == MorphType.IDENTITY)
+                throw new ImpossibleArrowException("An object's identity is unique.");
+
+        Arrow arr = new Arrow(obj);
+
+        // Add reference to object
+        objSet.add(arr);
+
         arrows.put(arr, new HashSet<Arrow>());
         return arr;
     }
@@ -78,13 +175,13 @@ public class Category {
      * @param g Reference to the latter function g:B->C
      * @param f Reference to the first function f:A->B
      * @return Reference to the composed arrow h:A->C, h = g(f) = g ○ f
-     * @throws BadCompositionException
+     * @throws ImpossibleArrowException If the arrows are not composable with each other.
      * @see #addComposition(Arrow g, Arrow f)
      */
-    static Arrow compose(Arrow g, Arrow f) throws BadCompositionException {
+    static Arrow compose(Arrow g, Arrow f) throws ImpossibleArrowException {
         if (f.trg().equals(g.src())) // Condition for a composition to be possible.
             return new Arrow(String.format("%s %s %s", g.getName(), COMPOSITION_SYMBOL, f.getName()), f.src(), g.trg());
-        else throw new BadCompositionException(String.format("Tried to compose %s(%s), conditions not met.", g.getName(), f.getName()));
+        else throw new ImpossibleArrowException(String.format("Tried to compose %s(%s), conditions not met.", g.getName(), f.getName()));
     }
 
     /**
@@ -93,15 +190,22 @@ public class Category {
      * @param g Reference to the latter function g:B->C
      * @param f Reference to the first function f:A->B
      * @return Reference to the composed arrow h:A->C, h = g(f) = g ○ f
-     * @throws BadCompositionException If the two given arrows can't be composed with each other.
+     * @throws ImpossibleArrowException If the two given arrows can't be composed with each other.
      * @throws NullPointerException If for any reason the objects the given arrows
      * source or target to don't exist in the category.
      * reference to do not exist.
      * @see #compose(Arrow g, Arrow f)
      * @see #removeArrowCompositions(Arrow)
      */
-    Arrow addComposition(Arrow g, Arrow f) throws BadCompositionException {
+    Arrow addComposition(Arrow g, Arrow f) throws ImpossibleArrowException {
         Arrow arr = compose(g, f);
+
+        // If here then g and f are composable, now we check for identity
+        // (otherwise we do all the things such that we can add to category the new composition)
+        if (g.getType() == MorphType.IDENTITY)  // If g is identity then g•f = f (whether f is identity or not)
+            return f;
+        if (f.getType() == MorphType.IDENTITY)  // If f is identity then g•f = g (if here then g is not id.)
+            return g;
 
         // Add composition as dependent of f.src()
         try {
@@ -189,7 +293,7 @@ public class Category {
         System.out.println(str);
     }
 
-    public static void main(String[] args) throws BadCompositionException, BadObjectNameException {
+    public static void main(String[] args) throws BadObjectNameException, ImpossibleArrowException {
         // This is to test the model
         Category ct = new Category();
 
