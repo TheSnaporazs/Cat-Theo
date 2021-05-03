@@ -1,6 +1,8 @@
 package app.categories;
 
 import app.exceptions.*;
+import java.util.List;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
@@ -13,7 +15,10 @@ public class Category {
     public static final String COMPOSITION_SYMBOL = "•";
 
     HashMap<Arrow, Set<Arrow>> arrows = new HashMap<Arrow, Set<Arrow>>();
-    HashMap<String, Set<Arrow>> objects = new HashMap<String, Set<Arrow>>();
+
+    // Zeroth index of the array is meant for the outcoming arrows
+    // One-th index is meant for the incoming arrows.
+    HashMap<String, List<Set<Arrow>>> objects = new HashMap<String, List<Set<Arrow>>>();
 
     /**
      * Adds a new {@link app.categories.Arrow Arrow} with custom type
@@ -33,14 +38,14 @@ public class Category {
 
         // Add reference to source
         try {
-            objects.get(src).add(arr);
+            objects.get(src).get(0).add(arr);
         } catch (NullPointerException e) {
             throw new BadObjectNameException("Source object does not exist in category.");
         }
 
         // Add reference to target
         try {
-            objects.get(trg).add(arr);
+            objects.get(trg).get(1).add(arr);
         } catch (NullPointerException e) {
             throw new BadObjectNameException("Target object does not exist in category.");
         }
@@ -64,14 +69,14 @@ public class Category {
 
         // Add reference to source
         try {
-            objects.get(src).add(arr);
+            objects.get(src).get(0).add(arr);
         } catch (NullPointerException e) {
             throw new BadObjectNameException("Source object does not exist in category.");
         }
 
         // Add reference to target
         try {
-            objects.get(trg).add(arr);
+            objects.get(trg).get(1).add(arr);
         } catch (NullPointerException e) {
             throw new BadObjectNameException("Target object does not exist in category.");
         }
@@ -90,22 +95,23 @@ public class Category {
      * @see app.categories.Arrow#Arrow(String, String) Arrow(name, obj)
      */
     Arrow addIdentity(String name, String obj) throws BadObjectNameException, ImpossibleArrowException {
-        Set<Arrow> objSet;
+        List<Set<Arrow>> objSet;
         
         try {
             objSet = objects.get(obj);
         } catch (NullPointerException e) {
-            throw new BadObjectNameException("Source object does not exist in category.");
+            throw new BadObjectNameException("Object does not exist in category.");
         }
 
-        for(Arrow dep: objSet)
+        for(Arrow dep: objSet.get(0))
             if(dep.getType() == MorphType.IDENTITY)
                 throw new ImpossibleArrowException("An object's identity is unique.");
 
         Arrow arr = new Arrow(name, obj);
 
         // Add reference to object
-        objSet.add(arr);
+        objSet.get(0).add(arr);
+        objSet.get(1).add(arr);
 
         arrows.put(arr, new HashSet<Arrow>());
         return arr;
@@ -121,22 +127,23 @@ public class Category {
      * @see app.categories.Arrow#Arrow(String) Arrow(obj)
      */
     Arrow addIdentity(String obj) throws BadObjectNameException, ImpossibleArrowException {
-        Set<Arrow> objSet;
+        List<Set<Arrow>> objSet;
         
         try {
             objSet = objects.get(obj);
         } catch (NullPointerException e) {
-            throw new BadObjectNameException("Source object does not exist in category.");
+            throw new BadObjectNameException("Object does not exist in category.");
         }
 
-        for(Arrow dep: objSet)
+        for(Arrow dep: objSet.get(0))
             if(dep.getType() == MorphType.IDENTITY)
                 throw new ImpossibleArrowException("An object's identity is unique.");
 
         Arrow arr = new Arrow(obj);
 
         // Add reference to object
-        objSet.add(arr);
+        objSet.get(0).add(arr);
+        objSet.get(1).add(arr);
 
         arrows.put(arr, new HashSet<Arrow>());
         return arr;
@@ -148,20 +155,21 @@ public class Category {
      * @param arr Reference to the arrow to remove.
      */
     void removeArrow(Arrow arr) {
-        Set<Arrow> temp; // Needed for all of these things.
+        List<Set<Arrow>> temp1; // Needed for all of these things.
 
         // Remove reference from source
-        if((temp = objects.get(arr.src())) != null)
-            temp.remove(arr);
+        if((temp1 = objects.get(arr.src())) != null)
+            temp1.get(0).remove(arr);
 
         // Remove reference from target
-        if((temp = objects.get(arr.trg())) != null)
-            temp.remove(arr);
+        if((temp1 = objects.get(arr.trg())) != null)
+            temp1.get(1).remove(arr);
 
         // Remove from the Category all the compositions depending on the
         // current arrow.
-        if((temp = arrows.remove(arr)) != null)
-            for(Arrow comp: temp)
+        Set<Arrow> temp2;
+        if((temp2 = arrows.remove(arr)) != null)
+            for(Arrow comp: temp2)
                 removeArrow(comp);
     }
 
@@ -209,14 +217,14 @@ public class Category {
 
         // Add composition as dependent of f.src()
         try {
-            objects.get(arr.src()).add(arr);
+            objects.get(arr.src()).get(0).add(arr);
         } catch (NullPointerException e) {
             throw new NullPointerException("Source of 'f' does not exist in the category.");
         }
 
         // Add composition as dependent of g.trg()
         try {
-            objects.get(arr.trg()).add(arr);
+            objects.get(arr.trg()).get(1).add(arr);
         } catch (NullPointerException e) {
             throw new NullPointerException("Target of 'g' does not exist in the category.");
         }
@@ -260,7 +268,7 @@ public class Category {
      */
     void addObject(String name) throws BadObjectNameException {
         if (objects.containsKey(name)) throw new BadObjectNameException("An object with the same name already exists in the category.");
-        objects.put(name, new HashSet<Arrow>());
+        objects.put(name, Arrays.asList(new HashSet<Arrow>(), new HashSet<Arrow>()));
     }
 
     /**
@@ -271,13 +279,15 @@ public class Category {
      * @see #addObject(String name)
      */
     void removeObject(String name) throws BadObjectNameException {
-        Set<Arrow> set;
+        List<Set<Arrow>> set;
         try {
             set = objects.remove(name);
         } catch (NullPointerException e) {
             throw new BadObjectNameException("Object does not exist in the category.");
         }
-        for(Arrow arr: set)
+        for(Arrow arr: set.get(0))
+            removeArrow(arr);
+        for(Arrow arr: set.get(1))
             removeArrow(arr);
     }
 
@@ -291,6 +301,23 @@ public class Category {
             str = String.format("%s%s ", str, name);
         
         System.out.println(str);
+    }
+
+    void printObjectsArrows(String obj) throws BadObjectNameException {
+        List<Set<Arrow>> sets;
+        try {
+            sets = objects.get(obj);
+        } catch (NullPointerException e) {
+            throw new BadObjectNameException("Object does not exist in the category.");
+        }
+        System.out.printf("Snapshot of all of %s's arrows:\n", obj);
+        System.out.println("Outcoming: ");
+        for(Arrow arr: sets.get(0))
+            System.out.printf("\t%s\n", arr.represent());
+        
+        System.out.println("Incoming: ");
+        for(Arrow arr: sets.get(1))
+            System.out.printf("\t%s\n", arr.represent());
     }
 
     public static void main(String[] args) throws BadObjectNameException, ImpossibleArrowException {
@@ -310,11 +337,11 @@ public class Category {
         ct.addComposition(a3, a2);
         ct.addComposition(a3, c1);
         
-        Arrow t1 = new Arrow("A");
-        System.out.println(t1.represent());
+        ct.addIdentity("A");
 
         ct.printArrows();
         ct.printObjects();
+        ct.printObjectsArrows("B");
         ct.removeObject("B");
         ct.printArrows();
         ct.printObjects();
