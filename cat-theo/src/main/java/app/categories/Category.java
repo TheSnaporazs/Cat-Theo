@@ -10,6 +10,8 @@ import java.util.HashMap;
  * @see {@link app.categories.Arrow Arrow}
  */
 public class Category {
+    public static final String COMPOSITION_SYMBOL = "•";
+
     HashMap<Arrow, Set<Arrow>> arrows = new HashMap<Arrow, Set<Arrow>>();
     HashMap<String, Set<Arrow>> objects = new HashMap<String, Set<Arrow>>();
 
@@ -81,7 +83,7 @@ public class Category {
      */
     static Arrow compose(Arrow g, Arrow f) throws BadCompositionException {
         if (f.trg().equals(g.src())) // Condition for a composition to be possible.
-            return new Arrow(String.format("%s ○ %s", g.getName(), f.getName()), f.src(), g.trg());
+            return new Arrow(String.format("%s %s %s", g.getName(), COMPOSITION_SYMBOL, f.getName()), f.src(), g.trg());
         else throw new BadCompositionException(String.format("Tried to compose %s(%s), conditions not met.", g.getName(), f.getName()));
     }
 
@@ -203,10 +205,18 @@ public class Category {
         Arrow c1 = ct.addComposition(a2, a1);
         ct.addComposition(a3, a2);
         ct.addComposition(a3, c1);
+        
+        Arrow t1 = new Arrow("A");
+        System.out.println(t1.represent());
 
         ct.printArrows();
         ct.printObjects();
         ct.removeObject("B");
+        ct.printArrows();
+        ct.printObjects();
+
+        ct.addObject("B");
+        ct.addArrow("g", "B", "C");
         ct.printArrows();
         ct.printObjects();
     }

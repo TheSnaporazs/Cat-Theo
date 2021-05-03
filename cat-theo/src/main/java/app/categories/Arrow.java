@@ -6,21 +6,68 @@ package app.categories;
  * @see {@link app.categories.Arrow Arrow}
  */
 public class Arrow {
+    public static final String IDENTITY_SYMBOL = "Id(%s)";
     private String name;
     private String src;
     private String trg;
+    private MorphType type;
 
     /**
-     * Instances a new {@link app.categories.Arrow Arrow} representing the morphism from a source to a target.
+     * Instances a new {@link app.categories.Arrow Arrow} representing a morphism from a source to a target
+     * with custom type.
+     * @param name Name of the arrow.
+     * @param src Name of the source object.
+     * @param trg Name of the target object.
+     * @param type Type of the arrow.
+     * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
+     */
+    Arrow(String name, String src, String trg, MorphType type) {
+        this.name = name;
+        this.src = src;
+        this.trg = trg;
+        this.type = type;
+    }
+
+    /**
+     * Instances a new {@link app.categories.Arrow Arrow} representing a morphism from a source to a target.
      * @param name Name of the arrow.
      * @param src Name of the source object.
      * @param trg Name of the target object.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
     Arrow(String name, String src, String trg) {
-        this.name = name;
-        this.src = src;
-        this.trg = trg;
+        this(name, src, trg, MorphType.MORPHISM);
+    }
+
+    /**
+     * Instances a new {@link app.categories.Arrow Arrow} representing an object's <b>endomorphism</b> of custom type.
+     * @param name Name of the arrow.
+     * @param obj Name of the object.
+     * @param type Type of the endomorphism.
+     * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
+     */
+    Arrow(String name, String obj, MorphType type) {    //Creates an Endomorphism for obj
+        this(name, obj, obj, type);
+    }
+
+    /**
+     * Instances a new {@link app.categories.Arrow Arrow} representing an object's <b>identity</b>.
+     * @param name Arrow's custom name, thus won't use <b>IDENTITY_SYMBOL</b> standard.
+     * @param obj Name of the object.
+     * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
+     */
+    Arrow(String name, String obj) {                    //Creates an Identity for obj using custom name
+        this(name, obj, obj, MorphType.IDENTITY);
+    }
+
+    /**
+     * Instances a new {@link app.categories.Arrow Arrow} representing an object's <b>identity</b>.
+     * This constructor will name the arrow following the <b>IDENTITY_SYMBOL</b> standard.
+     * @param obj Name of the object.
+     * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
+     */
+    Arrow(String obj) {                                 // Creates an Identity for obj using the standard IDENTITY_SYMBOL as template
+        this(String.format(IDENTITY_SYMBOL, obj), obj, obj, MorphType.IDENTITY);
     }
 
     /**
