@@ -1,5 +1,5 @@
+C:\Users\Dario\Desktop\Coding\Java Project\Cat-Theo\cat-theo\src\main\java\app\categories\MorphType.java
 C:\Users\Dario\Desktop\Coding\Java Project\Cat-Theo\cat-theo\src\main\java\module-info.java
-C:\Users\Dario\Desktop\Coding\Java Project\Cat-Theo\cat-theo\src\main\java\app\exceptions\BadCompositionException.java
 C:\Users\Dario\Desktop\Coding\Java Project\Cat-Theo\cat-theo\src\main\java\app\categories\Arrow.java
 C:\Users\Dario\Desktop\Coding\Java Project\Cat-Theo\cat-theo\src\main\java\app\controllers\GenericController.java
 C:\Users\Dario\Desktop\Coding\Java Project\Cat-Theo\cat-theo\src\main\java\app\App.java
@@ -7,3 +7,5 @@ C:\Users\Dario\Desktop\Coding\Java Project\Cat-Theo\cat-theo\src\main\java\app\c
 C:\Users\Dario\Desktop\Coding\Java Project\Cat-Theo\cat-theo\src\main\java\app\controllers\MenuController.java
 C:\Users\Dario\Desktop\Coding\Java Project\Cat-Theo\cat-theo\src\main\java\app\categories\Obj.java
 C:\Users\Dario\Desktop\Coding\Java Project\Cat-Theo\cat-theo\src\main\java\app\controllers\WorkController.java
+C:\Users\Dario\Desktop\Coding\Java Project\Cat-Theo\cat-theo\src\main\java\app\exceptions\BadObjectNameException.java
+C:\Users\Dario\Desktop\Coding\Java Project\Cat-Theo\cat-theo\src\main\java\app\exceptions\ImpossibleArrowException.java

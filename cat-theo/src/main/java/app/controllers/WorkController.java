@@ -3,6 +3,7 @@ package app.controllers;
 
 import app.categories.Category;
 import app.categories.Obj;
+import app.exceptions.BadObjectNameException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -21,9 +22,13 @@ public class WorkController extends GenericController{
 
     }
 
+    /**
+     * Updates the model by adding the object specifed by the user
+     *
+     * @param e Contains the attributes of the ActionEvent that invoked the method
+     */
     @FXML
-    private void addObj(ActionEvent e)
-    {
+    private void addObj(ActionEvent e) throws BadObjectNameException {
         /*
         TODO get object name from View
         We do it twice just to be able to then
@@ -31,10 +36,13 @@ public class WorkController extends GenericController{
         will of course only perform one addition.
          */
         currCat.addObject("A");
-        currCat.addObject("B");
     }
 
-    private void addArr(ActionEvent a)
+    /**
+     * Updates the model by adding the arrow specified by the user
+     * @param e
+     */
+    private void addArr(ActionEvent e)
     {
         // TODO get arrow attributes from View
 
@@ -48,6 +56,8 @@ public class WorkController extends GenericController{
      */
     public void printCurrCat()
     {
-        currCat.printAllObjects();
+        // TODO add printAll method to category object
     }
+
+
 }
