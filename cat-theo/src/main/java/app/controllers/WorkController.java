@@ -6,6 +6,10 @@ import app.categories.Obj;
 import app.exceptions.BadObjectNameException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 /**
  * Java-FX controller for the work page
@@ -16,6 +20,11 @@ import javafx.fxml.FXML;
 public class WorkController extends GenericController{
 
     private Category currCat = new Category();
+
+    @FXML private AnchorPane root;
+    @FXML private AnchorPane scroll_wrap;
+
+    double orgSceneX, orgSceneY;
 
     public WorkController()
     {
@@ -59,5 +68,36 @@ public class WorkController extends GenericController{
         // TODO add printAll method to category object
     }
 
+    /**
+     * Method to create a draggable circle
+     *
+     * stub for the creation of an object
+     */
+    public void createCircle() {
+        Circle circle = new Circle(30, 30, 30, Color.ORANGE);
+        scroll_wrap.getChildren().add(circle);
+
+        circle.setCursor(Cursor.HAND);
+
+        circle.setOnMousePressed((t) -> {
+            orgSceneX = t.getSceneX();
+            orgSceneY = t.getSceneY();
+            Circle c = (Circle) ( t.getSource() );
+            c.toFront();
+        });
+        circle.setOnMouseDragged((t) -> {
+            double offsetX = t.getSceneX() - orgSceneX;
+            double offsetY = t.getSceneY() - orgSceneY;
+
+            Circle c = (Circle) ( t.getSource() );
+
+            c.setCenterX(c.getCenterX() + offsetX);
+            c.setCenterY(c.getCenterY() + offsetY);
+
+            orgSceneX = t.getSceneX();
+            orgSceneY = t.getSceneY();
+        });
+
+    }
 
 }
