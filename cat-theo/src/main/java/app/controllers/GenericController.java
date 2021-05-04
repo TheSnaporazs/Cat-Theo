@@ -4,6 +4,8 @@ import app.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 
 import java.io.IOException;
 
@@ -29,7 +31,14 @@ public abstract class GenericController {
         /*
         Get the event object, cast it into a string representing the destination scene
          */
-        String destination = (String) ((Node) event.getSource()).getUserData();
+        String destination = null;
+
+        if ( event.getSource() instanceof Node) {
+            destination = (String) ((Node) event.getSource()).getUserData();
+        } else if (event.getSource() instanceof MenuItem) {
+            destination = (String) ((MenuItem) event.getSource()).getUserData();
+        }
+
         App.setRoot(destination);
 
     }

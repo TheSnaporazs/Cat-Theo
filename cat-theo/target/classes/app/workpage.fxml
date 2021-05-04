@@ -32,13 +32,13 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-                  <MenuItem mnemonicParsing="false" onAction="#createCircle" text="Add Object" />
+                <MenuItem mnemonicParsing="false" text="Delete" />
+                <MenuItem mnemonicParsing="false" onAction="#createCircle" text="Add Object" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Actions">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#switchPage" userData="mainmenu" text="Back to main" />
+                  <MenuItem mnemonicParsing="false" onAction="#switchPage" userData="mainmenu" text="Back to main" />
                   <MenuItem mnemonicParsing="false" text="Unspecified Action" />
               </items>
             </Menu>
