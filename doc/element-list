@@ -1,0 +1,5 @@
+module:app
+app
+app.categories
+app.controllers
+app.exceptions
