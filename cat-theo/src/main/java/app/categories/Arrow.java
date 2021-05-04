@@ -5,10 +5,12 @@ import app.exceptions.ImpossibleArrowException;
 /**
  * Represents an Arrow from the Category Theory branch of mathematics.
  * @author Davide Marincione
- * @see {@link app.categories.Arrow Arrow}
+ * @see {@link app.categories.Category Category}
+ * @see {@link app.categories.Obj Obj}
  */
 public class Arrow {
     public static final String IDENTITY_SYMBOL = "Id(%s)";
+    public static final String COMPOSITION_SYMBOL = "%s • %s";
     private String name;
     private String src;
     private String trg;
@@ -23,7 +25,7 @@ public class Arrow {
      * @param type Type of the arrow.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
-    Arrow(String name, String src, String trg, MorphType type) throws ImpossibleArrowException {
+    public Arrow(String name, String src, String trg, MorphType type) throws ImpossibleArrowException {
         if (type == MorphType.IDENTITY && !src.equals(trg))
             throw new ImpossibleArrowException("An identity has to have same source and target!");
 
@@ -40,70 +42,81 @@ public class Arrow {
      * @param trg Name of the target object.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
-    Arrow(String name, String src, String trg) throws ImpossibleArrowException {
+    public Arrow(String name, String src, String trg) throws ImpossibleArrowException {
         this(name, src, trg, MorphType.MORPHISM);
-    }
-
-    /**
-     * Instances a new {@link app.categories.Arrow Arrow} representing an object's <b>endomorphism</b> of custom type.
-     * @param name Name of the arrow.
-     * @param obj Name of the object.
-     * @param type Type of the endomorphism.
-     * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
-     */
-    Arrow(String name, String obj, MorphType type) throws ImpossibleArrowException {    //Creates an Endomorphism for obj
-        this(name, obj, obj, type);
-    }
-
-    /**
-     * Instances a new {@link app.categories.Arrow Arrow} representing an object's <b>identity</b>.
-     * @param name Arrow's custom name, thus won't use <b>IDENTITY_SYMBOL</b> standard.
-     * @param obj Name of the object.
-     * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
-     */
-    Arrow(String name, String obj) throws ImpossibleArrowException {                    //Creates an Identity for obj using custom name
-        this(name, obj, obj, MorphType.IDENTITY);
-    }
-
-    /**
-     * Instances a new {@link app.categories.Arrow Arrow} representing an object's <b>identity</b>.
-     * This constructor will name the arrow following the <b>IDENTITY_SYMBOL</b> standard.
-     * @param obj Name of the object.
-     * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
-     */
-    Arrow(String obj) throws ImpossibleArrowException {                                 // Creates an Identity for obj using the standard IDENTITY_SYMBOL as template
-        this(String.format(IDENTITY_SYMBOL, obj), obj, obj, MorphType.IDENTITY);
     }
 
     /**
      * Returns the name of the {@link app.categories.Arrow Arrow} instance.
      * @return Name of the arrow.
      */
-    String getName() { return name; }
+    public String getName() { return name; }
 
     /**
      * Returns the name of the arrow's source.
      * @return Name of the source.
      */
-    String src() { return src; }
+    public String src() { return src; }
 
     /**
      * Returns the name of the arrow's target.
      * @return Name of the target.
      */
-    String trg() { return trg; }
+    public String trg() { return trg; }
 
     /**
      * Returns the arrow's type.
      * @return Type of the arrow.
      */
-    MorphType getType() { return type; }
+    public MorphType getType() { return type; }
 
     /**
      * Function to easily compute a pretty print of the arrow
      * @return A string representing the arrow
      */
-    String represent() {
+    public String represent() {
         return String.format("%s: %s→%s",getName(),src,trg);
+    }
+
+    /**
+     * Creates (if possible) a new {@link app.categories.Arrow Arrow} result of the
+     * composition of two others, <b>doesn't</b> add it to any {@link app.categories.Category Category}.
+     * Composition is the result of passing as input of a function another function-
+     * in our case the composed function 'h' will be equal to: h = g(f) = g ○ f
+     * In Category Theory the composition h between two arrows f, g such that f:A->B
+     * and g:B->C is equal to creating a new arrow h: A->C
+     * @param g Reference to the latter function g:B->C
+     * @param f Reference to the first function f:A->B
+     * @return Reference to the composed arrow h:A->C, h = g(f) = g ○ f
+     * @throws ImpossibleArrowException If the arrows are not composable with each other.
+     * @see app.categories.Category#addComposition(Arrow g, Arrow f)
+     */
+    public static Arrow compose(Arrow g, Arrow f) throws ImpossibleArrowException {
+        if (f.trg().equals(g.src())) // Condition for a composition to be possible.
+            return new Arrow(String.format(COMPOSITION_SYMBOL, g.getName(), f.getName()), f.src(), g.trg());
+        else throw new ImpossibleArrowException(String.format("Tried to compose %s(%s), conditions not met.", g.getName(), f.getName()));
+    }
+
+    /**
+     * Returns the name of an object's identity following the standard proposed by this package
+     * @param obj Name of the object
+     * @return Identity name following current standard
+     */
+    public static String makeIdentityName(String obj) { return String.format(IDENTITY_SYMBOL, obj); }
+
+    @Override
+    public int hashCode() {
+        return String.format("%s%s%s%s", name, src, trg, type.toString()).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Arrow))
+            return false;
+    
+        Arrow arr = (Arrow) obj;
+
+        return arr.getType() == type && arr.getName().equals(name)
+               && arr.src().equals(src) && arr.trg().equals(trg);
     }
 }
