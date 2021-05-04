@@ -27,7 +27,7 @@ public class Category {
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(String, Obj, Obj, MorphType) Arrow(name, source, target, type)
      */
-    Arrow addArrow(String name, Obj src, Obj trg, MorphType type) throws BadObjectNameException, ImpossibleArrowException {
+    public Arrow addArrow(String name, Obj src, Obj trg, MorphType type) throws BadObjectNameException, ImpossibleArrowException {
         if(!objects.containsValue(src))
             throw new BadObjectNameException("Source object does not exist in category.");
         if(!objects.containsValue(trg))
@@ -59,7 +59,7 @@ public class Category {
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(String, Obj, Obj, MorphType) Arrow(name, source, target, type)
      */
-    Arrow addArrow(String name, String srcName, String trgName, MorphType type) throws BadObjectNameException, ImpossibleArrowException {
+    public Arrow addArrow(String name, String srcName, String trgName, MorphType type) throws BadObjectNameException, ImpossibleArrowException {
         Obj src;
         Obj trg;
 
@@ -91,7 +91,7 @@ public class Category {
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(String, Obj, Obj) Arrow(name, source, target)
      */
-    Arrow addArrow(String name, Obj src, Obj trg) throws BadObjectNameException, ImpossibleArrowException {
+    public Arrow addArrow(String name, Obj src, Obj trg) throws BadObjectNameException, ImpossibleArrowException {
         return addArrow(name, src, trg, MorphType.MORPHISM);
     }
 
@@ -106,7 +106,7 @@ public class Category {
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(String, Obj, Obj) Arrow(name, source, target)
      */
-    Arrow addArrow(String name, String srcName, String trgName) throws BadObjectNameException, ImpossibleArrowException {
+    public Arrow addArrow(String name, String srcName, String trgName) throws BadObjectNameException, ImpossibleArrowException {
         return addArrow(name, srcName, trgName, MorphType.MORPHISM);
     }
 
@@ -121,7 +121,7 @@ public class Category {
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(String, Obj) Arrow(name, obj)
      */
-    Arrow addIdentity(String name, Obj obj) throws BadObjectNameException, ImpossibleArrowException {
+    public Arrow addIdentity(String name, Obj obj) throws BadObjectNameException, ImpossibleArrowException {
         if (!objects.containsValue(obj))
             throw new BadObjectNameException("Object does not exist in category.");
 
@@ -149,7 +149,7 @@ public class Category {
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(String, Obj) Arrow(name, obj)
      */
-    Arrow addIdentity(String name, String objName) throws BadObjectNameException, ImpossibleArrowException {
+    public Arrow addIdentity(String name, String objName) throws BadObjectNameException, ImpossibleArrowException {
         Obj obj;
         
         try {
@@ -170,7 +170,7 @@ public class Category {
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(Obj) Arrow(obj)
      */
-    Arrow addIdentity(Obj obj) throws BadObjectNameException, ImpossibleArrowException {
+    public Arrow addIdentity(Obj obj) throws BadObjectNameException, ImpossibleArrowException {
         return addIdentity(Arrow.makeIdentityName(obj.getName()), obj);
     }
 
@@ -183,7 +183,7 @@ public class Category {
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(Obj) Arrow(obj)
      */
-    Arrow addIdentity(String objName) throws BadObjectNameException, ImpossibleArrowException {
+    public Arrow addIdentity(String objName) throws BadObjectNameException, ImpossibleArrowException {
         return addIdentity(Arrow.makeIdentityName(objName), objName);
     }
 
@@ -192,7 +192,7 @@ public class Category {
      * compose (thus depend) on it from the {@link app.categories.Category Category}.
      * @param arr Reference to the arrow to remove.
      */
-    void removeArrow(Arrow arr) {
+    public void removeArrow(Arrow arr) {
         // Remove reference from source
         if (objects.containsValue(arr.src()))
             arr.src().outcoming.remove(arr);
@@ -222,7 +222,7 @@ public class Category {
      * @see #compose(Arrow g, Arrow f)
      * @see #removeArrowCompositions(Arrow)
      */
-    Arrow addComposition(Arrow g, Arrow f) throws BadObjectNameException, ImpossibleArrowException {
+    public Arrow addComposition(Arrow g, Arrow f) throws BadObjectNameException, ImpossibleArrowException {
         if(!objects.containsValue(f.src()))
             throw new BadObjectNameException("Source object does not exist in category.");
         if(!objects.containsValue(g.trg()))
@@ -256,7 +256,7 @@ public class Category {
      * @param arr Reference to the arrow from which the arrows to remove compose.
      * @see #addComposition(Arrow, Arrow)
      */
-    void removeArrowCompositions(Arrow arr) {
+    public void removeArrowCompositions(Arrow arr) {
         for (Arrow comp: arrows.get(arr))
             removeArrow(comp);
         arrows.get(arr).clear();
@@ -266,7 +266,7 @@ public class Category {
      * Prints all the arrows currently present in the {@link app.categories.Category Category}.
      * @see #printObjects()
      */
-    void printArrows() {
+    public void printArrows() {
         System.out.println("Snapshot of all the arrows:");
         for (Arrow arr: arrows.keySet())
             System.out.printf("\t%s\n",arr.represent());
@@ -280,7 +280,7 @@ public class Category {
      * the category.
      * @see #removeObject(String name)
      */
-    Obj addObject(String name) throws BadObjectNameException {
+    public Obj addObject(String name) throws BadObjectNameException {
         if (objects.containsKey(name)) throw new BadObjectNameException("An object with the same name already exists in the category.");
         Obj obj = new Obj(name);
         objects.put(name, obj);
@@ -293,7 +293,7 @@ public class Category {
      * @param obj Object to remove.
      * @see #addObject(String name)
      */
-    void removeObject(Obj obj) {
+    public void removeObject(Obj obj) {
         objects.remove(obj.getName());
         for(Arrow arr: obj.outcoming)
             removeArrow(arr);
@@ -307,7 +307,7 @@ public class Category {
      * @param objName Name of the object to remove.
      * @see #addObject(String name)
      */
-    void removeObject(String objName) {
+    public void removeObject(String objName) {
         Obj obj;
         if ((obj = objects.remove(objName)) != null) {
             for(Arrow arr: obj.outcoming)
@@ -321,7 +321,7 @@ public class Category {
      * Prints all the Objects currently in the {@link app.categories.Category Category}.
      * @see #printArrows()
      */
-    void printObjects() {
+    public void printObjects() {
         String str = "Snapshot of all the objects: ";
         for(String name: objects.keySet())
             str = String.format("%s%s ", str, name);
@@ -350,7 +350,7 @@ public class Category {
      * @param objName Object to print the arrows of.
      * @throws BadObjectNameException If the object does not exist.
      */
-    void printObjectArrows(String objName) throws BadObjectNameException {
+    public void printObjectArrows(String objName) throws BadObjectNameException {
         Obj obj;
         try {
             obj = objects.get(objName);
@@ -391,6 +391,7 @@ public class Category {
         ct.printObjects();
         ct.printObjectArrows("B");
 
+        /*
         ct.removeObject("B");
         ct.printArrows();
         ct.printObjects();
@@ -399,5 +400,6 @@ public class Category {
         ct.addArrow("g", "B", "C");
         ct.printArrows();
         ct.printObjects();
+        */
     }
 }
