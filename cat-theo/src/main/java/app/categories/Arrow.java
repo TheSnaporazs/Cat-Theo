@@ -12,8 +12,8 @@ public class Arrow {
     public static final String IDENTITY_SYMBOL = "Id(%s)";
     public static final String COMPOSITION_SYMBOL = "%s • %s";
     private String name;
-    private String src;
-    private String trg;
+    private Obj src;
+    private Obj trg;
     private MorphType type;
 
     /**
@@ -25,7 +25,7 @@ public class Arrow {
      * @param type Type of the arrow.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
-    public Arrow(String name, String src, String trg, MorphType type) throws ImpossibleArrowException {
+    public Arrow(String name, Obj src, Obj trg, MorphType type) throws ImpossibleArrowException {
         if (type == MorphType.IDENTITY && !src.equals(trg))
             throw new ImpossibleArrowException("An identity has to have same source and target!");
 
@@ -42,7 +42,7 @@ public class Arrow {
      * @param trg Name of the target object.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
-    public Arrow(String name, String src, String trg) throws ImpossibleArrowException {
+    public Arrow(String name, Obj src, Obj trg) throws ImpossibleArrowException {
         this(name, src, trg, MorphType.MORPHISM);
     }
 
@@ -56,13 +56,13 @@ public class Arrow {
      * Returns the name of the arrow's source.
      * @return Name of the source.
      */
-    public String src() { return src; }
+    public Obj src() { return src; }
 
     /**
      * Returns the name of the arrow's target.
      * @return Name of the target.
      */
-    public String trg() { return trg; }
+    public Obj trg() { return trg; }
 
     /**
      * Returns the arrow's type.
@@ -75,7 +75,7 @@ public class Arrow {
      * @return A string representing the arrow
      */
     public String represent() {
-        return String.format("%s: %s→%s",getName(),src,trg);
+        return String.format("%s: %s→%s", getName(), src.getName(), trg.getName());
     }
 
     /**
@@ -106,7 +106,7 @@ public class Arrow {
 
     @Override
     public int hashCode() {
-        return String.format("%s%s%s%s", name, src, trg, type.toString()).hashCode();
+        return String.format("%s%s%s%s", name, src.getName(), trg.getName(), type.toString()).hashCode();
     }
 
     @Override
