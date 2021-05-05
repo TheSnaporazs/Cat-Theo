@@ -1,0 +1,16 @@
+Things to say about the model on the document we are going to write:
+1- The epiphany: category theory is about infering things about parts of the structure by using the structure itself -> our knowledge of maps and graphs.
+1.1- Category, Arrow and Obj as interface or object? Why did we choose object?
+1.2- Obj as an object or as a simple key? The struggle and the victory of the object as a wrapper for incoming and outcoming arrows... it was just algorithmically faster to have it this way.
+1.3- Arrow types: what to put in? Why did we not put there endomorphisms or automorphisms but just the basic 5s we have right now.
+
+// Next things that should be developed
+2- Spaces, objects' ranges, arrows' kernels and arrows' images. (Exact sequences and why thid property is needed for proofing)
+2.1- Products and co-products.
+3- The interactive proofer: why not fully automatic (simply put, too hard)? How did we implement this monstruosity? (this goes in combo with the controller section)
+
+Things to say about the controller:
+    -Tutto tuo Dario
+
+Things to say about the GUI:
+    -Tutto tuo Tommaso
