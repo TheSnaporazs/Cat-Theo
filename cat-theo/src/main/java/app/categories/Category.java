@@ -348,38 +348,74 @@ public class Category {
             System.out.printf("\t%s\n", arr.represent());
     }
 
+    /**
+     * Finds all the initial objects.
+     * @return
+     */
+    public Set<Obj> getInitialObjs() {
+        Set<Obj> initialObjs = new HashSet<Obj>();
+
+        for (Obj obj : objects.values())
+            if (obj.isInitial())
+                initialObjs.add(obj);
+
+        return initialObjs;
+    }
+
+    /**
+     * Finds all the terminal objects.
+     * @return
+     */
+    public Set<Obj> getTerminalObjs() {
+        Set<Obj> terminalObjs = new HashSet<Obj>();
+
+        for (Obj obj : objects.values())
+            if (obj.isTerminal())
+                terminalObjs.add(obj);
+
+        return terminalObjs;
+    }
+
     public static void main(String[] args) throws BadObjectNameException, ImpossibleArrowException {
         // This is to test the model
         Category ct = new Category();
 
+        // This is the premise of the five lemma
         ct.addObject("A");
         ct.addObject("B");
         ct.addObject("C");
         ct.addObject("D");
+        ct.addObject("E");
+
+        ct.addObject("A'");
+        ct.addObject("B'");
+        ct.addObject("C'");
+        ct.addObject("D'");
+        ct.addObject("E'");
 
         Arrow a1 = ct.addArrow("ƒ", "A", "B");
         Arrow a2 = ct.addArrow("g", "B", "C");
         Arrow a3 = ct.addArrow("h", "C", "D");
+        Arrow a4 = ct.addArrow("j", "D", "E");
 
-        Arrow c1 = ct.addComposition(a2, a1);
-        ct.addComposition(a3, a2);
-        ct.addComposition(a3, c1);
-        
-        ct.addIdentity("A");
+        Arrow b1 = ct.addArrow("l", "A", "A'", MorphType.EPIMORPHISM);
+        Arrow b2 = ct.addArrow("m", "B", "B'", MorphType.ISOMORPHISM);
+        Arrow b3 = ct.addArrow("n", "C", "C'");
+        Arrow b4 = ct.addArrow("p", "D", "D'", MorphType.ISOMORPHISM);
+        Arrow b5 = ct.addArrow("q", "E", "E'", MorphType.MONOMORPHISM);
+
+        Arrow c1 = ct.addArrow("r", "A'", "B'");
+        Arrow c2 = ct.addArrow("s", "B'", "C'");
+        Arrow c3 = ct.addArrow("t", "C'", "D'");
+        Arrow c4 = ct.addArrow("u", "D'", "E'");
 
         ct.printArrows();
         ct.printObjects();
-        ct.printObjectArrows("B");
 
-        /*
-        ct.removeObject("B");
-        ct.printArrows();
-        ct.printObjects();
+        for(Obj o: ct.getInitialObjs())
+            System.out.println(o.getName());
 
-        ct.addObject("B");
-        ct.addArrow("g", "B", "C");
-        ct.printArrows();
-        ct.printObjects();
-        */   
+        for(Obj o: ct.getTerminalObjs())
+            System.out.println(o.getName());
     }
 }

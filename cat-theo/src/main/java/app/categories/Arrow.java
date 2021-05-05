@@ -79,6 +79,21 @@ public class Arrow {
     }
 
     /**
+     * Checks whether the arrow is and endomorphism or not
+     * (if the source and the target are the same)
+     * @return
+     */
+    public boolean isEndomorphism() { return src.equals(trg); }
+
+    /**
+     * Checks whether the arrow is an automorphism or not
+     * (if it is an {@link app.categories.Arrow#isEndomorphism() Endomorphism}
+     * and an {@link app.categories.MorphType#ISOMORPHISM Isomorphism})
+     * @return
+     */
+    public boolean isAutomorphism() { return type == MorphType.ISOMORPHISM && isEndomorphism(); }
+
+    /**
      * Creates (if possible) a new {@link app.categories.Arrow Arrow} result of the
      * composition of two others, <b>doesn't</b> add it to any {@link app.categories.Category Category}.
      * Composition is the result of passing as input of a function another function-

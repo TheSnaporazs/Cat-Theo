@@ -28,6 +28,18 @@ public class Obj {
      */
     public String getName() { return name; }
 
+    /**
+     * Checks whether the Obj is initial or not.
+     * @return
+     */
+    public boolean isInitial() { return incoming.size() <= 0; }
+
+    /**
+     * Checks whether the Obj is terminal or not.
+     * @return
+     */
+    public boolean isTerminal() { return outcoming.size() <= 0; }
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Obj))
