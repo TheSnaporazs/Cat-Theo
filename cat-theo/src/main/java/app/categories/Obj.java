@@ -18,7 +18,7 @@ public class Obj {
      * Instances a new {@link app.categories.Obj Obj} representing an object.
      * @param name Name of the object.
      */
-    public Obj(String name) {
+    Obj(String name) {
         this.name = name;
     }
 

@@ -22,17 +22,11 @@ public class Category {
      * @param trg Target object.
      * @param type Type of the arrow.
      * @return Reference to the added arrow.
-     * @throws BadObjectNameException If the object does not exist.
      * @throws ImpossibleArrowException
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(String, Obj, Obj, MorphType) Arrow(name, source, target, type)
      */
-    public Arrow addArrow(String name, Obj src, Obj trg, MorphType type) throws BadObjectNameException, ImpossibleArrowException {
-        if(!objects.containsValue(src))
-            throw new BadObjectNameException("Source object does not exist in category.");
-        if(!objects.containsValue(trg))
-            throw new BadObjectNameException("Target object does not exist in category.");
-
+    public Arrow addArrow(String name, Obj src, Obj trg, MorphType type) throws ImpossibleArrowException {
         if(type == MorphType.IDENTITY)
             if (src.equals(trg))
                 return addIdentity(name, src);
@@ -86,12 +80,11 @@ public class Category {
      * @param src Source object.
      * @param trg Target object.
      * @return Reference to the added arrow.
-     * @throws BadObjectNameException If the object does not exist.
      * @throws ImpossibleArrowException
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(String, Obj, Obj) Arrow(name, source, target)
      */
-    public Arrow addArrow(String name, Obj src, Obj trg) throws BadObjectNameException, ImpossibleArrowException {
+    public Arrow addArrow(String name, Obj src, Obj trg) throws ImpossibleArrowException {
         return addArrow(name, src, trg, MorphType.MORPHISM);
     }
 
@@ -116,19 +109,11 @@ public class Category {
      * @param name Name of the new arrow (watch out for a possible LaTeX implementation).
      * @param obj Object to make the identity of.
      * @return Reference to the identity.
-     * @throws BadObjectNameException If the object does not exist.
      * @throws ImpossibleArrowException If the identity already is in the category
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(String, Obj) Arrow(name, obj)
      */
-    public Arrow addIdentity(String name, Obj obj) throws BadObjectNameException, ImpossibleArrowException {
-        if (!objects.containsValue(obj))
-            throw new BadObjectNameException("Object does not exist in category.");
-
-        for(Arrow dep: obj.outcoming)
-            if(dep.getType() == MorphType.IDENTITY)
-                throw new ImpossibleArrowException("An object's identity is unique.");
-
+    public Arrow addIdentity(String name, Obj obj) throws ImpossibleArrowException {
         Arrow arr = new Arrow(name, obj, obj, MorphType.IDENTITY);
 
         // Add reference to object
@@ -165,12 +150,11 @@ public class Category {
      * Adds a the identity {@link app.categories.Arrow Arrow} of an object to the {@link app.categories.Category Category}.
      * @param obj Object to make the identity of.
      * @return Reference to the identity.
-     * @throws BadObjectNameException If the object does not exist.
      * @throws ImpossibleArrowException If an identity of the object is already in the category.
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(Obj) Arrow(obj)
      */
-    public Arrow addIdentity(Obj obj) throws BadObjectNameException, ImpossibleArrowException {
+    public Arrow addIdentity(Obj obj) throws ImpossibleArrowException {
         return addIdentity(Arrow.makeIdentityName(obj.getName()), obj);
     }
 
@@ -194,11 +178,11 @@ public class Category {
      */
     public void removeArrow(Arrow arr) {
         // Remove reference from source
-        if (objects.containsValue(arr.src()))
+        if(objects.containsKey(arr.src().getName()))
             arr.src().outcoming.remove(arr);
 
         // Remove reference from target
-        if (objects.containsValue(arr.trg()))
+        if(objects.containsKey(arr.trg().getName()))
             arr.trg().incoming.remove(arr);
 
         // Remove from the Category all the compositions depending on the
@@ -223,10 +207,6 @@ public class Category {
      * @see #removeArrowCompositions(Arrow)
      */
     public Arrow addComposition(Arrow g, Arrow f) throws BadObjectNameException, ImpossibleArrowException {
-        if(!objects.containsValue(f.src()))
-            throw new BadObjectNameException("Source object does not exist in category.");
-        if(!objects.containsValue(g.trg()))
-            throw new BadObjectNameException("Target object does not exist in category.");
         Arrow arr = Arrow.compose(g, f);
 
         // If here then g and f are composable, now we check for identity
@@ -400,6 +380,6 @@ public class Category {
         ct.addArrow("g", "B", "C");
         ct.printArrows();
         ct.printObjects();
-        */
+        */   
     }
 }

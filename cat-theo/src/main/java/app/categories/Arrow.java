@@ -25,7 +25,7 @@ public class Arrow {
      * @param type Type of the arrow.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
-    public Arrow(String name, Obj src, Obj trg, MorphType type) throws ImpossibleArrowException {
+    Arrow(String name, Obj src, Obj trg, MorphType type) throws ImpossibleArrowException {
         if (type == MorphType.IDENTITY && !src.equals(trg))
             throw new ImpossibleArrowException("An identity has to have same source and target!");
 
@@ -42,7 +42,7 @@ public class Arrow {
      * @param trg Name of the target object.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
-    public Arrow(String name, Obj src, Obj trg) throws ImpossibleArrowException {
+    Arrow(String name, Obj src, Obj trg) throws ImpossibleArrowException {
         this(name, src, trg, MorphType.MORPHISM);
     }
 
