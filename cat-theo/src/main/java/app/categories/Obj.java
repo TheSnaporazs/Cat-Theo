@@ -1,7 +1,7 @@
 package app.categories;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents an Object from the Category Theory branch of mathematics.
