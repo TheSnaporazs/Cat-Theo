@@ -33,7 +33,6 @@ public class WorkController extends GenericController{
     @FXML private AnchorPane scroll_wrap;
     @FXML private ToggleGroup tog1;
     @FXML private ToggleGroup tog2;
-    @FXML private ScrollPane pannable;
 
     double xCord, yCord;
 
@@ -44,15 +43,12 @@ public class WorkController extends GenericController{
 
     @FXML
     public void initialize() {
-
-        pannable.addEventHandler(MouseEvent.ANY, mouseEvent -> {
-            pannable.setPannable(false);
-            if(mouseEvent.getButton() == MouseButton.MIDDLE)
-                pannable.setPannable(true);
-                mouseEvent.consume();
-        });
-
-        scroll_wrap.addEventHandler(MouseEvent.MOUSE_PRESSED,
+    /*
+    Whole thing should be redone in a sensible way
+    lots of checks are missing, but the panning behaves
+    in a humane way now and I must go to dinner!
+     */
+        scroll_wrap.addEventHandler(MouseEvent.ANY,
                 MouseEvent -> {
                     System.out.println("CLICK!");
                     double X = MouseEvent.getX();
@@ -76,6 +72,7 @@ public class WorkController extends GenericController{
                                 System.out.println("ARROW!" + X + Y);
                                 break;
                         }
+                        MouseEvent.consume();
                     }
                 }
                 );
@@ -117,11 +114,6 @@ public class WorkController extends GenericController{
     }
 
 
-/*    *//**
-     * Method to create a draggable circle
-     *
-     * stub for the creation of an object
-     *//*
     @FXML
     public void createCircle(String stringa) {
         Circle circle = new Circle(60,60,30, Color.WHITE);
@@ -135,7 +127,7 @@ public class WorkController extends GenericController{
         stackPane.setLayoutY(30);
         CircleGroup.getChildren().add(stackPane);
         scroll_wrap.getChildren().add(CircleGroup);
-        
+
         CircleGroup.setCursor(Cursor.HAND);
         CircleGroup.setOnMousePressed((t) -> {
             xCord = t.getSceneX();
@@ -170,6 +162,6 @@ public class WorkController extends GenericController{
             createCircle(objName);
             scroll_wrap.getChildren().removeAll(tf,bot);
         });
-    }*/
+    }
 
 }
