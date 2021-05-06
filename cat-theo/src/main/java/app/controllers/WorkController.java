@@ -21,10 +21,9 @@ public class WorkController extends GenericController{
 
     private Category currCat = new Category();
 
-    @FXML private AnchorPane root;
     @FXML private AnchorPane scroll_wrap;
 
-    double orgSceneX, orgSceneY;
+    double xCord, yCord;
 
     public WorkController()
     {
@@ -73,31 +72,52 @@ public class WorkController extends GenericController{
      *
      * stub for the creation of an object
      */
-    public void createCircle() {
-        Circle circle = new Circle(30, 30, 30, Color.ORANGE);
-        scroll_wrap.getChildren().add(circle);
-
-        circle.setCursor(Cursor.HAND);
-
-        circle.setOnMousePressed((t) -> {
-            orgSceneX = t.getSceneX();
-            orgSceneY = t.getSceneY();
-            Circle c = (Circle) ( t.getSource() );
-            c.toFront();
+    public void createCircle(String stringa) {
+        Circle circle = new Circle(60,60,30, Color.WHITE);
+        circle.setStroke(Color.BLACK);
+        Group CircleGroup = new Group();
+        Text testo = new Text(stringa);
+        testo.setFont(new Font(30));
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().addAll(circle, testo);
+        stackPane.setLayoutX(30);
+        stackPane.setLayoutY(30);
+        CircleGroup.getChildren().add(stackPane);
+        scroll_wrap.getChildren().add(CircleGroup);
+        
+        CircleGroup.setCursor(Cursor.HAND);
+        CircleGroup.setOnMousePressed((t) -> {
+            xCord = t.getSceneX();
+            yCord = t.getSceneY();
         });
-        circle.setOnMouseDragged((t) -> {
-            double offsetX = t.getSceneX() - orgSceneX;
-            double offsetY = t.getSceneY() - orgSceneY;
+        CircleGroup.setOnMouseDragged((t) -> {
+            double offsetX = t.getSceneX() - xCord;
+            double offsetY = t.getSceneY() - yCord;
 
-            Circle c = (Circle) ( t.getSource() );
+            CircleGroup.setLayoutX(CircleGroup.getLayoutX() + offsetX);
+            CircleGroup.setLayoutY(CircleGroup.getLayoutY() + offsetY);
 
-            c.setCenterX(c.getCenterX() + offsetX);
-            c.setCenterY(c.getCenterY() + offsetY);
-
-            orgSceneX = t.getSceneX();
-            orgSceneY = t.getSceneY();
+            xCord = t.getSceneX();
+            yCord = t.getSceneY();
         });
-
     }
 
+    
+    public void getInput() {
+        TextField tf = new TextField();
+
+        tf.setLayoutX(150);
+        tf.setLayoutY(100);
+        tf.setPrefWidth(90);
+        scroll_wrap.getChildren().add(tf);
+        Button bot = new Button("Create");
+        bot.setLayoutX(250);
+        bot.setLayoutY(100);
+        scroll_wrap.getChildren().add(bot);
+        bot.setOnAction(event -> {
+            String objName = tf.getText();
+            createCircle(objName);
+            scroll_wrap.getChildren().removeAll(tf,bot);
+        });
+    }
 }
