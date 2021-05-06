@@ -5,15 +5,18 @@ import app.categories.Category;
 import app.categories.Obj;
 import app.exceptions.BadObjectNameException;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -28,12 +31,54 @@ public class WorkController extends GenericController{
     private Category currCat = new Category();
 
     @FXML private AnchorPane scroll_wrap;
+    @FXML private ToggleGroup tog1;
+    @FXML private ToggleGroup tog2;
+    @FXML private ScrollPane pannable;
 
     double xCord, yCord;
 
     public WorkController()
     {
 
+    }
+
+    @FXML
+    public void initialize() {
+
+        pannable.addEventHandler(MouseEvent.ANY, mouseEvent -> {
+            pannable.setPannable(false);
+            if(mouseEvent.getButton() == MouseButton.MIDDLE)
+                pannable.setPannable(true);
+                mouseEvent.consume();
+        });
+
+        scroll_wrap.addEventHandler(MouseEvent.MOUSE_PRESSED,
+                MouseEvent -> {
+                    System.out.println("CLICK!");
+                    double X = MouseEvent.getX();
+                    double Y = MouseEvent.getY();
+
+                    String mouseState = (String) ((RadioButton) tog1.getSelectedToggle()).getUserData();
+                    String toSpawn = (String) ((RadioButton) tog2.getSelectedToggle()).getUserData();
+
+                    System.out.println(mouseState + toSpawn + (mouseState == "sel") + mouseState.getClass());
+                    if(mouseState.equals("sel") && (MouseEvent.getButton() != MouseButton.MIDDLE))
+                    {
+                        System.out.println("We in!");
+                        switch(toSpawn)
+                        {
+                            case "obj":
+                                //TODO Spawn object + Update model
+                                System.out.println("OBJECT!" + X + Y);
+                                break;
+                            case "arr":
+                                //TODO Spawn arrow + Update model
+                                System.out.println("ARROW!" + X + Y);
+                                break;
+                        }
+                    }
+                }
+                );
     }
 
     /**
@@ -62,8 +107,6 @@ public class WorkController extends GenericController{
 
     }
 
-
-
     /**
      * Debug method, prints to terminal the contents of the current category
      * being displayed
@@ -73,11 +116,12 @@ public class WorkController extends GenericController{
         // TODO add printAll method to category object
     }
 
-    /**
+
+/*    *//**
      * Method to create a draggable circle
      *
      * stub for the creation of an object
-     */
+     *//*
     @FXML
     public void createCircle(String stringa) {
         Circle circle = new Circle(60,60,30, Color.WHITE);
@@ -126,6 +170,6 @@ public class WorkController extends GenericController{
             createCircle(objName);
             scroll_wrap.getChildren().removeAll(tf,bot);
         });
-    }
+    }*/
 
 }
