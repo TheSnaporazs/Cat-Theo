@@ -78,6 +78,7 @@ public class WorkController extends GenericController{
      *
      * stub for the creation of an object
      */
+    @FXML
     public void createCircle(String stringa) {
         Circle circle = new Circle(60,60,30, Color.WHITE);
         circle.setStroke(Color.BLACK);
@@ -126,4 +127,5 @@ public class WorkController extends GenericController{
             scroll_wrap.getChildren().removeAll(tf,bot);
         });
     }
+
 }
