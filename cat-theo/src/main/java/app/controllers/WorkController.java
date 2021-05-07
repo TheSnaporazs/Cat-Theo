@@ -7,6 +7,7 @@ import app.events.OBJECT_SPAWNED;
 import app.exceptions.BadObjectNameException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -75,6 +76,11 @@ public class WorkController extends GenericController{
                 printCurrCat();
             } catch (BadObjectNameException e) {
                 e.printStackTrace();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("Duplicate Object Error");
+                error.setContentText("Cannot have two objects with the same name in the same category!");
+                error.showAndWait();
             }
         });
     }
