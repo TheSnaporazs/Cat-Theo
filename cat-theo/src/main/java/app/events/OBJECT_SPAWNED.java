@@ -6,7 +6,7 @@ import javafx.event.EventType;
 
 public class OBJECT_SPAWNED extends ANY_CAT {
 
-    public static final EventType<ANY_CAT> OBJECT_SPAWNED_TYPE = new EventType(ANY_CAT_EVENT_TYPE, "OBJECT_SPAWNED");
+    public static final EventType<OBJECT_SPAWNED> OBJECT_SPAWNED_TYPE = new EventType(ANY_CAT_EVENT_TYPE, "OBJECT_SPAWNED");
 
     private final double X;
     private final double Y;
@@ -18,5 +18,11 @@ public class OBJECT_SPAWNED extends ANY_CAT {
         System.out.println("OBJECT EVENT!");
     }
 
+    public double getX() {
+        return X;
+    }
 
+    public double getY() {
+        return Y;
+    }
 }

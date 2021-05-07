@@ -34,9 +34,6 @@
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#switchPage"
                                   userData="mainmenu" text="Back to main" />
-                        <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-                        <MenuItem mnemonicParsing="false" onAction="#getInput"  text="Create Object" />
-
                     </items>
                 </Menu>
         </menus>

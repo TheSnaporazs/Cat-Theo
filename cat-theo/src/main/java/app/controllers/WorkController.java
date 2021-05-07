@@ -4,6 +4,9 @@ package app.controllers;
 import app.GUI.GUIutil;
 import app.categories.Category;
 import app.categories.Obj;
+import app.events.ANY_CAT;
+import app.events.ARROW_SPAWNED;
+import app.events.OBJECT_SPAWNED;
 import app.exceptions.BadObjectNameException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,8 +38,6 @@ public class WorkController extends GenericController{
     @FXML private AnchorPane scroll_wrap;
     @FXML private ToggleGroup tog1;
     @FXML private ToggleGroup tog2;
-
-    double xCord, yCord;
 
     public WorkController()
     {
@@ -80,7 +81,6 @@ public class WorkController extends GenericController{
                                 break;
                         }
                     }
-
                     if (event.getButton() != MouseButton.MIDDLE)
                     {
                         event.consume();
@@ -105,6 +105,10 @@ public class WorkController extends GenericController{
                     }*/
                 }
                 );
+
+        scroll_wrap.addEventHandler(OBJECT_SPAWNED.OBJECT_SPAWNED_TYPE, event -> {
+            GUIutil.spawnObject(event.getX(), event.getY(), scroll_wrap);
+        });
     }
 
 
@@ -144,54 +148,9 @@ public class WorkController extends GenericController{
     }
 
 
-    @FXML
-    public void createCircle(String stringa) {
-        Circle circle = new Circle(60,60,30, Color.WHITE);
-        circle.setStroke(Color.BLACK);
-        Group CircleGroup = new Group();
-        Text testo = new Text(stringa);
-        testo.setFont(new Font(30));
-        StackPane stackPane = new StackPane();
-        stackPane.getChildren().addAll(circle, testo);
-        stackPane.setLayoutX(30);
-        stackPane.setLayoutY(30);
-        CircleGroup.getChildren().add(stackPane);
-        scroll_wrap.getChildren().add(CircleGroup);
 
-        CircleGroup.setCursor(Cursor.HAND);
-        CircleGroup.setOnMousePressed((t) -> {
-            xCord = t.getSceneX();
-            yCord = t.getSceneY();
-        });
-        CircleGroup.setOnMouseDragged((t) -> {
-            double offsetX = t.getSceneX() - xCord;
-            double offsetY = t.getSceneY() - yCord;
-
-            CircleGroup.setLayoutX(CircleGroup.getLayoutX() + offsetX);
-            CircleGroup.setLayoutY(CircleGroup.getLayoutY() + offsetY);
-
-            xCord = t.getSceneX();
-            yCord = t.getSceneY();
-        });
-    }
 
     
-    public void getInput() {
-        TextField tf = new TextField();
 
-        tf.setLayoutX(150);
-        tf.setLayoutY(100);
-        tf.setPrefWidth(90);
-        scroll_wrap.getChildren().add(tf);
-        Button bot = new Button("Create");
-        bot.setLayoutX(250);
-        bot.setLayoutY(100);
-        scroll_wrap.getChildren().add(bot);
-        bot.setOnAction(event -> {
-            String objName = tf.getText();
-            createCircle(objName);
-            scroll_wrap.getChildren().removeAll(tf,bot);
-        });
-    }
 
 }
