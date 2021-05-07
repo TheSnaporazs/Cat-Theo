@@ -1,9 +1,11 @@
 package app.categories;
 
-import app.exceptions.*;
-import java.util.Set;
-import java.util.HashSet;
+import app.exceptions.BadObjectNameException;
+import app.exceptions.ImpossibleArrowException;
+
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 /**
  * Represents a category from the Category Theory branch of mathematics.
  * @author Davide Marincione
