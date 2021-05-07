@@ -1,6 +1,7 @@
 package app.controllers;
 
 
+import app.GUI.GUIutil;
 import app.categories.Category;
 import app.categories.Obj;
 import app.exceptions.BadObjectNameException;
@@ -9,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -43,22 +45,49 @@ public class WorkController extends GenericController{
 
     @FXML
     public void initialize() {
+
+
     /*
     Whole thing should be redone in a sensible way
     lots of checks are missing, but the panning behaves
     in a humane way now and I must go to dinner!
      */
+
         scroll_wrap.addEventHandler(MouseEvent.ANY,
-                MouseEvent -> {
-                    System.out.println("CLICK!");
-                    double X = MouseEvent.getX();
-                    double Y = MouseEvent.getY();
+                event -> {
+                    if (event.getEventType() == MouseEvent.MOUSE_CLICKED )
+                    {
+                        double X = event.getX();
+                        double Y = event.getY();
 
-                    String mouseState = (String) ((RadioButton) tog1.getSelectedToggle()).getUserData();
-                    String toSpawn = (String) ((RadioButton) tog2.getSelectedToggle()).getUserData();
+                        switch (event.getButton())  //we catch all of them since switch is a O(1) hash table
+                        {
+                            case PRIMARY:
+                                //select object
+                                break;
+                            case SECONDARY:
+                                GUIutil.spawnCreationMenu(X, Y, scroll_wrap);
+                                break;
+                            case NONE:
+                                break;
+                            case MIDDLE:
 
-                    System.out.println(mouseState + toSpawn + (mouseState == "sel") + mouseState.getClass());
-                    if(mouseState.equals("sel") && (MouseEvent.getButton() != MouseButton.MIDDLE))
+                                break;
+
+                            case BACK:
+                                break;
+                            case FORWARD:
+                                break;
+                        }
+                    }
+
+                    if (event.getButton() != MouseButton.MIDDLE)
+                    {
+                        event.consume();
+                    }
+
+
+/*                    if(mouseState.equals("sel") && (event.getButton() != MouseButton.MIDDLE))
                     {
                         System.out.println("We in!");
                         switch(toSpawn)
@@ -72,11 +101,12 @@ public class WorkController extends GenericController{
                                 System.out.println("ARROW!" + X + Y);
                                 break;
                         }
-                        MouseEvent.consume();
-                    }
+                        event.consume();
+                    }*/
                 }
                 );
     }
+
 
     /**
      * Updates the model by adding the object specifed by the user
