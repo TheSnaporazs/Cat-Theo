@@ -108,7 +108,8 @@ public class GUIutil {
             double offsetX = t.getSceneX() - xCord[0];
             double offsetY = t.getSceneY() - yCord[0];
 
-            CircleGroup.relocate(CircleGroup.getLayoutX() + offsetX, CircleGroup.getLayoutY() + offsetY);
+            CircleGroup.setLayoutX(CircleGroup.getLayoutX() + offsetX);
+            CircleGroup.setLayoutY(CircleGroup.getLayoutY() + offsetY);
 
             xCord[0] = t.getSceneX();
             yCord[0] = t.getSceneY();
