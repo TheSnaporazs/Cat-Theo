@@ -25,7 +25,7 @@ public class Arrow {
      * @param type Type of the arrow.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
-    public Arrow(String name, Obj src, Obj trg, MorphType type) throws ImpossibleArrowException {
+    Arrow(String name, Obj src, Obj trg, MorphType type) throws ImpossibleArrowException {
         if (type == MorphType.IDENTITY && !src.equals(trg))
             throw new ImpossibleArrowException("An identity has to have same source and target!");
 
@@ -42,7 +42,7 @@ public class Arrow {
      * @param trg Name of the target object.
      * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
      */
-    public Arrow(String name, Obj src, Obj trg) throws ImpossibleArrowException {
+    Arrow(String name, Obj src, Obj trg) throws ImpossibleArrowException {
         this(name, src, trg, MorphType.MORPHISM);
     }
 
@@ -77,6 +77,21 @@ public class Arrow {
     public String represent() {
         return String.format("%s: %s→%s", getName(), src.getName(), trg.getName());
     }
+
+    /**
+     * Checks whether the arrow is and endomorphism or not
+     * (if the source and the target are the same)
+     * @return
+     */
+    public boolean isEndomorphism() { return src.equals(trg); }
+
+    /**
+     * Checks whether the arrow is an automorphism or not
+     * (if it is an {@link app.categories.Arrow#isEndomorphism() Endomorphism}
+     * and an {@link app.categories.MorphType#ISOMORPHISM Isomorphism})
+     * @return
+     */
+    public boolean isAutomorphism() { return type == MorphType.ISOMORPHISM && isEndomorphism(); }
 
     /**
      * Creates (if possible) a new {@link app.categories.Arrow Arrow} result of the

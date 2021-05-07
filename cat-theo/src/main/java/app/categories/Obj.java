@@ -18,7 +18,7 @@ public class Obj {
      * Instances a new {@link app.categories.Obj Obj} representing an object.
      * @param name Name of the object.
      */
-    public Obj(String name) {
+    Obj(String name) {
         this.name = name;
     }
 
@@ -27,6 +27,18 @@ public class Obj {
      * @return
      */
     public String getName() { return name; }
+
+    /**
+     * Checks whether the Obj is initial or not.
+     * @return
+     */
+    public boolean isInitial() { return incoming.size() <= 0; }
+
+    /**
+     * Checks whether the Obj is terminal or not.
+     * @return
+     */
+    public boolean isTerminal() { return outcoming.size() <= 0; }
 
     @Override
     public boolean equals(Object obj) {
