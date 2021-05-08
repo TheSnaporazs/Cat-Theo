@@ -3,6 +3,7 @@ package app.controllers;
 
 import app.GUI.GUIutil;
 import app.categories.Category;
+import app.categories.Obj;
 import app.events.OBJECT_SPAWNED;
 import app.exceptions.BadObjectNameException;
 import javafx.event.ActionEvent;
@@ -71,8 +72,7 @@ public class WorkController extends GenericController{
 
         scroll_wrap.addEventHandler(OBJECT_SPAWNED.OBJECT_SPAWNED_TYPE, event -> {
             try {
-                currCat.addObject(event.getObjName());
-                GUIutil.spawnObject(event.getX(), event.getY(), event.getObjName(), scroll_wrap);
+                GUIutil.spawnObject(event.getX(), event.getY(), currCat.addObject(event.getObjName()), scroll_wrap);
                 printCurrCat();
             } catch (BadObjectNameException e) {
                 e.printStackTrace();

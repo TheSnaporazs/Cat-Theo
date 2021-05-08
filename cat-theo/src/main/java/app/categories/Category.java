@@ -6,6 +6,8 @@ import app.exceptions.ImpossibleArrowException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import javafx.scene.Group;
+import javafx.scene.layout.Pane;
 /**
  * Represents a category from the Category Theory branch of mathematics.
  * @author Davide Marincione
@@ -276,6 +278,9 @@ public class Category {
      * @see #addObject(String name)
      */
     public void removeObject(Obj obj) {
+        if(obj.getRepr() != null)
+            ((Pane) obj.getRepr().getParent()).getChildren().remove(obj.getRepr());
+            // Oh god Dario... why the hell did you make me do this...
         objects.remove(obj.getName());
         for(Arrow arr: obj.outcoming)
             removeArrow(arr);
