@@ -2,7 +2,7 @@ package app.categories;
 
 import java.util.HashSet;
 import java.util.Set;
-import javafx.scene.Group;
+import javafx.scene.Node;
 
 /**
  * Represents an Object from the Category Theory branch of mathematics.
@@ -14,7 +14,7 @@ public class Obj {
     private String name;
     Set<Arrow> incoming = new HashSet<Arrow>();
     Set<Arrow> outcoming = new HashSet<Arrow>();
-    Group guiRepr;
+    Node guiRepr;
 
     /**
      * Instances a new {@link app.categories.Obj Obj} representing an object.
@@ -46,14 +46,14 @@ public class Obj {
      * Sets the group representing this object in the GUI
      * @param repr the group
      */
-    public void setRepr(Group repr) { guiRepr = repr; }
+    public void setRepr(Node repr) { guiRepr = repr; }
 
     /**
      * Returns a reference to the group representing the
      * object in the GUI
      * @return
      */
-    public Group getRepr() { return guiRepr; }
+    public Node getRepr() { return guiRepr; }
 
     @Override
     public boolean equals(Object obj) {

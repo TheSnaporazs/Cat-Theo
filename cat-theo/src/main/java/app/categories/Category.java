@@ -6,8 +6,15 @@ import app.exceptions.ImpossibleArrowException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import javafx.scene.Group;
+
 import javafx.scene.layout.Pane;
+
+import java.io.File;
+import java.io.FileWriter;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * Represents a category from the Category Theory branch of mathematics.
  * @author Davide Marincione
@@ -297,6 +304,8 @@ public class Category {
     public void removeObject(String objName) {
         Obj obj;
         if ((obj = objects.remove(objName)) != null) {
+            if(obj.getRepr() != null)
+                ((Pane) obj.getRepr().getParent()).getChildren().remove(obj.getRepr());
             for(Arrow arr: obj.outcoming)
                 removeArrow(arr);
             for(Arrow arr: obj.incoming)
@@ -383,6 +392,41 @@ public class Category {
         return terminalObjs;
     }
 
+    public void save(String fileName, boolean overwrite) {
+        JSONArray objs = new JSONArray();
+        for(Obj obj: objects.values()) {
+            JSONObject jsObj = new JSONObject();
+            jsObj.put("name", obj.getName());
+            if(obj.getRepr() != null) {
+                jsObj.put("x", obj.getRepr().getLayoutX());
+                jsObj.put("y", obj.getRepr().getLayoutY());
+            }
+            objs.put(jsObj);
+        }
+
+        JSONArray arrs = new JSONArray();
+        for(Arrow arr: arrows.keySet()) {
+            JSONObject jsArr = new JSONObject();
+            jsArr.put("name", arr.getName());
+            jsArr.put("source", arr.src().getName());
+            jsArr.put("target", arr.trg().getName());
+            JSONArray deps = new JSONArray();
+            for(Arrow dep: arrows.get(arr)) {
+                deps.put(dep.getName());
+            }
+            jsArr.put("dependencies", deps);
+            arrs.put(jsArr);
+        }
+
+        JSONObject category = new JSONObject();
+        category.put("objects", objs);
+        category.put("arrows", arrs);
+
+        System.out.println(category.toString());
+
+        // TODO: file writing with the FileWriter class
+    }
+
     public static void main(String[] args) throws BadObjectNameException, ImpossibleArrowException {
         // This is to test the model
         Category ct = new Category();
@@ -424,5 +468,7 @@ public class Category {
 
         for(Obj o: ct.getTerminalObjs())
             System.out.println(o.getName());
+        
+        ct.save(" ", true);
     }
 }

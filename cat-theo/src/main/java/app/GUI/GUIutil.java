@@ -87,8 +87,6 @@ public class GUIutil {
         Circle circle = new Circle(60,60,30, Color.WHITE);
         circle.setStroke(Color.BLACK);
 
-        Group CircleGroup = new Group();
-
         Text testo = new Text(obj.getName());
         testo.setFont(new Font(30));
 
@@ -96,23 +94,22 @@ public class GUIutil {
         stackPane.getChildren().addAll(circle, testo);
         stackPane.relocate(X, Y);
 
-        CircleGroup.getChildren().add(stackPane);
-        parent.getChildren().add(CircleGroup);
+        parent.getChildren().add(stackPane);
 
-        obj.setRepr(CircleGroup); //After all we have to let the object know of this...
+        obj.setRepr(stackPane); //After all we have to let the object know of this...
 
-        CircleGroup.setCursor(Cursor.HAND);
-        CircleGroup.setOnMousePressed((t) -> {
+        stackPane.setCursor(Cursor.HAND);
+        stackPane.setOnMousePressed((t) -> {
             xCord[0] = t.getSceneX();
             yCord[0] = t.getSceneY();
         });
-        CircleGroup.setOnMouseDragged((t) -> {
+        stackPane.setOnMouseDragged((t) -> {
 
             double offsetX = t.getSceneX() - xCord[0];
             double offsetY = t.getSceneY() - yCord[0];
 
-            CircleGroup.setLayoutX(CircleGroup.getLayoutX() + offsetX);
-            CircleGroup.setLayoutY(CircleGroup.getLayoutY() + offsetY);
+            stackPane.setLayoutX(stackPane.getLayoutX() + offsetX);
+            stackPane.setLayoutY(stackPane.getLayoutY() + offsetY);
 
             xCord[0] = t.getSceneX();
             yCord[0] = t.getSceneY();
