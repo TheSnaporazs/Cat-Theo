@@ -6,6 +6,16 @@ import app.exceptions.ImpossibleArrowException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
+import javafx.scene.layout.Pane;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * Represents a category from the Category Theory branch of mathematics.
  * @author Davide Marincione
@@ -276,6 +286,9 @@ public class Category {
      * @see #addObject(String name)
      */
     public void removeObject(Obj obj) {
+        if(obj.getRepr() != null)
+            ((Pane) obj.getRepr().getParent()).getChildren().remove(obj.getRepr());
+            // Oh god Dario... why the hell did you make me do this...
         objects.remove(obj.getName());
         for(Arrow arr: obj.outcoming)
             removeArrow(arr);
@@ -292,6 +305,8 @@ public class Category {
     public void removeObject(String objName) {
         Obj obj;
         if ((obj = objects.remove(objName)) != null) {
+            if(obj.getRepr() != null)
+                ((Pane) obj.getRepr().getParent()).getChildren().remove(obj.getRepr());
             for(Arrow arr: obj.outcoming)
                 removeArrow(arr);
             for(Arrow arr: obj.incoming)
@@ -378,7 +393,62 @@ public class Category {
         return terminalObjs;
     }
 
-    public static void main(String[] args) throws BadObjectNameException, ImpossibleArrowException {
+    public void save(String fileName, boolean overwrite) throws IOException{
+        // Create folder if it doesn't exist
+        File folder = new File(System.getProperty("user.dir") +"/saved_categories");
+        if(!folder.exists())
+            folder.mkdir();
+
+        // Create file and throw error if can't overwrite.
+        File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
+        if(file.exists() && !overwrite)
+            throw new IOException("File already exists.");
+        
+        file.createNewFile();
+
+
+        //Make array of objs json representations.
+        JSONArray objs = new JSONArray();
+        for(Obj obj: objects.values()) {
+            JSONObject jsObj = new JSONObject();
+            jsObj.put("name", obj.getName());
+            if(obj.getRepr() != null) {
+                jsObj.put("x", obj.getRepr().getLayoutX());
+                jsObj.put("y", obj.getRepr().getLayoutY());
+            }
+            objs.put(jsObj);
+        }
+
+        //Make array of arrows json representations.
+        JSONArray arrs = new JSONArray();
+        for(Arrow arr: arrows.keySet()) {
+            JSONObject jsArr = new JSONObject();
+            jsArr.put("name", arr.getName());
+            jsArr.put("source", arr.src().getName());
+            jsArr.put("target", arr.trg().getName());
+
+            // Make array of the arrows which compose from the current one.
+            JSONArray deps = new JSONArray();
+            for(Arrow dep: arrows.get(arr)) {
+                deps.put(dep.getName());
+            }
+            jsArr.put("dependencies", deps);
+            arrs.put(jsArr);
+        }
+
+        //Make object representing the whole category
+        JSONObject category = new JSONObject();
+        category.put("objects", objs);
+        category.put("arrows", arrs);
+        //Will maybe add Spaces in the future
+
+        //Save file
+        FileWriter shakespeare = new FileWriter(file); // Hihihi I am so fun...
+        shakespeare.write(category.toString(4));
+        shakespeare.close();
+    }
+
+    public static void main(String[] args) throws BadObjectNameException, ImpossibleArrowException, IOException {
         // This is to test the model
         Category ct = new Category();
 
@@ -419,5 +489,7 @@ public class Category {
 
         for(Obj o: ct.getTerminalObjs())
             System.out.println(o.getName());
+        
+        ct.save("five_lemma.json", true);
     }
 }

@@ -2,6 +2,7 @@ package app.GUI;
 
 import app.events.ARROW_SPAWNED;
 import app.events.OBJECT_SPAWNED;
+import app.categories.Obj;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -76,40 +77,39 @@ public class GUIutil {
      * @see app.categories.Category
      * @param X     Double, the X coordinate of the Object
      * @param Y     Double, the Y coordinate of the Object
-     * @param objName   String, the name of the Object
+     * @param obj   Obj, the Object
      * @param parent    Pane, the parent pane upon which to attach the object
      */
-    public static void spawnObject(double X, double Y, String objName, Pane parent) {
+    public static void spawnObject(double X, double Y, Obj obj, Pane parent) {
         final double[] xCord = new double[1];
         final double[] yCord = new double[1];
 
         Circle circle = new Circle(60,60,30, Color.WHITE);
         circle.setStroke(Color.BLACK);
 
-        Group CircleGroup = new Group();
-
-        Text testo = new Text(objName);
+        Text testo = new Text(obj.getName());
         testo.setFont(new Font(30));
 
         StackPane stackPane = new StackPane();
         stackPane.getChildren().addAll(circle, testo);
         stackPane.relocate(X, Y);
 
-        CircleGroup.getChildren().add(stackPane);
-        parent.getChildren().add(CircleGroup);
+        parent.getChildren().add(stackPane);
 
-        CircleGroup.setCursor(Cursor.HAND);
-        CircleGroup.setOnMousePressed((t) -> {
+        obj.setRepr(stackPane); //After all we have to let the object know of this...
+
+        stackPane.setCursor(Cursor.HAND);
+        stackPane.setOnMousePressed((t) -> {
             xCord[0] = t.getSceneX();
             yCord[0] = t.getSceneY();
         });
-        CircleGroup.setOnMouseDragged((t) -> {
+        stackPane.setOnMouseDragged((t) -> {
 
             double offsetX = t.getSceneX() - xCord[0];
             double offsetY = t.getSceneY() - yCord[0];
 
-            CircleGroup.setLayoutX(CircleGroup.getLayoutX() + offsetX);
-            CircleGroup.setLayoutY(CircleGroup.getLayoutY() + offsetY);
+            stackPane.setLayoutX(stackPane.getLayoutX() + offsetX);
+            stackPane.setLayoutY(stackPane.getLayoutY() + offsetY);
 
             xCord[0] = t.getSceneX();
             yCord[0] = t.getSceneY();
