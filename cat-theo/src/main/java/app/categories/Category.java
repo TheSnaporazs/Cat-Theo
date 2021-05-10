@@ -5,16 +5,19 @@ import app.exceptions.ImpossibleArrowException;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javafx.scene.layout.Pane;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 /**
  * Represents a category from the Category Theory branch of mathematics.
@@ -23,7 +26,7 @@ import org.json.JSONObject;
  * @see {@link app.categories.Obj Obj}
  */
 public class Category {
-    HashMap<Arrow, Set<Arrow>> arrows = new HashMap<Arrow, Set<Arrow>>();
+    HashMap<String, Arrow> arrows = new HashMap<String, Arrow>();
     HashMap<String, Obj> objects = new HashMap<String, Obj>();
 
     /**
@@ -48,7 +51,7 @@ public class Category {
         src.outcoming.add(arr);
         trg.incoming.add(arr);
 
-        arrows.put(arr, new HashSet<Arrow>());
+        arrows.put(name, arr);
         return arr;
     }
 
@@ -132,7 +135,7 @@ public class Category {
         obj.outcoming.add(arr);
         obj.incoming.add(arr);
 
-        arrows.put(arr, new HashSet<Arrow>());
+        arrows.put(name, arr);
         return arr;
     }
 
@@ -189,6 +192,8 @@ public class Category {
      * @param arr Reference to the arrow to remove.
      */
     public void removeArrow(Arrow arr) {
+        arrows.remove(arr.getName());
+
         // Remove reference from source
         if(objects.containsKey(arr.src().getName()))
             arr.src().outcoming.remove(arr);
@@ -199,10 +204,8 @@ public class Category {
 
         // Remove from the Category all the compositions depending on the
         // current arrow.
-        Set<Arrow> tempSet;
-        if((tempSet = arrows.remove(arr)) != null)
-            for(Arrow comp: tempSet)
-                removeArrow(comp);
+        for(Arrow comp: arr.dependencies)
+            removeArrow(comp);
     }
 
     /**
@@ -236,10 +239,10 @@ public class Category {
         arr.trg().incoming.add(arr);
 
         // Add the arrow as dependent of f and g
-        arrows.get(f).add(arr);
-        arrows.get(g).add(arr);
+        f.dependencies.add(arr);
+        g.dependencies.add(arr);
 
-        arrows.put(arr, new HashSet<Arrow>());
+        arrows.put(arr.getName(), arr);
         return arr;
     }
 
@@ -249,9 +252,9 @@ public class Category {
      * @see #addComposition(Arrow, Arrow)
      */
     public void removeArrowCompositions(Arrow arr) {
-        for (Arrow comp: arrows.get(arr))
+        for (Arrow comp: arr.dependencies)
             removeArrow(comp);
-        arrows.get(arr).clear();
+        arr.dependencies.clear();
     }
 
     /**
@@ -260,7 +263,7 @@ public class Category {
      */
     public void printArrows() {
         System.out.println("Snapshot of all the arrows:");
-        for (Arrow arr: arrows.keySet())
+        for (Arrow arr: arrows.values())
             System.out.printf("\t%s\n",arr.represent());
     }
 
@@ -393,6 +396,12 @@ public class Category {
         return terminalObjs;
     }
 
+    /**
+     * Saves the category to a JSON file in '/saved_categories'
+     * @param fileName name of the file (be sure to add .json at the end)
+     * @param overwrite whether to overwrite existing files.
+     * @throws IOException
+     */
     public void save(String fileName, boolean overwrite) throws IOException{
         // Create folder if it doesn't exist
         File folder = new File(System.getProperty("user.dir") +"/saved_categories");
@@ -421,7 +430,7 @@ public class Category {
 
         //Make array of arrows json representations.
         JSONArray arrs = new JSONArray();
-        for(Arrow arr: arrows.keySet()) {
+        for(Arrow arr: arrows.values()) {
             JSONObject jsArr = new JSONObject();
             jsArr.put("name", arr.getName());
             jsArr.put("source", arr.src().getName());
@@ -429,7 +438,7 @@ public class Category {
 
             // Make array of the arrows which compose from the current one.
             JSONArray deps = new JSONArray();
-            for(Arrow dep: arrows.get(arr)) {
+            for(Arrow dep: arr.dependencies) {
                 deps.put(dep.getName());
             }
             jsArr.put("dependencies", deps);
@@ -448,7 +457,57 @@ public class Category {
         shakespeare.close();
     }
 
+    /**
+     * Loads and returns the category corresponding to the given .json file
+     * @param fileName
+     * @return
+     * @throws IOException
+     * @throws BadObjectNameException
+     * @throws ImpossibleArrowException
+     */
+    public static Category load(String fileName) throws IOException, BadObjectNameException, ImpossibleArrowException {
+        //Oh almighty god of the algorithms, please, have mercy on me
+        //because I have sinned: this method is O(n^2), I beg of you,
+        //shed the knowledge on me such that I may honour your name
+        //with worthy runtimes.
+
+        Category ct = new Category();
+        // Create file and throw error if can't overwrite.
+        File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
+        if(!file.exists())
+            throw new IOException("File does not exist.");
+        
+        FileReader reader = new FileReader(file);
+        JSONObject category = new JSONObject(new JSONTokener(reader));
+
+        reader.close();
+
+        // Load all the objs
+        JSONArray objs = category.getJSONArray("objects");
+        for(Integer i = 0; i < objs.length(); i++)
+            ct.addObject(objs.getJSONObject(i).getString("name"));
+
+        // Load all the arrows
+        JSONArray arrs = category.getJSONArray("arrows");
+        for(Integer i = 0; i < arrs.length(); i++) {
+            JSONObject jsonArr = arrs.getJSONObject(i);
+            ct.addArrow(jsonArr.getString("name"), jsonArr.getString("source"), jsonArr.getString("target"));
+        }
+
+        //Put in the composition-dependencies
+        for(Integer i = 0; i < arrs.length(); i++) {
+            JSONObject jsonArr = arrs.getJSONObject(i);
+            Arrow arr = ct.arrows.get(jsonArr.getString("name"));
+            JSONArray deps = jsonArr.getJSONArray("dependencies");
+            for(Integer j = 0; j < deps.length(); j++)
+                arr.dependencies.add(ct.arrows.get(deps.getString(j)));
+        }
+
+        return ct;
+    }
+
     public static void main(String[] args) throws BadObjectNameException, ImpossibleArrowException, IOException {
+        /*
         // This is to test the model
         Category ct = new Category();
 
@@ -480,6 +539,9 @@ public class Category {
         Arrow c2 = ct.addArrow("s", "B'", "C'");
         Arrow c3 = ct.addArrow("t", "C'", "D'");
         Arrow c4 = ct.addArrow("u", "D'", "E'");
+        */
+
+        Category ct = Category.load("base_composition.json");
 
         ct.printArrows();
         ct.printObjects();
@@ -489,7 +551,5 @@ public class Category {
 
         for(Obj o: ct.getTerminalObjs())
             System.out.println(o.getName());
-        
-        ct.save("five_lemma.json", true);
     }
 }

@@ -13,27 +13,9 @@
     ],
     "arrows": [
         {
-            "name": "p",
-            "source": "D",
-            "target": "D'",
-            "dependencies": []
-        },
-        {
-            "name": "j",
-            "source": "D",
-            "target": "E",
-            "dependencies": []
-        },
-        {
-            "name": "ƒ",
-            "source": "A",
-            "target": "B",
-            "dependencies": []
-        },
-        {
-            "name": "n",
-            "source": "C",
-            "target": "C'",
+            "name": "g",
+            "source": "B",
+            "target": "C",
             "dependencies": []
         },
         {
@@ -43,9 +25,9 @@
             "dependencies": []
         },
         {
-            "name": "u",
-            "source": "D'",
-            "target": "E'",
+            "name": "j",
+            "source": "D",
+            "target": "E",
             "dependencies": []
         },
         {
@@ -61,9 +43,33 @@
             "dependencies": []
         },
         {
+            "name": "n",
+            "source": "C",
+            "target": "C'",
+            "dependencies": []
+        },
+        {
+            "name": "p",
+            "source": "D",
+            "target": "D'",
+            "dependencies": []
+        },
+        {
             "name": "q",
             "source": "E",
             "target": "E'",
+            "dependencies": []
+        },
+        {
+            "name": "ƒ",
+            "source": "A",
+            "target": "B",
+            "dependencies": []
+        },
+        {
+            "name": "r",
+            "source": "A'",
+            "target": "B'",
             "dependencies": []
         },
         {
@@ -79,15 +85,9 @@
             "dependencies": []
         },
         {
-            "name": "g",
-            "source": "B",
-            "target": "C",
-            "dependencies": []
-        },
-        {
-            "name": "r",
-            "source": "A'",
-            "target": "B'",
+            "name": "u",
+            "source": "D'",
+            "target": "E'",
             "dependencies": []
         }
     ]
