@@ -1,0 +1,94 @@
+{
+    "objects": [
+        {"name": "A"},
+        {"name": "B"},
+        {"name": "E'"},
+        {"name": "C"},
+        {"name": "D'"},
+        {"name": "D"},
+        {"name": "C'"},
+        {"name": "E"},
+        {"name": "B'"},
+        {"name": "A'"}
+    ],
+    "arrows": [
+        {
+            "name": "p",
+            "source": "D",
+            "target": "D'",
+            "dependencies": []
+        },
+        {
+            "name": "j",
+            "source": "D",
+            "target": "E",
+            "dependencies": []
+        },
+        {
+            "name": "ƒ",
+            "source": "A",
+            "target": "B",
+            "dependencies": []
+        },
+        {
+            "name": "n",
+            "source": "C",
+            "target": "C'",
+            "dependencies": []
+        },
+        {
+            "name": "h",
+            "source": "C",
+            "target": "D",
+            "dependencies": []
+        },
+        {
+            "name": "u",
+            "source": "D'",
+            "target": "E'",
+            "dependencies": []
+        },
+        {
+            "name": "l",
+            "source": "A",
+            "target": "A'",
+            "dependencies": []
+        },
+        {
+            "name": "m",
+            "source": "B",
+            "target": "B'",
+            "dependencies": []
+        },
+        {
+            "name": "q",
+            "source": "E",
+            "target": "E'",
+            "dependencies": []
+        },
+        {
+            "name": "s",
+            "source": "B'",
+            "target": "C'",
+            "dependencies": []
+        },
+        {
+            "name": "t",
+            "source": "C'",
+            "target": "D'",
+            "dependencies": []
+        },
+        {
+            "name": "g",
+            "source": "B",
+            "target": "C",
+            "dependencies": []
+        },
+        {
+            "name": "r",
+            "source": "A'",
+            "target": "B'",
+            "dependencies": []
+        }
+    ]
+}

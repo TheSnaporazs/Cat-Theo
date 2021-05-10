@@ -74,7 +74,6 @@ public class WorkController extends GenericController{
             try {
                 GUIutil.spawnObject(event.getX(), event.getY(), currCat.addObject(event.getObjName()), scroll_wrap);
                 printCurrCat();
-                currCat.save(" ", true);
             } catch (BadObjectNameException e) {
                 e.printStackTrace();
                 Alert error = new Alert(Alert.AlertType.ERROR);

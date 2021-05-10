@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -392,7 +393,21 @@ public class Category {
         return terminalObjs;
     }
 
-    public void save(String fileName, boolean overwrite) {
+    public void save(String fileName, boolean overwrite) throws IOException{
+        // Create folder if it doesn't exist
+        File folder = new File(System.getProperty("user.dir") +"/saved_categories");
+        if(!folder.exists())
+            folder.mkdir();
+
+        // Create file and throw error if can't overwrite.
+        File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
+        if(file.exists() && !overwrite)
+            throw new IOException("File already exists.");
+        
+        file.createNewFile();
+
+
+        //Make array of objs json representations.
         JSONArray objs = new JSONArray();
         for(Obj obj: objects.values()) {
             JSONObject jsObj = new JSONObject();
@@ -404,12 +419,15 @@ public class Category {
             objs.put(jsObj);
         }
 
+        //Make array of arrows json representations.
         JSONArray arrs = new JSONArray();
         for(Arrow arr: arrows.keySet()) {
             JSONObject jsArr = new JSONObject();
             jsArr.put("name", arr.getName());
             jsArr.put("source", arr.src().getName());
             jsArr.put("target", arr.trg().getName());
+
+            // Make array of the arrows which compose from the current one.
             JSONArray deps = new JSONArray();
             for(Arrow dep: arrows.get(arr)) {
                 deps.put(dep.getName());
@@ -418,16 +436,19 @@ public class Category {
             arrs.put(jsArr);
         }
 
+        //Make object representing the whole category
         JSONObject category = new JSONObject();
         category.put("objects", objs);
         category.put("arrows", arrs);
+        //Will maybe add Spaces in the future
 
-        System.out.println(category.toString());
-
-        // TODO: file writing with the FileWriter class
+        //Save file
+        FileWriter shakespeare = new FileWriter(file); // Hihihi I am so fun...
+        shakespeare.write(category.toString(4));
+        shakespeare.close();
     }
 
-    public static void main(String[] args) throws BadObjectNameException, ImpossibleArrowException {
+    public static void main(String[] args) throws BadObjectNameException, ImpossibleArrowException, IOException {
         // This is to test the model
         Category ct = new Category();
 
@@ -469,6 +490,6 @@ public class Category {
         for(Obj o: ct.getTerminalObjs())
             System.out.println(o.getName());
         
-        ct.save(" ", true);
+        ct.save("five_lemma.json", true);
     }
 }
