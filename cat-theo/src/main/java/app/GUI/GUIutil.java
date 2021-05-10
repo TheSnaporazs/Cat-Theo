@@ -3,6 +3,8 @@ package app.GUI;
 import app.events.ARROW_SPAWNED;
 import app.events.OBJECT_SPAWNED;
 import app.categories.Obj;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -39,36 +41,17 @@ public class GUIutil {
      * @param Y A double representing the y coordinate at which to spawn the menu
      * @param parent    a JavaFX Pane object representing the parent object upon which to attach the context menu
      */
-    public static void spawnCreationMenu(double X, double Y, Pane parent)
+    public static ContextMenu spawnCreationMenu(double X, double Y, String item, EventHandler action)
     {
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem obj = new MenuItem("Create new object");
-        MenuItem arr = new MenuItem("Create new morphism");
+        MenuItem opt1 = new MenuItem(item);
 
-        obj.setOnAction((event -> {
-            System.out.println("Object");
-            String objName = spawnPrompt("Insert Object Name", "Create Object");
-            parent.fireEvent(new OBJECT_SPAWNED(X, Y, objName));
-        }));
+        opt1.setOnAction(action);
 
-        arr.setOnAction((event -> {
-            System.out.println("Arrow");
-            parent.fireEvent(new ARROW_SPAWNED(X, Y));
-        }));
 
-        contextMenu.getItems().addAll(obj, arr);
+        contextMenu.getItems().add(opt1);
 
-        Button invisible = new Button();
-        invisible.setContextMenu(contextMenu);
-
-        invisible.relocate(X, Y);
-        invisible.fire();
-        parent.getChildren().add(invisible);
-
-        contextMenu.setOnHidden(event ->
-        {
-            parent.getChildren().remove(invisible);
-        });
+        return contextMenu;
     }
 
     /**

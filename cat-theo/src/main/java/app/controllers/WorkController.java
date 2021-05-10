@@ -48,14 +48,15 @@ public class WorkController extends GenericController{
                                 //select object
                                 break;
                             case SECONDARY:
-                                GUIutil.spawnCreationMenu(X, Y, scroll_wrap);
+                                GUIutil.spawnCreationMenu(X, Y, "Create Object", ((event1) -> {
+                                    String name = GUIutil.spawnPrompt("Name: ", "Insert Object Name");
+                                    scroll_wrap.fireEvent(new OBJECT_SPAWNED(X, Y, name));
+                                }));
                                 break;
                             case NONE:
                                 break;
                             case MIDDLE:
-
                                 break;
-
                             case BACK:
                                 break;
                             case FORWARD:
