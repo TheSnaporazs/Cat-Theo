@@ -72,7 +72,9 @@ public class WorkController extends GenericController{
 
         scroll_wrap.addEventHandler(OBJECT_SPAWNED.OBJECT_SPAWNED_TYPE, event -> {
             try {
-                GUIutil.spawnObject(event.getX(), event.getY(), currCat.addObject(event.getObjName()), scroll_wrap);
+                scroll_wrap.getChildren().add(
+                        GUIutil.spawnObject(event.getX(), event.getY(), currCat.addObject(event.getObjName()))
+                );  //Woah that's a lot!
                 printCurrCat();
             } catch (BadObjectNameException e) {
                 e.printStackTrace();

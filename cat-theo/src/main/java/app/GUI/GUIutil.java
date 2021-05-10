@@ -16,6 +16,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+
 /**
  * GUIutil.java
  * Singleton to provide spawning methods of javafx objects
@@ -69,7 +71,6 @@ public class GUIutil {
         });
     }
 
-
     /**
      * Spawns the graphical representation of an Object, as a node of a graph
      *
@@ -78,9 +79,8 @@ public class GUIutil {
      * @param X     Double, the X coordinate of the Object
      * @param Y     Double, the Y coordinate of the Object
      * @param obj   Obj, the Object
-     * @param parent    Pane, the parent pane upon which to attach the object
      */
-    public static void spawnObject(double X, double Y, Obj obj, Pane parent) {
+    public static StackPane spawnObject(double X, double Y, Obj obj) {
         final double[] xCord = new double[1];
         final double[] yCord = new double[1];
 
@@ -93,8 +93,6 @@ public class GUIutil {
         StackPane stackPane = new StackPane();
         stackPane.getChildren().addAll(circle, testo);
         stackPane.relocate(X, Y);
-
-        parent.getChildren().add(stackPane);
 
         obj.setRepr(stackPane); //After all we have to let the object know of this...
 
@@ -114,6 +112,8 @@ public class GUIutil {
             xCord[0] = t.getSceneX();
             yCord[0] = t.getSceneY();
         });
+
+        return stackPane;
     }
 
 
