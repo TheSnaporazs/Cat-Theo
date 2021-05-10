@@ -1,6 +1,10 @@
 package app.categories;
 
+import java.util.HashSet;
+
 import app.exceptions.ImpossibleArrowException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents an Arrow from the Category Theory branch of mathematics.
@@ -15,6 +19,7 @@ public class Arrow {
     private Obj src;
     private Obj trg;
     private MorphType type;
+    Set<Arrow> dependencies = new HashSet<Arrow>();
 
     /**
      * Instances a new {@link app.categories.Arrow Arrow} representing a morphism from a source to a target

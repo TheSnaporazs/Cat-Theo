@@ -1,0 +1,27 @@
+{
+    "objects": [
+        {"name": "A"},
+        {"name": "B"},
+        {"name": "C"}
+    ],
+    "arrows": [
+        {
+            "name": "ƒ",
+            "source": "A",
+            "target": "B",
+            "dependencies": ["g \u2022 ƒ"]
+        },
+        {
+            "name": "g",
+            "source": "B",
+            "target": "C",
+            "dependencies": ["g \u2022 ƒ"]
+        },
+        {
+            "name": "g \u2022 ƒ",
+            "source": "A",
+            "target": "C",
+            "dependencies": []
+        }
+    ]
+}
