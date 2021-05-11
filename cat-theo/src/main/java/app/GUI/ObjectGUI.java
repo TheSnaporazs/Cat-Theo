@@ -4,7 +4,11 @@ import app.categories.Obj;
 import app.exceptions.IllegalArgumentsException;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -24,58 +28,84 @@ import javafx.scene.text.Text;
  */
 public class ObjectGUI extends StackPane {
 
-    public ObjectGUI(double X, double Y, Obj object) {
+    public ObjectGUI(double X, double Y, Obj object, Pane parent) throws IllegalArgumentsException {
         super();
 
-        final double[] xCord = new double[1];
-        final double[] yCord = new double[1];
+        drawCircle(X, Y, object);                   //Graphical representation
+        addHandlers(parent, generateContext());     //Event Handling
+        this.setCursor(Cursor.HAND);                //Cursor Icon, I think it's neat!
 
+    }
+
+    private void drawCircle(double X, double Y, Obj object)
+    {
         Circle circle = new Circle(60,60,30, Color.WHITE);
         circle.setStroke(Color.BLACK);
+        Text txt = new Text(object.getName());
+        txt.setFont(new Font(30));
 
-        Text testo = new Text(object.getName());
-        testo.setFont(new Font(30));
-
-        this.getChildren().addAll(circle, testo);
+        this.getChildren().addAll(circle, txt);
         this.relocate(X, Y);
 
         object.setRepr(this); //After all we have to let the object know of this...
+    };
 
-        this.setCursor(Cursor.HAND);
-        this.setOnMousePressed((t) -> {
-            switch (t.getButton())
-            {
-                case PRIMARY:
-                    xCord[0] = t.getSceneX();
-                    yCord[0] = t.getSceneY();
-                    break;
-                case SECONDARY:
-                    String[] items = {"Spawn Morphism"};
-                    EventHandler[] actions = {
-                            (event -> {
-                                String name = GUIutil.spawnPrompt("Name: ", "Insert Morphism Name");
+    /**
+     * Adds various behaviours to the object,
+     * @param parent    the parent pane on which the object is spawned
+     * @param cntxt     the context menu utilized to prompt the user from the object
+     */
+    private void addHandlers(Pane parent, ContextMenu cntxt)
+    {
+        //To be used in lambdas from an outside scope, we must do this treachery, or so I have been told
+        final double[] xCord = new double[1];
+        final double[] yCord = new double[1];
 
-                            })
-                    };
-
-                    try {
-                        GUIutil.spawnCreationMenu(t.getSceneX(), t.getSceneY(),items, actions);
-                    } catch (IllegalArgumentsException e) {
-                        e.printStackTrace();
+        this.addEventHandler(MouseEvent.ANY,
+                event -> {
+                    if(event.getEventType() == MouseEvent.MOUSE_CLICKED) {
+                        switch (event.getButton()) {
+                            case PRIMARY:
+                                xCord[0] = event.getSceneX();
+                                yCord[0] = event.getSceneY();
+                                break;
+                            case SECONDARY:
+                                cntxt.show(parent, event.getScreenX(), event.getScreenY());
+                                event.consume();
+                        }
                     }
-            }
+                    if(event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
+                        this.setCursor(Cursor.MOVE);
+                        double offsetX = event.getSceneX() - xCord[0];
+                        double offsetY = event.getSceneY() - yCord[0];
 
-        });
-        this.setOnMouseDragged((t) -> {
+                        this.setLayoutX(this.getLayoutX() + offsetX);
+                        this.setLayoutY(this.getLayoutY() + offsetY);
 
-            double offsetX = t.getSceneX() - xCord[0];
-            double offsetY = t.getSceneY() - yCord[0];
+                        xCord[0] = event.getSceneX();
+                        yCord[0] = event.getSceneY();
+                    }
 
-            this.setLayoutX(this.getLayoutX() + offsetX);
-            this.setLayoutY(this.getLayoutY() + offsetY);
+                    if(event.getEventType() == MouseEvent.MOUSE_RELEASED) {
+                        this.setCursor(Cursor.HAND);
+                    }
 
-            xCord[0] = t.getSceneX();
-            yCord[0] = t.getSceneY();
-        });
+                });
     }
+
+    private ContextMenu generateContext() throws IllegalArgumentsException {
+        /*
+        Creation of the object contextMenu, wordy.
+         */
+        String[] items = {"Spawn Morphism"};
+        EventHandler[] actions = {
+                (event -> {
+                    String name = GUIutil.spawnPrompt("Name: ", "Insert Morphism Name");
+                })
+        };
+        ContextMenu cntxt = GUIutil.spawnCreationMenu(items, actions);
+        cntxt.setAutoHide(true);
+        return cntxt;
+    }
+
 }

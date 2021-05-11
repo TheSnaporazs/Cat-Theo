@@ -2,6 +2,7 @@ package app.controllers;
 
 
 import app.GUI.GUIutil;
+import app.GUI.ObjectGUI;
 import app.categories.Category;
 import app.categories.Obj;
 import app.events.OBJECT_SPAWNED;
@@ -39,6 +40,7 @@ public class WorkController extends GenericController{
     public void initialize() {
         scroll_wrap.addEventHandler(MouseEvent.ANY,
                 event -> {
+
                     if (event.getEventType() == MouseEvent.MOUSE_CLICKED )
                     {
                         double X = event.getX();
@@ -50,8 +52,7 @@ public class WorkController extends GenericController{
                                 //select object
                                 break;
                             case SECONDARY:
-
-
+                                System.out.println("event!");
                                 String[] items = {"Create Object"};
                                 EventHandler[] actions = {
                                         ((event1) -> {
@@ -82,7 +83,7 @@ public class WorkController extends GenericController{
         scroll_wrap.addEventHandler(OBJECT_SPAWNED.OBJECT_SPAWNED_TYPE, event -> {
             try {
                 scroll_wrap.getChildren().add(
-                        GUIutil.spawnObject(event.getX(), event.getY(), currCat.addObject(event.getObjName()))
+                        new ObjectGUI(event.getX(), event.getY(), currCat.addObject(event.getObjName()), scroll_wrap)
                 );  //Woah that's a lot!
                 printCurrCat();
             } catch (BadObjectNameException e) {
@@ -92,6 +93,10 @@ public class WorkController extends GenericController{
                 error.setHeaderText("Duplicate Object Error");
                 error.setContentText("Cannot have two objects with the same name in the same category!");
                 error.showAndWait();
+            } catch (IllegalArgumentsException e) {
+
+                e.printStackTrace();
+                System.out.println("Something went wrong in the contextMenu init! (This shouldn't really happen!)");
             }
         });
     }

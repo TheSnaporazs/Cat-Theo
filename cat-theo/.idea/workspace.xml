@@ -7,7 +7,14 @@
     <list default="true" id="9a32b215-2bf7-41e4-bf38-f0540b652510" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/GUI/GUIutil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/GUI/GUIutil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/GUI/ObjectGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/GUI/ObjectGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/GUIutil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/GUIutil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/ObjectGUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/ObjectGUI$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/ObjectGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/ObjectGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/controllers/WorkController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/controllers/WorkController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

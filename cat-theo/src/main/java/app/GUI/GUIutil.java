@@ -39,12 +39,10 @@ public class GUIutil {
      *
      * @see app.categories.Obj
      * @see app.categories.Arrow
-     * @param X A double representing the x coordinate at which to spawn the menu
-     * @param Y A double representing the y coordinate at which to spawn the menu
      * @param items     An array of strings to be displayed as menuitems on the contextMenu
      * @param actions   An array of EventHandlers to be attached to each menuitems on the contextmenu
      */
-    public static ContextMenu spawnCreationMenu(double X, double Y, String[] items, EventHandler[] actions) throws IllegalArgumentsException {
+    public static ContextMenu spawnCreationMenu(String[] items, EventHandler[] actions) throws IllegalArgumentsException {
         if(items.length != actions.length)
             {
                     throw new IllegalArgumentsException("The Menu cannot have an unequal amount of items and actions!");
@@ -61,6 +59,7 @@ public class GUIutil {
 
         return contextMenu;
     }
+
 
     /**
      * Wrapper method for spawnCreationMenu, provides an automatic implementation
@@ -85,7 +84,7 @@ public class GUIutil {
         temp.relocate(X, Y);
         ContextMenu menu = null;
         try {
-            menu = GUIutil.spawnCreationMenu(X, Y, items , actions);
+            menu = GUIutil.spawnCreationMenu(items , actions);
         } catch (IllegalArgumentsException e) {
             e.printStackTrace();
         }
