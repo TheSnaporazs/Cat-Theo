@@ -6,10 +6,12 @@ import app.categories.Category;
 import app.categories.Obj;
 import app.events.OBJECT_SPAWNED;
 import app.exceptions.BadObjectNameException;
+import app.exceptions.IllegalArgumentsException;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -48,10 +50,31 @@ public class WorkController extends GenericController{
                                 //select object
                                 break;
                             case SECONDARY:
-                                GUIutil.spawnCreationMenu(X, Y, "Create Object", ((event1) -> {
-                                    String name = GUIutil.spawnPrompt("Name: ", "Insert Object Name");
-                                    scroll_wrap.fireEvent(new OBJECT_SPAWNED(X, Y, name));
-                                }));
+                                Button temp = new Button();
+                                temp.relocate(X, Y);
+                                System.out.println("R-CLICK!");
+
+                                String[] items = {"Create Object"};
+                                EventHandler[] actions = {
+                                        ((event1) -> {
+                                            String name = GUIutil.spawnPrompt("Name: ", "Insert Object Name");
+                                            scroll_wrap.fireEvent(new OBJECT_SPAWNED(X, Y, name));
+                                        })
+                                };
+                                ContextMenu menu = null;
+                                try {
+                                    menu = GUIutil.spawnCreationMenu(X, Y, items , actions);
+                                } catch (IllegalArgumentsException e) {
+                                    e.printStackTrace();
+                                }
+
+                                temp.setContextMenu(menu);
+                                temp.fire();
+                                menu.setOnHidden((event1) -> {
+                                    scroll_wrap.getChildren().remove(temp);
+                                });
+
+                                scroll_wrap.getChildren().add(temp);
                                 break;
                             case NONE:
                                 break;

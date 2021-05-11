@@ -1,6 +1,8 @@
 package app.GUI;
 
 import app.categories.Obj;
+import app.exceptions.IllegalArgumentsException;
+import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
@@ -48,14 +50,19 @@ public class ObjectGUI extends StackPane {
                     yCord[0] = t.getSceneY();
                     break;
                 case SECONDARY:
-                    GUIutil.spawnCreationMenu(
-                            t.getSceneX(), t.getSceneY(),
-                            "Spawn Morphism",
+                    String[] items = {"Spawn Morphism"};
+                    EventHandler[] actions = {
                             (event -> {
                                 String name = GUIutil.spawnPrompt("Name: ", "Insert Morphism Name");
 
                             })
-                    );
+                    };
+
+                    try {
+                        GUIutil.spawnCreationMenu(t.getSceneX(), t.getSceneY(),items, actions);
+                    } catch (IllegalArgumentsException e) {
+                        e.printStackTrace();
+                    }
             }
 
         });

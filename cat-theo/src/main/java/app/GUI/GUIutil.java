@@ -3,6 +3,7 @@ package app.GUI;
 import app.events.ARROW_SPAWNED;
 import app.events.OBJECT_SPAWNED;
 import app.categories.Obj;
+import app.exceptions.IllegalArgumentsException;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -18,6 +19,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -41,15 +43,20 @@ public class GUIutil {
      * @param Y A double representing the y coordinate at which to spawn the menu
      * @param parent    a JavaFX Pane object representing the parent object upon which to attach the context menu
      */
-    public static ContextMenu spawnCreationMenu(double X, double Y, String item, EventHandler action)
-    {
+    public static ContextMenu spawnCreationMenu(double X, double Y, String[] items, EventHandler[] actions) throws IllegalArgumentsException {
+        if(items.length != actions.length)
+            {
+                    throw new IllegalArgumentsException("The Menu cannot have an unequal amount of items and actions!");
+            }
+
+        ArrayList<MenuItem> mItems = new ArrayList<MenuItem>();
+        for(int c = 0; c < items.length; c++)
+        {
+            mItems.add(new MenuItem(items[c]));
+            mItems.get(c).setOnAction(actions[c]);
+        }
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem opt1 = new MenuItem(item);
-
-        opt1.setOnAction(action);
-
-
-        contextMenu.getItems().add(opt1);
+        contextMenu.getItems().addAll(mItems);
 
         return contextMenu;
     }
