@@ -7,6 +7,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -63,16 +64,12 @@ public class ObjectGUI extends StackPane {
 
         this.addEventHandler(MouseEvent.ANY,
                 event -> {
-                    if(event.getEventType() == MouseEvent.MOUSE_CLICKED) {
-                        switch (event.getButton()) {
-                            case PRIMARY:
-                                xCord[0] = event.getSceneX();
-                                yCord[0] = event.getSceneY();
-                                break;
-                            case SECONDARY:
-                                cntxt.show(parent, event.getScreenX(), event.getScreenY());
-                                event.consume();
-                        }
+                    if(event.getEventType() == MouseEvent.MOUSE_CLICKED
+                            && event.getButton().equals(MouseButton.SECONDARY)) {
+
+                        cntxt.show(parent, event.getScreenX(), event.getScreenY());
+                        event.consume();
+
                     }
                     if(event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
                         this.setCursor(Cursor.MOVE);
@@ -85,7 +82,11 @@ public class ObjectGUI extends StackPane {
                         xCord[0] = event.getSceneX();
                         yCord[0] = event.getSceneY();
                     }
-
+                    if(event.getEventType() == MouseEvent.MOUSE_PRESSED)
+                    {
+                        xCord[0] = event.getSceneX();
+                        yCord[0] = event.getSceneY();
+                    }
                     if(event.getEventType() == MouseEvent.MOUSE_RELEASED) {
                         this.setCursor(Cursor.HAND);
                     }

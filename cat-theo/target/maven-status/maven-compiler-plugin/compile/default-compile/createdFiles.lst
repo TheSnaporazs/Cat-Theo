@@ -5,7 +5,6 @@ app\controllers\GenericController.class
 app\controllers\WorkController.class
 app\events\OBJECT_SPAWNED.class
 app\GUI\ObjectGUI.class
-app\GUI\ObjectGUI$1.class
 module-info.class
 app\controllers\MenuController.class
 app\controllers\WorkController$1.class
