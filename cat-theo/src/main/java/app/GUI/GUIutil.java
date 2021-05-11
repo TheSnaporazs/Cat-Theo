@@ -34,14 +34,15 @@ import java.util.ArrayList;
 public class GUIutil {
 
     /**
-     * Spawns a context menu prompting the user with the creation of an Object/Arrow, ensuring that it gets
-     * properly removed when the user is done with it's decision
+     * Spawns a context menu prompting the user with generic options provided in the function's arguments
+     * the Strings and the corresponding events must be paired at the same index in the two arrays.
      *
      * @see app.categories.Obj
      * @see app.categories.Arrow
      * @param X A double representing the x coordinate at which to spawn the menu
      * @param Y A double representing the y coordinate at which to spawn the menu
-     * @param parent    a JavaFX Pane object representing the parent object upon which to attach the context menu
+     * @param items     An array of strings to be displayed as menuitems on the contextMenu
+     * @param actions   An array of EventHandlers to be attached to each menuitems on the contextmenu
      */
     public static ContextMenu spawnCreationMenu(double X, double Y, String[] items, EventHandler[] actions) throws IllegalArgumentsException {
         if(items.length != actions.length)
@@ -59,6 +60,43 @@ public class GUIutil {
         contextMenu.getItems().addAll(mItems);
 
         return contextMenu;
+    }
+
+    /**
+     * Wrapper method for spawnCreationMenu, provides an automatic implementation
+     * of the ugly button trick utilized to pop a ContextMenu on a scrollPane
+     * so that I do not have to look at it directly when implementing it
+     * (sorry for the boilerplate, still friends? <3)
+     *
+     * @see ContextMenu
+     * @see Pane
+     * @param X Double, the X coordinate at which to spawn the menu at
+     * @param Y Double, the Y coordinate at which to spawn the menu at
+     * @param items     Array of Strings, contains all the different text options
+     *                  to be displayed on the menu
+     * @param actions   Array of Eventhandlers, contains all the different actions
+     *                  to be performed by the option
+     * @param parent    Any child of class Pane, provides a parent upon which to attach
+     *                  the button to do the ugly trick
+     */
+    public static void ButtonMenu(double X, double Y, String[] items, EventHandler[] actions, Pane parent)
+    {
+        Button temp = new Button();
+        temp.relocate(X, Y);
+        ContextMenu menu = null;
+        try {
+            menu = GUIutil.spawnCreationMenu(X, Y, items , actions);
+        } catch (IllegalArgumentsException e) {
+            e.printStackTrace();
+        }
+
+        temp.setContextMenu(menu);
+        temp.fire();
+        menu.setOnHidden((event1) -> {
+            parent.getChildren().remove(temp);
+        });
+
+        parent.getChildren().add(temp);
     }
 
     /**
