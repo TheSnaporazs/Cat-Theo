@@ -1,8 +1,7 @@
 package app.categories;
 
-import java.util.HashSet;
-
 import app.exceptions.ImpossibleArrowException;
+
 import java.util.HashSet;
 import java.util.Set;
 

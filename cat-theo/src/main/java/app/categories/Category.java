@@ -2,22 +2,18 @@ package app.categories;
 
 import app.exceptions.BadObjectNameException;
 import app.exceptions.ImpossibleArrowException;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import javafx.scene.layout.Pane;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents a category from the Category Theory branch of mathematics.

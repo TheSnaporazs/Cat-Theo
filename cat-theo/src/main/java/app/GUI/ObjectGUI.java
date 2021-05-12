@@ -4,9 +4,7 @@ import app.categories.Obj;
 import app.exceptions.IllegalArgumentsException;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -105,7 +103,7 @@ public class ObjectGUI extends StackPane {
                 })
         };
         ContextMenu cntxt = GUIutil.spawnCreationMenu(items, actions);
-        cntxt.setAutoHide(true);
+
         return cntxt;
     }
 

@@ -1,13 +1,9 @@
 package app.GUI;
 
-import app.events.ARROW_SPAWNED;
-import app.events.OBJECT_SPAWNED;
 import app.categories.Obj;
 import app.exceptions.IllegalArgumentsException;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -19,7 +15,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -56,6 +51,7 @@ public class GUIutil {
         }
         ContextMenu contextMenu = new ContextMenu();
         contextMenu.getItems().addAll(mItems);
+        contextMenu.setAutoHide(true);
 
         return contextMenu;
     }
@@ -67,6 +63,10 @@ public class GUIutil {
      * so that I do not have to look at it directly when implementing it
      * (sorry for the boilerplate, still friends? <3)
      *
+     * WARNING: the button trick is not necessary anymore, one can instantiate
+     * the contextMenu and then call the show method on a parent object
+     * to cleanly display it without need for such voodoo tricks, therefore
+     * this method is deprecated.
      * @see ContextMenu
      * @see Pane
      * @param X Double, the X coordinate at which to spawn the menu at
@@ -78,6 +78,7 @@ public class GUIutil {
      * @param parent    Any child of class Pane, provides a parent upon which to attach
      *                  the button to do the ugly trick
      */
+    @Deprecated
     public static void ButtonMenu(double X, double Y, String[] items, EventHandler[] actions, Pane parent)
     {
         Button temp = new Button();
