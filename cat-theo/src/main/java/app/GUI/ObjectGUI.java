@@ -30,9 +30,6 @@ public class ObjectGUI extends StackPane {
 
     public ObjectGUI(double X, double Y, Obj object, Pane parent) throws IllegalArgumentsException {
         super();
-        xCord = X;
-        yCord = Y;
-
         drawCircle(X, Y, object);                   //Graphical representation
         addHandlers(parent);     //Event Handling
         this.setCursor(Cursor.HAND);                //Cursor Icon, I think it's neat!
