@@ -25,9 +25,13 @@ import javafx.scene.text.Text;
  * @see app.categories.Obj
  */
 public class ObjectGUI extends StackPane {
+    double xCord;
+    double yCord;
 
     public ObjectGUI(double X, double Y, Obj object, Pane parent) throws IllegalArgumentsException {
         super();
+        xCord = X;
+        yCord = Y;
 
         drawCircle(X, Y, object);                   //Graphical representation
         addHandlers(parent);     //Event Handling
@@ -53,10 +57,11 @@ public class ObjectGUI extends StackPane {
      * @param cntxt     the context menu utilized to prompt the user from the object
      */
     private void addHandlers(Pane parent)
-    {
+    {   
+        //Lol, make this a property of the object mate... -Davide
         //To be used in lambdas from an outside scope, we must do this treachery, or so I have been told
-        final double[] xCord = new double[1];
-        final double[] yCord = new double[1];
+        //final double[] xCord = new double[1];
+        //final double[] yCord = new double[1];
 
         this.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 event -> {
@@ -72,22 +77,27 @@ public class ObjectGUI extends StackPane {
         this.addEventHandler(MouseEvent.MOUSE_DRAGGED,
                 event -> {
                         this.setCursor(Cursor.MOVE);
-                        double offsetX = event.getSceneX() - xCord[0];
-                        double offsetY = event.getSceneY() - yCord[0];
+                        double offsetX = event.getSceneX() - xCord;
+                        double offsetY = event.getSceneY() - yCord;
 
-                        this.setLayoutX(this.getLayoutX() + offsetX);
-                        this.setLayoutY(this.getLayoutY() + offsetY);
+                        //TODO: also bound to the max X and Y of the pane
+                        // God, being a 2D videogame programmer has its benefits...
+        
+                        double temp = this.getLayoutX() + offsetX;
+                        this.setLayoutX(temp < 0.0f ? 0.0f : temp);
 
-                        xCord[0] = event.getSceneX();
-                        yCord[0] = event.getSceneY();
+                        temp = this.getLayoutY() + offsetY;
+                        this.setLayoutY(temp < 0.0f ? 0.0f : temp);
+
+                        xCord = event.getSceneX();
+                        yCord = event.getSceneY();
                         event.consume();
                     });
+
         this.addEventHandler(MouseEvent.MOUSE_PRESSED,
                 event -> {
-                        xCord[0] = event.getSceneX();
-                        yCord[0] = event.getSceneY();
-                        event.consume();
-                    });
+                        xCord = event.getSceneX();
+                        yCord = event.getSceneY();});
         this.addEventHandler(MouseEvent.MOUSE_RELEASED,
                 event -> {
                         this.setCursor(Cursor.HAND);
