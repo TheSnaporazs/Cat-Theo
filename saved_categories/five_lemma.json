@@ -15,78 +15,91 @@
         {
             "name": "g",
             "source": "B",
+            "type": 0,
             "target": "C",
             "dependencies": []
         },
         {
             "name": "h",
             "source": "C",
+            "type": 0,
             "target": "D",
             "dependencies": []
         },
         {
             "name": "j",
             "source": "D",
+            "type": 0,
             "target": "E",
             "dependencies": []
         },
         {
             "name": "l",
             "source": "A",
+            "type": 2,
             "target": "A'",
             "dependencies": []
         },
         {
             "name": "m",
             "source": "B",
+            "type": 3,
             "target": "B'",
             "dependencies": []
         },
         {
             "name": "n",
             "source": "C",
+            "type": 0,
             "target": "C'",
             "dependencies": []
         },
         {
             "name": "p",
             "source": "D",
+            "type": 3,
             "target": "D'",
             "dependencies": []
         },
         {
             "name": "q",
             "source": "E",
+            "type": 1,
             "target": "E'",
             "dependencies": []
         },
         {
             "name": "ƒ",
             "source": "A",
+            "type": 0,
             "target": "B",
             "dependencies": []
         },
         {
             "name": "r",
             "source": "A'",
+            "type": 0,
             "target": "B'",
             "dependencies": []
         },
         {
             "name": "s",
             "source": "B'",
+            "type": 0,
             "target": "C'",
             "dependencies": []
         },
         {
             "name": "t",
             "source": "C'",
+            "type": 0,
             "target": "D'",
             "dependencies": []
         },
         {
             "name": "u",
             "source": "D'",
+            "type": 0,
             "target": "E'",
             "dependencies": []
         }

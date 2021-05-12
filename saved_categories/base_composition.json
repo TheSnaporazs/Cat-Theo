@@ -8,18 +8,21 @@
         {
             "name": "ƒ",
             "source": "A",
+            "type": 0,
             "target": "B",
             "dependencies": ["g \u2022 ƒ"]
         },
         {
             "name": "g",
             "source": "B",
+            "type": 0,
             "target": "C",
             "dependencies": ["g \u2022 ƒ"]
         },
         {
             "name": "g \u2022 ƒ",
             "source": "A",
+            "type": 0,
             "target": "C",
             "dependencies": []
         }
