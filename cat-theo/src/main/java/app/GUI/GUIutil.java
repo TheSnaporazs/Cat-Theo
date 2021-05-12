@@ -2,12 +2,14 @@ package app.GUI;
 
 import app.categories.Obj;
 import app.exceptions.IllegalArgumentsException;
+import app.controllers.WorkController;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -37,7 +39,7 @@ public class GUIutil {
      * @param items     An array of strings to be displayed as menuitems on the contextMenu
      * @param actions   An array of EventHandlers to be attached to each menuitems on the contextmenu
      */
-    public static ContextMenu spawnCreationMenu(String[] items, EventHandler[] actions) throws IllegalArgumentsException {
+    public static void pingCreationMenu(Double x, Double y, Node parent, String[] items, EventHandler[] actions) throws IllegalArgumentsException {
         if(items.length != actions.length)
             {
                     throw new IllegalArgumentsException("The Menu cannot have an unequal amount of items and actions!");
@@ -49,11 +51,10 @@ public class GUIutil {
             mItems.add(new MenuItem(items[c]));
             mItems.get(c).setOnAction(actions[c]);
         }
-        ContextMenu contextMenu = new ContextMenu();
-        contextMenu.getItems().addAll(mItems);
-        contextMenu.setAutoHide(true);
-
-        return contextMenu;
+        WorkController.CtxMenu.getItems().clear();
+        WorkController.CtxMenu.getItems().addAll(mItems);
+        WorkController.CtxMenu.setAutoHide(true);
+        WorkController.CtxMenu.show(parent, x, y);
     }
 
 
@@ -83,16 +84,16 @@ public class GUIutil {
     {
         Button temp = new Button();
         temp.relocate(X, Y);
-        ContextMenu menu = null;
+
         try {
-            menu = GUIutil.spawnCreationMenu(items , actions);
+            GUIutil.pingCreationMenu(X, Y, parent, items, actions);
         } catch (IllegalArgumentsException e) {
             e.printStackTrace();
         }
 
-        temp.setContextMenu(menu);
+        temp.setContextMenu(WorkController.CtxMenu);
         temp.fire();
-        menu.setOnHidden((event1) -> {
+        WorkController.CtxMenu.setOnHidden((event1) -> {
             parent.getChildren().remove(temp);
         });
 

@@ -1,6 +1,5 @@
 app\App.class
 app\GUI\GUIutil.class
-app\events\ARROW_SPAWNED.class
 app\controllers\GenericController.class
 app\controllers\WorkController.class
 app\events\OBJECT_SPAWNED.class

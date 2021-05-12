@@ -24,7 +24,7 @@ import javafx.scene.layout.AnchorPane;
  * @since 30/04/2021
  */
 public class WorkController extends GenericController{
-
+    public static ContextMenu CtxMenu = new ContextMenu();
     private Category currCat = new Category();
 
     @FXML private AnchorPane scroll_wrap;
@@ -58,8 +58,7 @@ public class WorkController extends GenericController{
                                         })
                                 };
                                 try {
-                                    ContextMenu cntxt = GUIutil.spawnCreationMenu(items, actions);
-                                    cntxt.show(scroll_wrap, event.getScreenX(), event.getScreenY());
+                                    GUIutil.pingCreationMenu(event.getScreenX(), event.getScreenY(), scroll_wrap, items, actions);
                                 } catch (IllegalArgumentsException e) {
                                     System.out.println("Something went wrong in the contextMenu init! " +
                                             "(This shouldn't really happen!)");

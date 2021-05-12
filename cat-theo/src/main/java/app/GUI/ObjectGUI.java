@@ -1,6 +1,7 @@
 package app.GUI;
 
 import app.categories.Obj;
+import app.controllers.WorkController;
 import app.exceptions.IllegalArgumentsException;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -31,7 +32,7 @@ public class ObjectGUI extends StackPane {
         super();
 
         drawCircle(X, Y, object);                   //Graphical representation
-        addHandlers(parent, generateContext());     //Event Handling
+        addHandlers(parent);     //Event Handling
         this.setCursor(Cursor.HAND);                //Cursor Icon, I think it's neat!
 
     }
@@ -54,22 +55,26 @@ public class ObjectGUI extends StackPane {
      * @param parent    the parent pane on which the object is spawned
      * @param cntxt     the context menu utilized to prompt the user from the object
      */
-    private void addHandlers(Pane parent, ContextMenu cntxt)
+    private void addHandlers(Pane parent)
     {
         //To be used in lambdas from an outside scope, we must do this treachery, or so I have been told
         final double[] xCord = new double[1];
         final double[] yCord = new double[1];
 
-        this.addEventHandler(MouseEvent.ANY,
+        this.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 event -> {
-                    if(event.getEventType() == MouseEvent.MOUSE_CLICKED
-                            && event.getButton().equals(MouseButton.SECONDARY)) {
-
-                        cntxt.show(parent, event.getScreenX(), event.getScreenY());
+                    if(event.getButton().equals(MouseButton.SECONDARY)) {
+                        try {
+                            generateContext(event.getScreenX(), event.getScreenY(), parent);
+                        } catch(IllegalArgumentsException e) {
+                            System.out.println(e.getMessage() + "\n" + "error got while creating context menu for object");
+                            e.printStackTrace();
+                        }
                         event.consume();
 
-                    }
-                    if(event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
+                    }});
+        this.addEventHandler(MouseEvent.MOUSE_DRAGGED,
+                event -> {
                         this.setCursor(Cursor.MOVE);
                         double offsetX = event.getSceneX() - xCord[0];
                         double offsetY = event.getSceneY() - yCord[0];
@@ -79,20 +84,18 @@ public class ObjectGUI extends StackPane {
 
                         xCord[0] = event.getSceneX();
                         yCord[0] = event.getSceneY();
-                    }
-                    if(event.getEventType() == MouseEvent.MOUSE_PRESSED)
-                    {
+                    });
+        this.addEventHandler(MouseEvent.MOUSE_PRESSED,
+                event -> {
                         xCord[0] = event.getSceneX();
-                        yCord[0] = event.getSceneY();
-                    }
-                    if(event.getEventType() == MouseEvent.MOUSE_RELEASED) {
+                        yCord[0] = event.getSceneY();});
+        this.addEventHandler(MouseEvent.MOUSE_RELEASED,
+                event -> {
                         this.setCursor(Cursor.HAND);
-                    }
-
-                });
+                    });
     }
 
-    private ContextMenu generateContext() throws IllegalArgumentsException {
+    private void generateContext(Double X, Double Y, Pane parent) throws IllegalArgumentsException {
         /*
         Creation of the object contextMenu, wordy.
          */
@@ -102,9 +105,8 @@ public class ObjectGUI extends StackPane {
                     String name = GUIutil.spawnPrompt("Name: ", "Insert Morphism Name");
                 })
         };
-        ContextMenu cntxt = GUIutil.spawnCreationMenu(items, actions);
 
-        return cntxt;
+        GUIutil.pingCreationMenu(X, Y, parent, items, actions);
     }
 
 }
