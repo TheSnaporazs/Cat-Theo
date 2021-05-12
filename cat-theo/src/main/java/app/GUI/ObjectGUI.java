@@ -1,11 +1,9 @@
 package app.GUI;
 
 import app.categories.Obj;
-import app.controllers.WorkController;
 import app.exceptions.IllegalArgumentsException;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -34,7 +32,6 @@ public class ObjectGUI extends StackPane {
         drawCircle(X, Y, object);                   //Graphical representation
         addHandlers(parent);     //Event Handling
         this.setCursor(Cursor.HAND);                //Cursor Icon, I think it's neat!
-
     }
 
     private void drawCircle(double X, double Y, Obj object)
@@ -71,7 +68,6 @@ public class ObjectGUI extends StackPane {
                             e.printStackTrace();
                         }
                         event.consume();
-
                     }});
         this.addEventHandler(MouseEvent.MOUSE_DRAGGED,
                 event -> {
@@ -84,14 +80,18 @@ public class ObjectGUI extends StackPane {
 
                         xCord[0] = event.getSceneX();
                         yCord[0] = event.getSceneY();
+                        event.consume();
                     });
         this.addEventHandler(MouseEvent.MOUSE_PRESSED,
                 event -> {
                         xCord[0] = event.getSceneX();
-                        yCord[0] = event.getSceneY();});
+                        yCord[0] = event.getSceneY();
+                        event.consume();
+                    });
         this.addEventHandler(MouseEvent.MOUSE_RELEASED,
                 event -> {
                         this.setCursor(Cursor.HAND);
+                        event.consume();
                     });
     }
 

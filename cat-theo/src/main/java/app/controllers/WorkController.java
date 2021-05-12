@@ -38,71 +38,57 @@ public class WorkController extends GenericController{
 
     @FXML
     public void initialize() {
-        scroll_wrap.addEventHandler(MouseEvent.ANY,
-                event -> {
 
-                    if (event.getEventType() == MouseEvent.MOUSE_CLICKED )
-                    {
-                        switch (event.getButton())  //we catch all of them since switch is a O(1) hash table
-                        {
-                            case PRIMARY:
-                                //select object
-                                break;
-                            case SECONDARY:
-                                String[] items = {"Create Object"};
-                                EventHandler[] actions = {
-                                        ((event1) -> {
-                                            String name = GUIutil.spawnPrompt("Name: ", "Insert Object Name");
-                                            scroll_wrap.fireEvent(new OBJECT_SPAWNED(event.getX(),
-                                                    event.getY(), name));
-                                        })
-                                };
-                                try {
-                                    GUIutil.pingCreationMenu(event.getScreenX(), event.getScreenY(), scroll_wrap, items, actions);
-                                } catch (IllegalArgumentsException e) {
-                                    System.out.println("Something went wrong in the contextMenu init! " +
-                                            "(This shouldn't really happen!)");
-                                    e.printStackTrace();
-                                }
-
-                                break;
-                            case NONE:
-                                break;
-                            case MIDDLE:
-                                break;
-                            case BACK:
-                                break;
-                            case FORWARD:
-                                break;
-                        }
+        // Mapping right click to a context menu
+        scroll_wrap.addEventHandler(MouseEvent.MOUSE_CLICKED,
+            event -> {
+                if (event.getButton() == MouseButton.SECONDARY) { //we catch all of them since switch is a O(1) hash table
+                    String[] items = {"Create Object"};
+                    EventHandler[] actions = {
+                        ((event1) -> {
+                            String name = GUIutil.spawnPrompt("Name: ", "Insert Object Name");
+                            scroll_wrap.fireEvent(new OBJECT_SPAWNED(event.getX(),
+                                    event.getY(), name));
+                        })
+                    };
+                    try {
+                        GUIutil.pingCreationMenu(event.getScreenX(), event.getScreenY(), scroll_wrap, items, actions);
+                    } catch (IllegalArgumentsException e) {
+                        System.out.println("Something went wrong in the contextMenu init! " +
+                                "(This shouldn't really happen!)");
+                        e.printStackTrace();
                     }
-                    if (event.getButton() != MouseButton.MIDDLE)
-                    {
-                        event.consume();
-                    }
-
+                    event.consume();
                 }
-                );
+            });
+        
+        // Mapping left-button-drag to panning the scroll pane
+        scroll_wrap.addEventHandler(MouseEvent.MOUSE_DRAGGED,
+            event -> {
+                if(event.getButton() != MouseButton.PRIMARY)
+                    event.consume();
+            });
 
-        scroll_wrap.addEventHandler(OBJECT_SPAWNED.OBJECT_SPAWNED_TYPE, event -> {
-            try {
-                scroll_wrap.getChildren().add(
-                        new ObjectGUI(event.getX(), event.getY(), currCat.addObject(event.getObjName()), scroll_wrap)
-                );  //Woah that's a lot!
-                printCurrCat();
-            } catch (BadObjectNameException e) {
-                e.printStackTrace();
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setTitle("Error");
-                error.setHeaderText("Duplicate Object Error");
-                error.setContentText("Cannot have two objects with the same name in the same category!");
-                error.showAndWait();
-            } catch (IllegalArgumentsException e) {
+        scroll_wrap.addEventHandler(OBJECT_SPAWNED.OBJECT_SPAWNED_TYPE,
+            event -> {
+                try {
+                    scroll_wrap.getChildren().add(
+                            new ObjectGUI(event.getX(), event.getY(), currCat.addObject(event.getObjName()), scroll_wrap)
+                    );  //Woah that's a lot!
+                    printCurrCat();
+                } catch (BadObjectNameException e) {
+                    e.printStackTrace();
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("Duplicate Object Error");
+                    error.setContentText("Cannot have two objects with the same name in the same category!");
+                    error.showAndWait();
+                } catch (IllegalArgumentsException e) {
 
-                e.printStackTrace();
-                System.out.println("Something went wrong in the contextMenu init! (This shouldn't really happen!)");
-            }
-        });
+                    e.printStackTrace();
+                    System.out.println("Something went wrong in the contextMenu init! (This shouldn't really happen!)");
+                }
+            });
     }
 
 
@@ -115,11 +101,4 @@ public class WorkController extends GenericController{
         currCat.printObjects();
         currCat.printArrows();
     }
-
-
-
-
-    
-
-
 }

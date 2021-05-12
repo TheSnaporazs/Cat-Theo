@@ -31,19 +31,22 @@ import java.util.ArrayList;
 public class GUIutil {
 
     /**
-     * Spawns a context menu prompting the user with generic options provided in the function's arguments
+     * Positions the context menu abd prompts the user with generic options provided in the function's arguments
      * the Strings and the corresponding events must be paired at the same index in the two arrays.
-     *
      * @see app.categories.Obj
      * @see app.categories.Arrow
-     * @param items     An array of strings to be displayed as menuitems on the contextMenu
-     * @param actions   An array of EventHandlers to be attached to each menuitems on the contextmenu
+     * @param x X to position at
+     * @param y Y to position at
+     * @param parent 
+     * @param items An array of strings to be displayed as menuitems on the contextMenu
+     * @param actions An array of EventHandlers to be attached to each menuitems on the contextmenu
+     * @throws IllegalArgumentsException
      */
     public static void pingCreationMenu(Double x, Double y, Node parent, String[] items, EventHandler[] actions) throws IllegalArgumentsException {
         if(items.length != actions.length)
-            {
-                    throw new IllegalArgumentsException("The Menu cannot have an unequal amount of items and actions!");
-            }
+        {
+            throw new IllegalArgumentsException("The Menu cannot have an unequal amount of items and actions!");
+        }
 
         ArrayList<MenuItem> mItems = new ArrayList<MenuItem>();
         for(int c = 0; c < items.length; c++)
@@ -53,7 +56,7 @@ public class GUIutil {
         }
         WorkController.CtxMenu.getItems().clear();
         WorkController.CtxMenu.getItems().addAll(mItems);
-        WorkController.CtxMenu.setAutoHide(true);
+        WorkController.CtxMenu.setAutoHide(true); //Dunno what this does
         WorkController.CtxMenu.show(parent, x, y);
     }
 
@@ -100,6 +103,8 @@ public class GUIutil {
         parent.getChildren().add(temp);
     }
 
+
+    // Isn't this method deprecated??? -Davide
     /**
      * Spawns the graphical representation of an Object, as a node of a graph
      *
