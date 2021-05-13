@@ -1,11 +1,13 @@
 package app.categories;
 
+import app.GUI.GUIutil;
 import app.exceptions.BadObjectNameException;
 import app.exceptions.ImpossibleArrowException;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javafx.scene.layout.Pane;
@@ -435,6 +437,7 @@ public class Category {
             jsArr.put("name", arr.getName());
             jsArr.put("source", arr.src().getName());
             jsArr.put("target", arr.trg().getName());
+            jsArr.put("type", arr.getType().ordinal());
 
             // Make array of the arrows which compose from the current one.
             JSONArray deps = new JSONArray();
@@ -470,6 +473,7 @@ public class Category {
         //because I have sinned: this method is O(n^2), I beg of you,
         //shed the knowledge on me such that I may honour your name
         //with worthy runtimes.
+        MorphType[] types = MorphType.values();
 
         Category ct = new Category();
         // Create file and throw error if can't overwrite.
@@ -491,7 +495,7 @@ public class Category {
         JSONArray arrs = category.getJSONArray("arrows");
         for(Integer i = 0; i < arrs.length(); i++) {
             JSONObject jsonArr = arrs.getJSONObject(i);
-            ct.addArrow(jsonArr.getString("name"), jsonArr.getString("source"), jsonArr.getString("target"));
+            ct.addArrow(jsonArr.getString("name"), jsonArr.getString("source"), jsonArr.getString("target"), types[jsonArr.getInt("type")]);
         }
 
         //Put in the composition-dependencies
@@ -503,6 +507,43 @@ public class Category {
                 arr.dependencies.add(ct.arrows.get(deps.getString(j)));
         }
 
+        return ct;
+    }
+
+    /**
+     * Loads and returns the category corresponding to the given .json file
+     * @param fileName
+     * @return
+     * @throws IOException
+     * @throws BadObjectNameException
+     * @throws ImpossibleArrowException
+     */
+    public static Category loadForGUI(String fileName, Pane pane) throws IOException, BadObjectNameException, ImpossibleArrowException {
+        Category ct = load(fileName);
+
+        // Create file and throw error if can't overwrite.
+        File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
+        if(!file.exists())
+            throw new IOException("File does not exist.");
+        
+        FileReader reader = new FileReader(file);
+        JSONObject category = new JSONObject(new JSONTokener(reader));
+
+        reader.close();
+
+        // Put objs in GUI
+        JSONArray objs = category.getJSONArray("objects");
+        for(Integer i = 0; i < objs.length(); i++) {
+            JSONObject jsonObj = objs.getJSONObject(i);
+            Obj obj = ct.objects.get(jsonObj.getString("name"));
+            GUIutil.spawnObject(jsonObj.getDouble("x"), jsonObj.getDouble("y"), obj, pane);
+        }
+
+        /* Do things for arrow GUI spawning
+        for(Arrow arr: ct.arrows.values()) {
+            //Things
+        }
+        */
         return ct;
     }
 
@@ -541,7 +582,7 @@ public class Category {
         Arrow c4 = ct.addArrow("u", "D'", "E'");
         */
 
-        Category ct = Category.load("base_composition.json");
+        Category ct = Category.load("five_lemma.json");
 
         ct.printArrows();
         ct.printObjects();
