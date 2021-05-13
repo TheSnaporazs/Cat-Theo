@@ -1,6 +1,8 @@
 package app.GUI;
 
 import app.categories.Obj;
+import app.events.ARROW_SPAWNED_SOURCE;
+import app.events.ARROW_SPAWNED_TARGET;
 import app.exceptions.IllegalArgumentsException;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -28,8 +30,16 @@ public class ObjectGUI extends StackPane {
     double xCord;
     double yCord;
 
+    static private Pane parent;
+    private Obj object;
+    
     public ObjectGUI(double X, double Y, Obj object, Pane parent) throws IllegalArgumentsException {
         super();
+
+        this.parent = parent;
+        this.object = object;
+
+
         drawCircle(X, Y, object);                   //Graphical representation
         addHandlers(parent);     //Event Handling
         this.setCursor(Cursor.HAND);                //Cursor Icon, I think it's neat!
@@ -46,15 +56,14 @@ public class ObjectGUI extends StackPane {
         this.relocate(X, Y);
 
         object.setRepr(this); //After all we have to let the object know of this...
-    };
+    }
 
     /**
      * Adds various behaviours to the object,
      * @param parent    the parent pane on which the object is spawned
-     * @param cntxt     the context menu utilized to prompt the user from the object
      */
     private void addHandlers(Pane parent)
-    {   
+    {
         //Lol, make this a property of the object mate... -Davide
         //To be used in lambdas from an outside scope, we must do this treachery, or so I have been told
         //final double[] xCord = new double[1];
@@ -73,35 +82,34 @@ public class ObjectGUI extends StackPane {
                     }});
         this.addEventHandler(MouseEvent.MOUSE_DRAGGED,
                 event -> {
-                        this.setCursor(Cursor.MOVE);
-                        double offsetX = event.getSceneX() - xCord;
-                        double offsetY = event.getSceneY() - yCord;
+                    this.setCursor(Cursor.MOVE);
+                    double offsetX = event.getSceneX() - xCord;
+                    double offsetY = event.getSceneY() - yCord;
 
-                        //TODO: also bound to the max X and Y of the pane
-                        // God, being a 2D videogame programmer has its benefits...
-        
-                        double temp = this.getLayoutX() + offsetX;
-                        this.setLayoutX(temp < 0.0f ? 0.0f : temp);
+                    //TODO: also bound to the max X and Y of the pane
+                    // God, being a 2D videogame programmer has its benefits...
 
-                        temp = this.getLayoutY() + offsetY;
-                        this.setLayoutY(temp < 0.0f ? 0.0f : temp);
+                    double temp = this.getLayoutX() + offsetX;
+                    this.setLayoutX(temp < 0.0f ? 0.0f : temp);
 
-                        xCord = event.getSceneX();
-                        yCord = event.getSceneY();
-                        event.consume();
-                    });
+                    temp = this.getLayoutY() + offsetY;
+                    this.setLayoutY(temp < 0.0f ? 0.0f : temp);
+
+                    xCord = event.getSceneX();
+                    yCord = event.getSceneY();
+                    event.consume();
+                });
 
         this.addEventHandler(MouseEvent.MOUSE_PRESSED,
                 event -> {
-                        xCord = event.getSceneX();
-                        yCord = event.getSceneY();});
+                    xCord = event.getSceneX();
+                    yCord = event.getSceneY();});
         this.addEventHandler(MouseEvent.MOUSE_RELEASED,
                 event -> {
-                        this.setCursor(Cursor.HAND);
-                        event.consume();
-                    });
+                    this.setCursor(Cursor.HAND);
+                    event.consume();
+                });
     }
-
     private void generateContext(Double X, Double Y, Pane parent) throws IllegalArgumentsException {
         /*
         Creation of the object contextMenu, wordy.
@@ -112,8 +120,12 @@ public class ObjectGUI extends StackPane {
                     String name = GUIutil.spawnPrompt("Name: ", "Insert Morphism Name");
                 })
         };
-
         GUIutil.pingCreationMenu(X, Y, parent, items, actions);
     }
+
+    public Obj getObject() {
+        return object;
+    }
+
 
 }

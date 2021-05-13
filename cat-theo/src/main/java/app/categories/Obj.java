@@ -1,5 +1,6 @@
 package app.categories;
 
+import app.GUI.ObjectGUI;
 import javafx.scene.Node;
 
 import java.util.HashSet;
@@ -15,7 +16,7 @@ public class Obj {
     private String name;
     Set<Arrow> incoming = new HashSet<Arrow>();
     Set<Arrow> outcoming = new HashSet<Arrow>();
-    Node guiRepr;
+    ObjectGUI guiRepr;
 
     /**
      * Instances a new {@link app.categories.Obj Obj} representing an object.
@@ -47,14 +48,14 @@ public class Obj {
      * Sets the group representing this object in the GUI
      * @param repr the group
      */
-    public void setRepr(Node repr) { guiRepr = repr; }
+    public void setRepr(ObjectGUI repr) { guiRepr = repr; }
 
     /**
      * Returns a reference to the group representing the
      * object in the GUI
      * @return
      */
-    public Node getRepr() { return guiRepr; }
+    public ObjectGUI getRepr() { return guiRepr; }
 
     @Override
     public boolean equals(Object obj) {

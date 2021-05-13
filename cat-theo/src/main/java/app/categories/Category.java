@@ -86,6 +86,25 @@ public class Category {
     }
 
     /**
+     * Gets an Obj object from the Hashmap
+     * @param name  the Object name
+     * @return      the Object
+     */
+    public Obj getObject(String name) {
+        return objects.get(name);
+    }
+
+    /**
+     * Gets an Arrow object from the Hashmap
+     * @param name the Arrow's name
+     * @return     the Arrow
+     */
+    public Arrow getArrow(String name)
+    {
+        return arrows.get(name);
+    }
+
+    /**
      * Adds a new {@link app.categories.Arrow Arrow} to the {@link app.categories.Category Category}.
      * @param name Name of the new arrow (watch out for a possible LaTeX implementation).
      * @param src Source object.
@@ -96,6 +115,7 @@ public class Category {
      * @see app.categories.Arrow#Arrow(String, Obj, Obj) Arrow(name, source, target)
      */
     public Arrow addArrow(String name, Obj src, Obj trg) throws ImpossibleArrowException {
+
         return addArrow(name, src, trg, MorphType.MORPHISM);
     }
 

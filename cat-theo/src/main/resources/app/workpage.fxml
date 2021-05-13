@@ -27,13 +27,22 @@
         AnchorPane.rightAnchor="0.0">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
-
+                    <MenuItem mnemonicParsing="false" onAction="#switchPage"
+                               text="Save" />
+                    <MenuItem mnemonicParsing="false" onAction="#switchPage"
+                               text="Load" />
+                    <MenuItem mnemonicParsing="false" onAction="#switchPage"
+                               text="Exit" />
                 </Menu>
 
                 <Menu mnemonicParsing="false" text="Actions">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#switchPage"
                                   userData="mainmenu" text="Back to main" />
+                        <MenuItem mnemonicParsing="false" onAction="#objectFromMenu"
+                                  text="Create Object" />
+                        <MenuItem mnemonicParsing="false" onAction="#arrowFromMenu"
+                                  text="Create Arrow" />
                     </items>
                 </Menu>
         </menus>
