@@ -5,12 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a32b215-2bf7-41e4-bf38-f0540b652510" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_json_json_20210307.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/app/events/ARROW_SPAWNED_TARGET.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cat-theo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cat-theo.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/GUI/GUIutil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/GUI/GUIutil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/GUI/ObjectGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/GUI/ObjectGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/categories/Arrow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/categories/Arrow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/categories/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/categories/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/categories/Obj.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/categories/Obj.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/categories/Space.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/categories/Space.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/events/ARROW_SPAWNED.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/events/ARROW_SPAWNED_SOURCE.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/GUIutil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/GUIutil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/ObjectGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/ObjectGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Arrow.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Arrow.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Category.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Obj.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Obj.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/controllers/WorkController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/controllers/WorkController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +38,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1rkhk2yLYSyf1A4qdBInkwCQupo" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />

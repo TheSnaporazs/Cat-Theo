@@ -1,8 +1,9 @@
 package app.categories;
 
+import javafx.scene.Node;
+
 import java.util.HashSet;
 import java.util.Set;
-import javafx.scene.Node;
 
 /**
  * Represents an Object from the Category Theory branch of mathematics.

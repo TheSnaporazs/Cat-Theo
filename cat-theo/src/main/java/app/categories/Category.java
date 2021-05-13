@@ -3,23 +3,18 @@ package app.categories;
 import app.GUI.GUIutil;
 import app.exceptions.BadObjectNameException;
 import app.exceptions.ImpossibleArrowException;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import javafx.scene.layout.Pane;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents a category from the Category Theory branch of mathematics.
@@ -241,8 +236,8 @@ public class Category {
         arr.trg().incoming.add(arr);
 
         // Add the arrow as dependent of f and g
-        f.dependencies.add(arr);
-        g.dependencies.add(arr);
+        f.add(arr);
+        g.add(arr);
 
         arrows.put(arr.getName(), arr);
         return arr;
@@ -254,9 +249,9 @@ public class Category {
      * @see #addComposition(Arrow, Arrow)
      */
     public void removeArrowCompositions(Arrow arr) {
-        for (Arrow comp: arr.dependencies)
+        for (Arrow comp: arr)
             removeArrow(comp);
-        arr.dependencies.clear();
+        arr.clear();
     }
 
     /**
@@ -441,7 +436,7 @@ public class Category {
 
             // Make array of the arrows which compose from the current one.
             JSONArray deps = new JSONArray();
-            for(Arrow dep: arr.dependencies) {
+            for(Arrow dep: arr) {
                 deps.put(dep.getName());
             }
             jsArr.put("dependencies", deps);
@@ -504,7 +499,7 @@ public class Category {
             Arrow arr = ct.arrows.get(jsonArr.getString("name"));
             JSONArray deps = jsonArr.getJSONArray("dependencies");
             for(Integer j = 0; j < deps.length(); j++)
-                arr.dependencies.add(ct.arrows.get(deps.getString(j)));
+                arr.add(ct.arrows.get(deps.getString(j)));
         }
 
         return ct;

@@ -1,7 +1,7 @@
 package app.categories;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 //This is just an idea: don't know if we want to develop this
 /**

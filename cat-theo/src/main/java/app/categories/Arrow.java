@@ -1,8 +1,8 @@
 package app.categories;
 
-import java.util.HashSet;
-
 import app.exceptions.ImpossibleArrowException;
+
+import java.util.HashSet;
 
 /**
  * Represents an Arrow from the Category Theory branch of mathematics.
