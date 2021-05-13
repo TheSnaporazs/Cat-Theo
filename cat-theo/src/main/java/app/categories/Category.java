@@ -206,7 +206,7 @@ public class Category {
 
         // Remove from the Category all the compositions depending on the
         // current arrow.
-        for(Arrow comp: arr.dependencies)
+        for(Arrow comp: arr)
             removeArrow(comp);
     }
 
