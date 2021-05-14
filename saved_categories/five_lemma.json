@@ -1,105 +1,310 @@
 {
+    "universe": {"name": "Pippo"},
     "objects": [
-        {"name": "A"},
-        {"name": "B"},
-        {"name": "E'"},
-        {"name": "C"},
-        {"name": "D'"},
-        {"name": "D"},
-        {"name": "C'"},
-        {"name": "E"},
-        {"name": "B'"},
-        {"name": "A'"}
+        {
+            "domain_name": "dom(A)",
+            "name": "A"
+        },
+        {
+            "domain_name": "dom(B)",
+            "name": "B"
+        },
+        {
+            "domain_name": "dom(E')",
+            "name": "E'"
+        },
+        {
+            "domain_name": "dom(C)",
+            "name": "C"
+        },
+        {
+            "domain_name": "dom(D')",
+            "name": "D'"
+        },
+        {
+            "domain_name": "dom(D)",
+            "name": "D"
+        },
+        {
+            "domain_name": "dom(C')",
+            "name": "C'"
+        },
+        {
+            "domain_name": "dom(E)",
+            "name": "E"
+        },
+        {
+            "domain_name": "dom(B')",
+            "name": "B'"
+        },
+        {
+            "domain_name": "dom(A')",
+            "name": "A'"
+        }
+    ],
+    "spaces": [
+        {
+            "subspaces": [],
+            "name": "img(q)"
+        },
+        {
+            "subspaces": [],
+            "name": "img(u)"
+        },
+        {
+            "subspaces": [],
+            "name": "img(s)"
+        },
+        {
+            "subspaces": ["rng(r)"],
+            "name": "dom(A')"
+        },
+        {
+            "subspaces": [
+                "img(r)",
+                "rng(s)"
+            ],
+            "name": "dom(B')"
+        },
+        {
+            "subspaces": [],
+            "name": "rng(r)"
+        },
+        {
+            "subspaces": [
+                "rng(t)",
+                "img(n)",
+                "img(s)"
+            ],
+            "name": "dom(C')"
+        },
+        {
+            "subspaces": [],
+            "name": "img(f)"
+        },
+        {
+            "subspaces": [],
+            "name": "rng(t)"
+        },
+        {
+            "subspaces": ["img(j)"],
+            "name": "dom(E)"
+        },
+        {
+            "subspaces": [],
+            "name": "rng(h)"
+        },
+        {
+            "subspaces": [],
+            "name": "img(j)"
+        },
+        {
+            "subspaces": [],
+            "name": "img(h)"
+        },
+        {
+            "subspaces": [],
+            "name": "rng(j)"
+        },
+        {
+            "subspaces": [
+                "rng(f)",
+                "rng(l)"
+            ],
+            "name": "dom(A)"
+        },
+        {
+            "subspaces": [],
+            "name": "rng(l)"
+        },
+        {
+            "subspaces": [],
+            "name": "img(n)"
+        },
+        {
+            "subspaces": [
+                "rng(n)",
+                "img(g)",
+                "rng(h)"
+            ],
+            "name": "dom(C)"
+        },
+        {
+            "subspaces": [],
+            "name": "rng(n)"
+        },
+        {
+            "subspaces": [],
+            "name": "img(r)"
+        },
+        {
+            "subspaces": [],
+            "name": "rng(f)"
+        },
+        {
+            "subspaces": [],
+            "name": "img(t)"
+        },
+        {
+            "subspaces": [
+                "img(t)",
+                "rng(u)"
+            ],
+            "name": "dom(D')"
+        },
+        {
+            "subspaces": [
+                "img(u)",
+                "img(q)"
+            ],
+            "name": "dom(E')"
+        },
+        {
+            "subspaces": [],
+            "name": "rng(s)"
+        },
+        {
+            "subspaces": [],
+            "name": "rng(u)"
+        },
+        {
+            "subspaces": [
+                "img(h)",
+                "rng(j)"
+            ],
+            "name": "dom(D)"
+        },
+        {
+            "subspaces": [],
+            "name": "rng(g)"
+        },
+        {
+            "subspaces": [],
+            "name": "img(g)"
+        },
+        {
+            "subspaces": [
+                "img(f)",
+                "rng(g)"
+            ],
+            "name": "dom(B)"
+        }
     ],
     "arrows": [
         {
-            "name": "g",
-            "source": "B",
-            "type": 0,
-            "target": "C",
-            "dependencies": []
-        },
-        {
-            "name": "h",
-            "source": "C",
-            "type": 0,
-            "target": "D",
-            "dependencies": []
-        },
-        {
-            "name": "j",
-            "source": "D",
-            "type": 0,
-            "target": "E",
-            "dependencies": []
-        },
-        {
-            "name": "l",
+            "image": "img(f)",
+            "identity": false,
+            "name": "f",
+            "range": "rng(f)",
             "source": "A",
-            "type": 2,
-            "target": "A'",
-            "dependencies": []
-        },
-        {
-            "name": "m",
-            "source": "B",
-            "type": 3,
-            "target": "B'",
-            "dependencies": []
-        },
-        {
-            "name": "n",
-            "source": "C",
-            "type": 0,
-            "target": "C'",
-            "dependencies": []
-        },
-        {
-            "name": "p",
-            "source": "D",
-            "type": 3,
-            "target": "D'",
-            "dependencies": []
-        },
-        {
-            "name": "q",
-            "source": "E",
-            "type": 1,
-            "target": "E'",
-            "dependencies": []
-        },
-        {
-            "name": "ƒ",
-            "source": "A",
-            "type": 0,
             "target": "B",
             "dependencies": []
         },
         {
-            "name": "r",
-            "source": "A'",
-            "type": 0,
+            "image": "img(g)",
+            "identity": false,
+            "name": "g",
+            "range": "rng(g)",
+            "source": "B",
+            "target": "C",
+            "dependencies": []
+        },
+        {
+            "image": "img(h)",
+            "identity": false,
+            "name": "h",
+            "range": "rng(h)",
+            "source": "C",
+            "target": "D",
+            "dependencies": []
+        },
+        {
+            "image": "img(j)",
+            "identity": false,
+            "name": "j",
+            "range": "rng(j)",
+            "source": "D",
+            "target": "E",
+            "dependencies": []
+        },
+        {
+            "image": "dom(A')",
+            "identity": false,
+            "name": "l",
+            "range": "rng(l)",
+            "source": "A",
+            "target": "A'",
+            "dependencies": []
+        },
+        {
+            "image": "dom(B')",
+            "identity": false,
+            "name": "m",
+            "range": "dom(B)",
+            "source": "B",
             "target": "B'",
             "dependencies": []
         },
         {
-            "name": "s",
-            "source": "B'",
-            "type": 0,
+            "image": "img(n)",
+            "identity": false,
+            "name": "n",
+            "range": "rng(n)",
+            "source": "C",
             "target": "C'",
             "dependencies": []
         },
         {
-            "name": "t",
-            "source": "C'",
-            "type": 0,
+            "image": "dom(D')",
+            "identity": false,
+            "name": "p",
+            "range": "dom(D)",
+            "source": "D",
             "target": "D'",
             "dependencies": []
         },
         {
+            "image": "img(q)",
+            "identity": false,
+            "name": "q",
+            "range": "dom(E)",
+            "source": "E",
+            "target": "E'",
+            "dependencies": []
+        },
+        {
+            "image": "img(r)",
+            "identity": false,
+            "name": "r",
+            "range": "rng(r)",
+            "source": "A'",
+            "target": "B'",
+            "dependencies": []
+        },
+        {
+            "image": "img(s)",
+            "identity": false,
+            "name": "s",
+            "range": "rng(s)",
+            "source": "B'",
+            "target": "C'",
+            "dependencies": []
+        },
+        {
+            "image": "img(t)",
+            "identity": false,
+            "name": "t",
+            "range": "rng(t)",
+            "source": "C'",
+            "target": "D'",
+            "dependencies": []
+        },
+        {
+            "image": "img(u)",
+            "identity": false,
             "name": "u",
+            "range": "rng(u)",
             "source": "D'",
-            "type": 0,
             "target": "E'",
             "dependencies": []
         }

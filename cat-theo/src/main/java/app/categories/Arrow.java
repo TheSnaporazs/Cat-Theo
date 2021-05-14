@@ -23,8 +23,9 @@ public class Arrow {
     Space image;
 
     /**
-     * Instances a new {@link app.categories.Arrow Arrow} representing a morphism from a source to a target
-     * with custom type. //TODO change description
+     * Instances a new {@link app.categories.Arrow Arrow} representing a morphism from a source to a target.
+     * Furthermore it is possible to define the range and the image of the morphism (also deciding if it is an
+     * identity or not)
      * @param name
      * @param src
      * @param trg
@@ -45,7 +46,8 @@ public class Arrow {
     }
 
     /**
-     * 
+     * Instances a new {@link app.categories.Arrow Arrow} representing a morphism from a source to a target.
+     * Furthermore it is possible to define the range and the image of the morphism.
      * @param name
      * @param src
      * @param trg
@@ -83,10 +85,17 @@ public class Arrow {
         return String.format("%s: %s→%s", getName(), src.getName(), trg.getName());
     }
 
-    //TODO: add javadoc to all the new methods
 
+    /**
+     * Checks if the arrow is an identity
+     * @return
+     */
     public boolean isIdentity() { return identity; }
 
+    /**
+     * Checks if the arrow is a monomorphism
+     * @return
+     */
     public boolean isMonic() {
         Iterator<Arrow> iter = src.incoming.iterator();
         Space baseImage = Space.nullSpace;
@@ -100,6 +109,10 @@ public class Arrow {
         return true;
     }
 
+    /**
+     * Checks if the arrow is an epimorphism
+     * @return
+     */
     public boolean isEpic() {
         Iterator<Arrow> iter = trg.outcoming.iterator();
         Space baseRange = Space.nullSpace;
@@ -113,6 +126,10 @@ public class Arrow {
         return true;
     }
 
+    /**
+     * Checks if the arrow is an isomorphism
+     * @return
+     */
     public boolean isIsomorphism() { return isMonic() && isEpic(); }
 
     /**

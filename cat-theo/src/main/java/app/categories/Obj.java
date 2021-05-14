@@ -23,9 +23,9 @@ public class Obj {
      * Instances a new {@link app.categories.Obj Obj} representing an object.
      * @param name Name of the object.
      */
-    Obj(String name) {
+    Obj(String name, Space domain) {
         this.name = name;
-        domain = new Space(String.format(DOMAIN_SYMBOL, name));
+        this.domain = domain;
     }
 
     /**
@@ -65,6 +65,13 @@ public class Obj {
      * @return
      */
     public Space getDomain() { return domain; }
+
+    /**
+     * Standard for representing an object's domain
+     * @param objName Name of the object
+     * @return standard name for the object's domain
+     */
+    public static String makeDomainName(String objName) { return String.format(DOMAIN_SYMBOL, objName); }
 
     @Override
     public boolean equals(Object obj) {

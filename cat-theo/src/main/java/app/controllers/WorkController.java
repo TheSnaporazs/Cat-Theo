@@ -6,6 +6,7 @@ import app.GUI.ObjectGUI;
 import app.categories.Category;
 import app.events.OBJECT_SPAWNED;
 import app.exceptions.BadObjectNameException;
+import app.exceptions.BadSpaceException;
 import app.exceptions.IllegalArgumentsException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
