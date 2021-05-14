@@ -3,6 +3,7 @@ package app.categories;
 import app.exceptions.ImpossibleArrowException;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * Represents an Arrow from the Category Theory branch of mathematics.
@@ -10,42 +11,50 @@ import java.util.HashSet;
  * @see {@link app.categories.Category Category}
  * @see {@link app.categories.Obj Obj}
  */
-public class Arrow extends HashSet<Arrow>{
+public class Arrow {
     public static final String IDENTITY_SYMBOL = "Id(%s)";
     public static final String COMPOSITION_SYMBOL = "%s • %s";
     private String name;
     private Obj src;
     private Obj trg;
-    private MorphType type;
+    private Boolean identity = false;
+    HashSet<Arrow> dependencies = new HashSet<Arrow>();
+    Space range;
+    Space image;
 
     /**
      * Instances a new {@link app.categories.Arrow Arrow} representing a morphism from a source to a target
-     * with custom type.
-     * @param name Name of the arrow.
-     * @param src Name of the source object.
-     * @param trg Name of the target object.
-     * @param type Type of the arrow.
-     * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
+     * with custom type. //TODO change description
+     * @param name
+     * @param src
+     * @param trg
+     * @param range
+     * @param image
+     * @param identity
+     * @throws ImpossibleArrowException
      */
-    Arrow(String name, Obj src, Obj trg, MorphType type) throws ImpossibleArrowException {
-        if (type == MorphType.IDENTITY && !src.equals(trg))
+    Arrow(String name, Obj src, Obj trg, Space range, Space image, Boolean identity) throws ImpossibleArrowException {
+        if (identity && !src.equals(trg))
             throw new ImpossibleArrowException("An identity has to have same source and target!");
 
         this.name = name;
         this.src = src;
         this.trg = trg;
-        this.type = type;
+        this.range = range;
+        this.image = image;
     }
 
     /**
-     * Instances a new {@link app.categories.Arrow Arrow} representing a morphism from a source to a target.
-     * @param name Name of the arrow.
-     * @param src Name of the source object.
-     * @param trg Name of the target object.
-     * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
+     * 
+     * @param name
+     * @param src
+     * @param trg
+     * @param range
+     * @param image
+     * @throws ImpossibleArrowException
      */
-    Arrow(String name, Obj src, Obj trg) throws ImpossibleArrowException {
-        this(name, src, trg, MorphType.MORPHISM);
+    Arrow(String name, Obj src, Obj trg, Space range, Space image) throws ImpossibleArrowException {
+        this(name, src, trg, range, image, false);
     }
 
     /**
@@ -67,18 +76,44 @@ public class Arrow extends HashSet<Arrow>{
     public Obj trg() { return trg; }
 
     /**
-     * Returns the arrow's type.
-     * @return Type of the arrow.
-     */
-    public MorphType getType() { return type; }
-
-    /**
      * Function to easily compute a pretty print of the arrow
      * @return A string representing the arrow
      */
     public String represent() {
         return String.format("%s: %s→%s", getName(), src.getName(), trg.getName());
     }
+
+    //TODO: add javadoc to all the new methods
+
+    public boolean isIdentity() { return identity; }
+
+    public boolean isMonic() {
+        Iterator<Arrow> iter = src.incoming.iterator();
+        Space baseImage = Space.nullSpace;
+        if (iter.hasNext())
+            baseImage = iter.next().image;
+
+        for(Space img = baseImage; iter.hasNext(); img = iter.next().image)
+            if(!img.equals(baseImage))
+                return false;
+
+        return true;
+    }
+
+    public boolean isEpic() {
+        Iterator<Arrow> iter = trg.outcoming.iterator();
+        Space baseRange = Space.nullSpace;
+        if (iter.hasNext())
+            baseRange = iter.next().range;
+
+        for(Space rng = baseRange; iter.hasNext(); rng = iter.next().range)
+            if(!rng.equals(baseRange))
+                return false;
+
+        return true;
+    }
+
+    public boolean isIsomorphism() { return isMonic() && isEpic(); }
 
     /**
      * Checks whether the arrow is and endomorphism or not
@@ -93,7 +128,7 @@ public class Arrow extends HashSet<Arrow>{
      * and an {@link app.categories.MorphType#ISOMORPHISM Isomorphism})
      * @return
      */
-    public boolean isAutomorphism() { return type == MorphType.ISOMORPHISM && isEndomorphism(); }
+    public boolean isAutomorphism() { return isIsomorphism() && isEndomorphism(); }
 
     /**
      * Creates (if possible) a new {@link app.categories.Arrow Arrow} result of the
@@ -110,7 +145,7 @@ public class Arrow extends HashSet<Arrow>{
      */
     public static Arrow compose(Arrow g, Arrow f) throws ImpossibleArrowException {
         if (f.trg().equals(g.src())) // Condition for a composition to be possible.
-            return new Arrow(String.format(COMPOSITION_SYMBOL, g.getName(), f.getName()), f.src(), g.trg());
+            return new Arrow(String.format(COMPOSITION_SYMBOL, g.getName(), f.getName()), f.src(), g.trg(), f.range, g.image);
         else throw new ImpossibleArrowException(String.format("Tried to compose %s(%s), conditions not met.", g.getName(), f.getName()));
     }
 
@@ -123,7 +158,7 @@ public class Arrow extends HashSet<Arrow>{
 
     @Override
     public int hashCode() {
-        return String.format("%s%s%s%s", name, src.getName(), trg.getName(), type.toString()).hashCode();
+        return String.format("%s%s%s%s%s", name, src.getName(), trg.getName(), range.getName(), image.getName()).hashCode();
     }
 
     @Override
@@ -133,7 +168,6 @@ public class Arrow extends HashSet<Arrow>{
     
         Arrow arr = (Arrow) obj;
 
-        return arr.getType() == type && arr.getName().equals(name)
-               && arr.src().equals(src) && arr.trg().equals(trg);
+        return arr.range.equals(range) && arr.image.equals(image) && arr.src().equals(src) && arr.trg().equals(trg);
     }
 }

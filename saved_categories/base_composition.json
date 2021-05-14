@@ -1,29 +1,205 @@
 {
+    "universe": {"name": "Pippo"},
     "objects": [
-        {"name": "A"},
-        {"name": "B"},
-        {"name": "C"}
+        {
+            "domain_name": "dom(A)",
+            "name": "A"
+        },
+        {
+            "domain_name": "dom(B)",
+            "name": "B"
+        },
+        {
+            "domain_name": "dom(E')",
+            "name": "E'"
+        },
+        {
+            "domain_name": "dom(C)",
+            "name": "C"
+        },
+        {
+            "domain_name": "dom(D')",
+            "name": "D'"
+        },
+        {
+            "domain_name": "dom(D)",
+            "name": "D"
+        },
+        {
+            "domain_name": "dom(C')",
+            "name": "C'"
+        },
+        {
+            "domain_name": "dom(E)",
+            "name": "E"
+        },
+        {
+            "domain_name": "dom(B')",
+            "name": "B'"
+        },
+        {
+            "domain_name": "dom(A')",
+            "name": "A'"
+        }
+    ],
+    "spaces": [
+        {
+            "subspaces": [],
+            "name": "dom(A')"
+        },
+        {
+            "subspaces": [],
+            "name": "dom(B')"
+        },
+        {
+            "subspaces": [],
+            "name": "dom(C')"
+        },
+        {
+            "subspaces": [],
+            "name": "dom(E)"
+        },
+        {
+            "subspaces": [],
+            "name": "dom(D)"
+        },
+        {
+            "subspaces": [],
+            "name": "dom(A)"
+        },
+        {
+            "subspaces": [],
+            "name": "dom(D')"
+        },
+        {
+            "subspaces": [],
+            "name": "dom(E')"
+        },
+        {
+            "subspaces": [],
+            "name": "dom(C)"
+        },
+        {
+            "subspaces": [],
+            "name": "dom(B)"
+        }
     ],
     "arrows": [
         {
-            "name": "ƒ",
-            "source": "A",
-            "type": 0,
-            "target": "B",
-            "dependencies": ["g \u2022 ƒ"]
-        },
-        {
+            "image": "dom(C)",
+            "identity": false,
             "name": "g",
+            "range": "dom(B)",
             "source": "B",
-            "type": 0,
             "target": "C",
-            "dependencies": ["g \u2022 ƒ"]
+            "dependencies": []
         },
         {
-            "name": "g \u2022 ƒ",
+            "image": "dom(D)",
+            "identity": false,
+            "name": "h",
+            "range": "dom(C)",
+            "source": "C",
+            "target": "D",
+            "dependencies": []
+        },
+        {
+            "image": "dom(E)",
+            "identity": false,
+            "name": "j",
+            "range": "dom(D)",
+            "source": "D",
+            "target": "E",
+            "dependencies": []
+        },
+        {
+            "image": "dom(A')",
+            "identity": false,
+            "name": "l",
+            "range": "dom(A)",
             "source": "A",
-            "type": 0,
-            "target": "C",
+            "target": "A'",
+            "dependencies": []
+        },
+        {
+            "image": "dom(B')",
+            "identity": false,
+            "name": "m",
+            "range": "dom(B)",
+            "source": "B",
+            "target": "B'",
+            "dependencies": []
+        },
+        {
+            "image": "dom(C')",
+            "identity": false,
+            "name": "n",
+            "range": "dom(C)",
+            "source": "C",
+            "target": "C'",
+            "dependencies": []
+        },
+        {
+            "image": "dom(D')",
+            "identity": false,
+            "name": "p",
+            "range": "dom(D)",
+            "source": "D",
+            "target": "D'",
+            "dependencies": []
+        },
+        {
+            "image": "dom(E')",
+            "identity": false,
+            "name": "q",
+            "range": "dom(E)",
+            "source": "E",
+            "target": "E'",
+            "dependencies": []
+        },
+        {
+            "image": "dom(B)",
+            "identity": false,
+            "name": "ƒ",
+            "range": "dom(A)",
+            "source": "A",
+            "target": "B",
+            "dependencies": []
+        },
+        {
+            "image": "dom(B')",
+            "identity": false,
+            "name": "r",
+            "range": "dom(A')",
+            "source": "A'",
+            "target": "B'",
+            "dependencies": []
+        },
+        {
+            "image": "dom(C')",
+            "identity": false,
+            "name": "s",
+            "range": "dom(B')",
+            "source": "B'",
+            "target": "C'",
+            "dependencies": []
+        },
+        {
+            "image": "dom(D')",
+            "identity": false,
+            "name": "t",
+            "range": "dom(C')",
+            "source": "C'",
+            "target": "D'",
+            "dependencies": []
+        },
+        {
+            "image": "dom(E')",
+            "identity": false,
+            "name": "u",
+            "range": "dom(D')",
+            "source": "D'",
+            "target": "E'",
             "dependencies": []
         }
     ]
