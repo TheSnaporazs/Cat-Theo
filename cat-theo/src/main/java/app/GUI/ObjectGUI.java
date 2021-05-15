@@ -115,5 +115,4 @@ public class ObjectGUI extends StackPane {
 
         GUIutil.pingCreationMenu(X, Y, parent, items, actions);
     }
-
 }

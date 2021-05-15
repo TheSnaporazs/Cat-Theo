@@ -14,7 +14,7 @@ import java.util.Set;
 public class Obj {
     public static final String DOMAIN_SYMBOL = "dom(%s)";
     private String name;
-    Space domain;
+    private Space domain;
     Set<Arrow> incoming = new HashSet<Arrow>();
     Set<Arrow> outcoming = new HashSet<Arrow>();
     Node guiRepr;
@@ -23,9 +23,9 @@ public class Obj {
      * Instances a new {@link app.categories.Obj Obj} representing an object.
      * @param name Name of the object.
      */
-    Obj(String name, Space domain) {
+    Obj(String name) {
         this.name = name;
-        this.domain = domain;
+        this.domain = new Space(String.format(DOMAIN_SYMBOL, name), this);
     }
 
     /**

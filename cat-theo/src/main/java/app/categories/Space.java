@@ -11,19 +11,13 @@ import java.util.HashSet;
 public class Space {
     public static Space nullSpace = new Space("W̴̨̧̡͔͈̦̫̘̰̘̮̫͍̗̊̏̆̀̇̈́T̴̯̖̝̮̈́͋͊̃̚͝ͅF̸̟͚̜̘̠͓̣̠̖̗̪̘̟̈́̆̈̏̅͛̄̆̈́̋̄̋͠"){
         @Override
-        public boolean contains(Space space) { return false; }
+        public boolean contains(Space space) { return space == nullSpace; }
     };
     private String name;
     Space superSpace = null;
     HashSet<Space> subspaces = new HashSet<Space>();
-
-    //Would have loved to make a HashSet<Arrow>: but I don't know why in
-    // the Lord's name that would give me errors, I would literally call
-    // .remove(arr) on this collection and, when printing its contents,
-    // find that arr would still be inside it... bah, leave it as a set of strings.
-    HashSet<String> toArrows = new HashSet<String>();
-    
-    HashSet<Obj> toObjs = new HashSet<Obj>();
+    HashSet<Arrow> toArrows = new HashSet<Arrow>();
+    Obj object;
 
     /**
      * Constructs a space with custom name.
@@ -31,6 +25,15 @@ public class Space {
      */
     Space(String name) {
         this.name = name;
+    }
+
+    /**
+     * Constructs a space with custom name.
+     * @param name
+     */
+    Space(String name, Obj object) {
+        this.name = name;
+        this.object = object;
     }
 
     /**
@@ -49,7 +52,7 @@ public class Space {
      * If the space as any references left on it, useful for deletion.
      * @return
      */
-    public boolean hasNoRefers() { return toArrows.isEmpty() && toObjs.isEmpty(); }
+    public boolean hasNoRefers() { return toArrows.isEmpty() && object == null; }
 
     /**
      * Checks if the space or any of its subspaces contains a space as a subspace
@@ -72,9 +75,7 @@ public class Space {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(!(obj instanceof Space))
-            return false;
-        return name.equals(((Space) obj).getName());
+    public int hashCode() {
+        return name.hashCode();
     }
 }

@@ -175,7 +175,7 @@ public class Arrow {
 
     @Override
     public int hashCode() {
-        return String.format("%s%s%s%s%s", name, src.getName(), trg.getName(), range.getName(), image.getName()).hashCode();
+        return name.hashCode();
     }
 
     @Override

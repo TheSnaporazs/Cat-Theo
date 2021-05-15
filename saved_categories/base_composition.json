@@ -1,18 +1,9 @@
 {
     "universe": {"name": "Pluto"},
     "objects": [
-        {
-            "domain_name": "dom(A)",
-            "name": "A"
-        },
-        {
-            "domain_name": "dom(B)",
-            "name": "B"
-        },
-        {
-            "domain_name": "dom(C)",
-            "name": "C"
-        }
+        {"name": "A"},
+        {"name": "B"},
+        {"name": "C"}
     ],
     "spaces": [
         {
@@ -30,21 +21,6 @@
         {
             "subspaces": [],
             "name": "img(g)"
-        },
-        {
-            "subspaces": ["rng(f)"],
-            "name": "dom(A)"
-        },
-        {
-            "subspaces": ["img(g)"],
-            "name": "dom(C)"
-        },
-        {
-            "subspaces": [
-                "rng(g)",
-                "img(f)"
-            ],
-            "name": "dom(B)"
         }
     ],
     "arrows": [
