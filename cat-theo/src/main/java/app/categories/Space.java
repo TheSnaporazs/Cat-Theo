@@ -60,10 +60,14 @@ public class Space {
      * @return
      */
     public boolean contains(Space subspace) {
-        if(equals(subspace))
+        //Anything contains itself
+        if(this == subspace)
             return true;
-        if(subspace.equals(nullSpace))
+
+        //nullSpace is contained to any space
+        if(subspace == nullSpace)
             return true;
+
         if (subspaces.contains(subspace))
             return true;
         
