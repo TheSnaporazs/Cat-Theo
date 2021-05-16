@@ -21,6 +21,8 @@ public class Arrow {
     HashSet<Arrow> dependencies = new HashSet<Arrow>();
     Space range;
     Space image;
+    Arrow firstAncestor;
+    Arrow secondAncestor;
 
     /**
      * Instances a new {@link app.categories.Arrow Arrow} representing a morphism from a source to a target.
@@ -148,6 +150,16 @@ public class Arrow {
     public boolean isAutomorphism() { return isIsomorphism() && isEndomorphism(); }
 
     /**
+     * Returns validity of the arrow.
+     * @return
+     */
+    public boolean runCheck() {
+        if(firstAncestor != null)
+            return secondAncestor.range.contains(firstAncestor.image);
+        return true;
+    }
+
+    /**
      * Creates (if possible) a new {@link app.categories.Arrow Arrow} result of the
      * composition of two others, <b>doesn't</b> add it to any {@link app.categories.Category Category}.
      * Composition is the result of passing as input of a function another function-
@@ -161,8 +173,10 @@ public class Arrow {
      * @see app.categories.Category#addComposition(Arrow g, Arrow f)
      */
     public static Arrow compose(Arrow g, Arrow f) throws ImpossibleArrowException {
-        if (f.trg().equals(g.src())) // Condition for a composition to be possible.
+
+        if (f.trg().equals(g.src()) && g.range.contains(f.image)) {// Condition for a composition to be possible.
             return new Arrow(String.format(COMPOSITION_SYMBOL, g.getName(), f.getName()), f.src(), g.trg(), f.range, g.image);
+        }
         else throw new ImpossibleArrowException(String.format("Tried to compose %s(%s), conditions not met.", g.getName(), f.getName()));
     }
 

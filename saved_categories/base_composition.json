@@ -8,15 +8,7 @@
     "spaces": [
         {
             "subspaces": [],
-            "name": "img(f)"
-        },
-        {
-            "subspaces": [],
             "name": "rng(f)"
-        },
-        {
-            "subspaces": [],
-            "name": "rng(g)"
         },
         {
             "subspaces": [],
@@ -25,29 +17,18 @@
     ],
     "arrows": [
         {
-            "image": "img(f)",
             "identity": false,
             "name": "f",
             "range": "rng(f)",
             "source": "A",
             "target": "B",
-            "dependencies": ["g \u2022 f"]
+            "dependencies": []
         },
         {
             "image": "img(g)",
             "identity": false,
             "name": "g",
-            "range": "rng(g)",
             "source": "B",
-            "target": "C",
-            "dependencies": ["g \u2022 f"]
-        },
-        {
-            "image": "img(g)",
-            "identity": false,
-            "name": "g \u2022 f",
-            "range": "rng(f)",
-            "source": "A",
             "target": "C",
             "dependencies": []
         }

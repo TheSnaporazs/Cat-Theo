@@ -17,6 +17,7 @@ public class Space {
     Space superSpace = null;
     HashSet<Space> subspaces = new HashSet<Space>();
     HashSet<Arrow> toArrows = new HashSet<Arrow>();
+    HashSet<Arrow> toCompositions = new HashSet<Arrow>();
     Obj object;
 
     /**

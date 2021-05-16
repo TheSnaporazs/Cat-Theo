@@ -209,9 +209,16 @@ public class Category {
      * @param arr Arrow on which to apply the change
      * @param range New space that will be range
      */
-    public void arrowChangeRange(Arrow arr, Space range) {
+    public void arrowChangeRange(Arrow arr, Space range) throws BadSpaceException {
         if(arr.range != arr.image)
             arr.range.toArrows.remove(arr);
+
+        for(Arrow comp: arr.dependencies) {
+            if(arr.range != comp.range) {
+                arr.range.toCompositions.remove(comp);
+                range.toCompositions.add(comp);
+            }
+        }
 
         if(arr.range.hasNoRefers()) {
             changeSuperSpace(arr.range, range);
@@ -220,6 +227,11 @@ public class Category {
 
         arr.range = range;
         range.toArrows.add(arr);
+
+        for(Arrow comp: arr.dependencies) {
+            if(!comp.runCheck())
+                removeArrow(comp);
+        }
     }
 
     /**
@@ -260,9 +272,17 @@ public class Category {
      * @param arr Arrow on which to apply the change
      * @param image New space that will be image
      */
-    public void arrowChangeImage(Arrow arr, Space image) {
+    public void arrowChangeImage(Arrow arr, Space image) throws BadSpaceException {
         if(arr.range != arr.image)
             arr.image.toArrows.remove(arr);
+
+        for(Arrow comp: arr.dependencies) {
+            if(arr.image != comp.image) {
+                arr.image.toCompositions.remove(comp);
+                image.toCompositions.add(comp);
+            }
+        }
+
         if(arr.image.hasNoRefers()) {
             changeSuperSpace(arr.image, image);
             removeSpace(arr.image);
@@ -270,6 +290,11 @@ public class Category {
 
         arr.image = image;
         image.toArrows.add(arr);
+
+        for(Arrow comp: arr.dependencies) {
+            if(!comp.runCheck())
+                removeArrow(comp);
+        }
     }
 
     /**
@@ -281,11 +306,12 @@ public class Category {
      */
     public void arrowChangeImage(Arrow arr, String imageName) throws BadSpaceException {
         Space image;
-        if((image = spaces.get(imageName)) == null)
+        if((image = spaces.get(imageName)) == null) {
             if(arr.image == arr.trg().getDomain())
                 image = addSpace(imageName, arr.trg().getDomain());
             else
                 image = addSpace(imageName, arr.image.superSpace);
+        }
 
         arrowChangeImage(arr, image);
     }
@@ -309,8 +335,10 @@ public class Category {
      * Removes an {@link app.categories.Arrow Arrow} and all the other arrows that
      * compose (thus depend) on it from the {@link app.categories.Category Category}.
      * @param arr Reference to the arrow to remove.
+     * @param ancestorBeingRemoved Needed such that we won't change sets
+     * being read at the same time.
      */
-    public void removeArrow(Arrow arr) {
+    public void removeArrow(Arrow arr, Arrow ancestorBeingRemoved) {
         arrows.remove(arr.getName());
 
         // Remove reference from source
@@ -324,7 +352,19 @@ public class Category {
         // Remove from the Category all the compositions depending on the
         // current arrow.
         for(Arrow comp: arr.dependencies)
-            removeArrow(comp);
+            removeArrow(comp, arr);
+
+        if(arr.firstAncestor != null) {
+            if(ancestorBeingRemoved != null) {
+                if(arr.firstAncestor != ancestorBeingRemoved)
+                    arr.firstAncestor.dependencies.remove(arr);
+                else
+                    arr.secondAncestor.dependencies.remove(arr);
+            } else {
+                arr.firstAncestor.dependencies.remove(arr);
+                arr.secondAncestor.dependencies.remove(arr);
+            }
+        }
 
         // Remove references from image and range
         arr.image.toArrows.remove(arr);
@@ -334,6 +374,18 @@ public class Category {
         arr.range.toArrows.remove(arr);
         if(arr.range.hasNoRefers())
             removeSpace(arr.range);
+
+        arr.firstAncestor.image.toCompositions.remove(arr);
+        arr.secondAncestor.range.toCompositions.remove(arr);
+    }
+
+    /**
+     * Removes an {@link app.categories.Arrow Arrow} and all the other arrows that
+     * compose (thus depend) on it from the {@link app.categories.Category Category}.
+     * @param arr Reference to the arrow to remove.
+     */
+    public void removeArrow(Arrow arr) {
+        removeArrow(arr, null);
     }
 
     /**
@@ -369,9 +421,14 @@ public class Category {
         // Add the arrow as dependent of f and g
         f.dependencies.add(arr);
         g.dependencies.add(arr);
+        arr.firstAncestor = f;
+        arr.secondAncestor = g;
 
-        arr.range.toArrows.add(arr);
-        arr.image.toArrows.add(arr);
+        f.range.toArrows.add(arr);
+        g.image.toArrows.add(arr);
+
+        f.image.toCompositions.add(arr);
+        g.range.toCompositions.add(arr);
 
         arrows.put(arr.getName(), arr);
         return arr;
@@ -384,7 +441,7 @@ public class Category {
      */
     public void removeArrowCompositions(Arrow arr) {
         for (Arrow comp: arr.dependencies)
-            removeArrow(comp);
+            removeArrow(comp, arr);
         arr.dependencies.clear();
     }
 
@@ -474,10 +531,39 @@ public class Category {
      */
     public void removeSpace(Space space) {
         for(Arrow arr: space.toArrows) {
-            if(arr.range.equals(space))
-                arrowChangeRange(arr, space.superSpace);
-            if(arr.image.equals(space))
-                arrowChangeImage(arr, space.superSpace);
+            if(arr.range == space) {
+                for(Arrow comp: arr.dependencies) {
+                    if(arr.range != comp.range) {
+                        space.toCompositions.remove(comp);
+                        space.superSpace.toCompositions.add(comp);
+                    }
+                }
+
+                arr.range = space.superSpace;
+                space.superSpace.toArrows.add(arr);
+
+                for(Arrow comp: arr.dependencies) {
+                    if(!comp.runCheck())
+                        removeArrow(comp);
+                }
+            }
+        
+            if(arr.image == space) {
+                for(Arrow comp: arr.dependencies) {
+                    if(arr.image != comp.image) {
+                        space.toCompositions.remove(comp);
+                        space.superSpace.toCompositions.add(comp);
+                    }
+                }
+        
+                arr.image = space.superSpace;
+                space.superSpace.toArrows.add(arr);
+        
+                for(Arrow comp: arr.dependencies) {
+                    if(!comp.runCheck())
+                        removeArrow(comp);
+                }
+            }
         }
 
         for(Space spc: space.subspaces) {
@@ -507,13 +593,26 @@ public class Category {
      * Changes a space's superspace
      * @param space Space on which to apply the change
      * @param newSuper New superspace to give.
+     * @throws BadSpaceException If newSuper.superSpace = space, that could bring to errors
      */
-    public void changeSuperSpace(Space space, Space newSuper) {
+    public void changeSuperSpace(Space space, Space newSuper) throws BadSpaceException {
         // May need to add further computation along the line,
         // so it is better to give it a method now.
-        space.superSpace.subspaces.remove(space);
-        space.superSpace = newSuper;
-        newSuper.subspaces.add(space);
+        if(newSuper.superSpace == space)
+            throw new BadSpaceException("Would-be-superspace has this space as a superspace... unless you want to see infinite loops stop right here.");
+
+        if(space.superSpace != null)
+            space.superSpace.subspaces.remove(space);
+        if(space != newSuper) {
+            space.superSpace = newSuper;
+            newSuper.subspaces.add(space);
+        }
+
+        //Don't know if this may be needed, but I'll leave it here just because
+        for(Arrow arr: space.toCompositions) {
+            if(!arr.runCheck())
+                removeArrow(arr);
+        }
     }
 
     /**
@@ -831,9 +930,23 @@ public class Category {
             JSONObject jsonArr = arrs.getJSONObject(i);
             Arrow arr = ct.arrows.get(jsonArr.getString("name"));
             JSONArray deps = jsonArr.getJSONArray("dependencies");
-            for(Integer j = 0; j < deps.length(); j++)
-                arr.dependencies.add(ct.arrows.get(deps.getString(j)));
+            for(Integer j = 0; j < deps.length(); j++) {
+                Arrow comp = ct.arrows.get(deps.getString(j));
+                arr.dependencies.add(comp);
+                if(comp.range == arr.range) {
+                    comp.firstAncestor = arr;
+                    arr.image.toCompositions.add(comp);
+                } else {
+                    comp.secondAncestor = arr;
+                    arr.range.toCompositions.add(comp);
+                }
+
+            }
         }
+
+        for(Arrow arr: ct.arrows.values())
+            if(!arr.runCheck())
+                throw new IOException("Something went wrong with loading the category, some arrows shouldn't exist");
 
         return ct;
     }
@@ -919,7 +1032,14 @@ public class Category {
         ct.addObject("C");
         Arrow a1 = ct.addArrow("f", "A", "B");
         Arrow a2 = ct.addArrow("g", "B", "C");
-        ct.addComposition(a2, a1);*/
+        //ct.arrowChangeImage(a1, a2.range);
+        ct.changeSuperSpace(a1.image, a2.range);
+        ct.addComposition(a2, a1);
+        ct.removeSpace(a1.image);
+        System.out.println(a1.image.getName());
+        ct.removeSpace(a1.image);
+        System.out.println(a1.image.getName());
+        System.out.println(a2.range.getName());*/
 
         Category ct = Category.load("five_lemma.json");
 
@@ -933,6 +1053,6 @@ public class Category {
         for(Obj o: ct.getTerminalObjs())
             System.out.println(o.getName());
 
-        //ct.save("base_composition.json", true);
+        //ct.save("five_lemma.json", true);
     }
 }
