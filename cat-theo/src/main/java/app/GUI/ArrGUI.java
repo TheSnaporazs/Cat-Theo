@@ -1,6 +1,12 @@
 package app.GUI;
 
 import app.categories.Arrow;
+import javafx.beans.InvalidationListener;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
@@ -25,6 +31,7 @@ public class ArrGUI extends Line {
     private Arrow arrow;
     private Pane parent;
 
+
     /**
      *  Initializes an ArrGUI upon this pane
      *
@@ -41,8 +48,8 @@ public class ArrGUI extends Line {
         this.arrow = arrow;
         arrow.guiRepr = this;
         this.parent = parent;
-
         bindEndpoints();
+
     }
 
 
@@ -53,10 +60,62 @@ public class ArrGUI extends Line {
 
     private void bindEndpoints()
     {
-        this.startXProperty().bind(src.layoutXProperty().add(30 + src.getRay() * Math.cos(GUIutil.computeAngle(src, trg))));
-        this.endXProperty().bind(trg.layoutXProperty().add(30 +trg.getRay() * Math.cos(GUIutil.computeAngle(trg, src))));
-        this.startYProperty().bind(src.layoutYProperty().add(30 + src.getRay() * Math.sin(GUIutil.computeAngle(src, trg))));
-        this.endYProperty().bind(trg.layoutYProperty().add(30 + trg.getRay() * Math.sin(GUIutil.computeAngle(trg, src))));
+        DoubleBinding xSrc = new DoubleBinding() {
+            {
+                // Specify the dependencies with super.bind()
+                super.bind(src.layoutXProperty(), trg.layoutYProperty(), trg.layoutXProperty(), trg.layoutYProperty());
+            }
+            @Override
+            protected double computeValue() {
+                // Return the computed value
+                return src.getLayoutX() + 30 + src.getRay() * Math.cos(GUIutil.computeAngle(src, trg));
+            }
+        };
+
+        this.startXProperty().bind(xSrc);
+
+        DoubleBinding ySrc = new DoubleBinding() {
+            {
+                // Specify the dependencies with super.bind()
+                super.bind(src.layoutXProperty(), trg.layoutYProperty(), trg.layoutXProperty(), trg.layoutYProperty());
+            }
+            @Override
+            protected double computeValue() {
+                // Return the computed value
+                return src.getLayoutY() + 30 + src.getRay() * Math.sin(GUIutil.computeAngle(src, trg));
+            }
+        };
+
+        this.startYProperty().bind(ySrc);
+
+        DoubleBinding xTrg = new DoubleBinding() {
+            {
+                // Specify the dependencies with super.bind()
+                super.bind(src.layoutXProperty(), trg.layoutYProperty(), trg.layoutXProperty(), trg.layoutYProperty());
+            }
+            @Override
+            protected double computeValue() {
+                // Return the computed value
+                return trg.getLayoutX() + 30 + trg.getRay() * Math.cos(GUIutil.computeAngle(trg, src));
+            }
+        };
+
+        this.endXProperty().bind(xTrg);
+
+        DoubleBinding yTrg = new DoubleBinding() {
+            {
+                // Specify the dependencies with super.bind()
+                super.bind(src.layoutXProperty(), trg.layoutYProperty(), trg.layoutXProperty(), trg.layoutYProperty());
+            }
+            @Override
+            protected double computeValue() {
+                // Return the computed value
+                return trg.getLayoutY() + 30 + trg.getRay() * Math.sin(GUIutil.computeAngle(trg, src));
+            }
+        };
+
+        this.endYProperty().bind(yTrg);
+
     }
 
     public ObjectGUI getSrc() {

@@ -1,5 +1,7 @@
 app\App.class
+app\GUI\ArrGUI$2.class
 app\controllers\WorkController.class
+app\GUI\ArrGUI$4.class
 app\events\OBJECT_SPAWNED.class
 app\GUI\ObjectGUI.class
 app\GUI\ArrGUI.class
@@ -10,5 +12,7 @@ app\exceptions\IllegalArgumentsException.class
 app\events\ARROW_SPAWNED_TARGET.class
 app\GUI\GUIutil.class
 app\controllers\GenericController.class
+app\GUI\ArrGUI$1.class
 app\events\ARROW_SPAWNED_SOURCE.class
+app\GUI\ArrGUI$3.class
 app\events\OBJECT_DELETED.class
