@@ -1,6 +1,6 @@
 package app.events;
 
-import app.categories.Obj;
+import app.GUI.ObjectGUI;
 import javafx.event.EventType;
 
 /**
@@ -18,25 +18,31 @@ import javafx.event.EventType;
  */
 public class ARROW_SPAWNED_SOURCE extends ANY_CAT {
 
-    public static final EventType<ARROW_SPAWNED_SOURCE> ARROW_SPAWNED_TYPE = new EventType(ANY_CAT_EVENT_TYPE, "ARROW_SPAWNED");
+    public static final EventType<ARROW_SPAWNED_SOURCE> ARROW_SPAWNED_SOURCE_TYPE = new EventType(ANY_CAT_EVENT_TYPE, "ARROW_SPAWNED_SOURCE");
 
-    private final Obj src;
+    private final ObjectGUI src;
+    private final String name;
 
     /**
      * Initializes an ARROW_SPAWNED_SOURCE event
      *
      * @param src   The source object of the Arrow
      */
-    public ARROW_SPAWNED_SOURCE(Obj src) {
-        super(ARROW_SPAWNED_TYPE);
+    public ARROW_SPAWNED_SOURCE(ObjectGUI src, String name) {
+        super(ARROW_SPAWNED_SOURCE_TYPE);
         this.src = src;
+        this.name = name;
     }
 
     /**
      *
      * @return  Returns the source object upon which to spawn the arrow
      */
-    public Obj getSrc() {
+    public ObjectGUI getSrc() {
         return src;
+    }
+
+    public String getName() {
+        return name;
     }
 }
