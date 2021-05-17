@@ -10,6 +10,7 @@ import app.events.ARROW_SPAWNED_TARGET;
 import app.events.OBJECT_DELETED;
 import app.events.OBJECT_SPAWNED;
 import app.exceptions.BadObjectNameException;
+import app.exceptions.BadSpaceException;
 import app.exceptions.IllegalArgumentsException;
 import app.exceptions.ImpossibleArrowException;
 import javafx.event.EventHandler;
@@ -31,7 +32,7 @@ import java.util.Optional;
  */
 public class WorkController extends GenericController{
     public static ContextMenu CtxMenu = new ContextMenu();
-    private Category currCat = new Category();
+    private Category currCat = new Category("UniverseName");
 
     @FXML private AnchorPane scroll_wrap;
     @FXML private ToggleGroup tog1;

@@ -1,6 +1,9 @@
 package app.categories;
 
+import app.GUI.ObjectGUI;
 import app.exceptions.BadObjectNameException;
+import app.exceptions.BadSpaceException;
+import app.exceptions.IllegalArgumentsException;
 import app.exceptions.ImpossibleArrowException;
 import javafx.scene.layout.Pane;
 import org.json.JSONArray;
@@ -24,6 +27,42 @@ import java.util.Set;
 public class Category {
     HashMap<String, Arrow> arrows = new HashMap<String, Arrow>();
     HashMap<String, Obj> objects = new HashMap<String, Obj>();
+    HashMap<String, Space> spaces = new HashMap<String, Space>();
+    String universeName;
+
+    public Category(String universeName) {
+        this.universeName = universeName;
+    }
+
+    /**
+     * Adds a new {@link app.categories.Arrow Arrow} with custom type
+     * to the {@link app.categories.Category Category}.
+     * @param name Name of the new arrow (watch out for a possible LaTeX implementation).
+     * @param src Source object.
+     * @param trg Target object.
+     * @param type Type of the arrow.
+     * @param inheritsDomains if it will hold as range and image the domains of its source and target.
+     * @return Reference to the added arrow.
+     * @throws ImpossibleArrowException
+     * @see #removeArrow(Arrow)
+     * @see app.categories.Arrow#Arrow(String, Obj, Obj, MorphType) Arrow(name, source, target, type)
+     */
+    public Arrow addArrow(String name, Obj src, Obj trg, boolean inheritsDomains) throws BadSpaceException, ImpossibleArrowException {
+        Arrow arr = new Arrow(name, src, trg, src.getDomain(), trg.getDomain());
+
+        src.getDomain().toArrows.add(arr);
+        trg.getDomain().toArrows.add(arr);
+        if(!inheritsDomains) {
+            arrowChangeRange(arr, String.format("rng(%s)", name));
+            arrowChangeImage(arr, String.format("img(%s)", name));
+        }
+
+        src.outcoming.add(arr);
+        trg.incoming.add(arr);
+
+        arrows.put(name, arr);
+        return arr;
+    }
 
     /**
      * Adds a new {@link app.categories.Arrow Arrow} with custom type
@@ -37,18 +76,8 @@ public class Category {
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(String, Obj, Obj, MorphType) Arrow(name, source, target, type)
      */
-    public Arrow addArrow(String name, Obj src, Obj trg, MorphType type) throws ImpossibleArrowException {
-        if(type == MorphType.IDENTITY)
-            if (src.equals(trg))
-                return addIdentity(name, src);
-
-        Arrow arr = new Arrow(name, src, trg, type);
-
-        src.outcoming.add(arr);
-        trg.incoming.add(arr);
-
-        arrows.put(name, arr);
-        return arr;
+    public Arrow addArrow(String name, Obj src, Obj trg) throws BadSpaceException, ImpossibleArrowException {
+        return addArrow(name, src, trg, false);
     }
 
     /**
@@ -58,13 +87,14 @@ public class Category {
      * @param srcName Name of the source object.
      * @param trgName Name of the target object.
      * @param type Type of the arrow.
+     * @param inheritsDomains if it will hold as range and image the domains of its source and target.
      * @return Reference to the added arrow.
      * @throws BadObjectNameException If the object does not exist.
      * @throws ImpossibleArrowException
      * @see #removeArrow(Arrow)
      * @see app.categories.Arrow#Arrow(String, Obj, Obj, MorphType) Arrow(name, source, target, type)
      */
-    public Arrow addArrow(String name, String srcName, String trgName, MorphType type) throws BadObjectNameException, ImpossibleArrowException {
+    public Arrow addArrow(String name, String srcName, String trgName, boolean inheritsDomains) throws BadSpaceException, BadObjectNameException, ImpossibleArrowException {
         Obj src;
         Obj trg;
 
@@ -82,56 +112,24 @@ public class Category {
             throw new BadObjectNameException("Target object does not exist in category.");
         }
     
-        return addArrow(name, src, trg, type);
+        return addArrow(name, src, trg, inheritsDomains);
     }
 
     /**
-     * Gets an Obj object from the Hashmap
-     * @param name  the Object name
-     * @return      the Object
-     */
-    public Obj getObject(String name) {
-        return objects.get(name);
-    }
-
-    /**
-     * Gets an Arrow object from the Hashmap
-     * @param name the Arrow's name
-     * @return     the Arrow
-     */
-    public Arrow getArrow(String name)
-    {
-        return arrows.get(name);
-    }
-
-    /**
-     * Adds a new {@link app.categories.Arrow Arrow} to the {@link app.categories.Category Category}.
-     * @param name Name of the new arrow (watch out for a possible LaTeX implementation).
-     * @param src Source object.
-     * @param trg Target object.
-     * @return Reference to the added arrow.
-     * @throws ImpossibleArrowException
-     * @see #removeArrow(Arrow)
-     * @see app.categories.Arrow#Arrow(String, Obj, Obj) Arrow(name, source, target)
-     */
-    public Arrow addArrow(String name, Obj src, Obj trg) throws ImpossibleArrowException {
-
-        return addArrow(name, src, trg, MorphType.MORPHISM);
-    }
-
-    /**
-     * Adds a new {@link app.categories.Arrow Arrow} to the {@link app.categories.Category Category}.
+     * Adds a new {@link app.categories.Arrow Arrow} with custom type
+     * to the {@link app.categories.Category Category}.
      * @param name Name of the new arrow (watch out for a possible LaTeX implementation).
      * @param srcName Name of the source object.
      * @param trgName Name of the target object.
+     * @param type Type of the arrow.
      * @return Reference to the added arrow.
      * @throws BadObjectNameException If the object does not exist.
      * @throws ImpossibleArrowException
      * @see #removeArrow(Arrow)
-     * @see app.categories.Arrow#Arrow(String, Obj, Obj) Arrow(name, source, target)
+     * @see app.categories.Arrow#Arrow(String, Obj, Obj, MorphType) Arrow(name, source, target, type)
      */
-    public Arrow addArrow(String name, String srcName, String trgName) throws BadObjectNameException, ImpossibleArrowException {
-        return addArrow(name, srcName, trgName, MorphType.MORPHISM);
+    public Arrow addArrow(String name, String srcName, String trgName) throws BadSpaceException, BadObjectNameException, ImpossibleArrowException {
+        return addArrow(name, srcName, trgName, false);
     }
 
 
@@ -145,7 +143,9 @@ public class Category {
      * @see app.categories.Arrow#Arrow(String, Obj) Arrow(name, obj)
      */
     public Arrow addIdentity(String name, Obj obj) throws ImpossibleArrowException {
-        Arrow arr = new Arrow(name, obj, obj, MorphType.IDENTITY);
+        Arrow arr = new Arrow(name, obj, obj, obj.getDomain(), obj.getDomain(), true);
+
+        obj.getDomain().toArrows.add(arr);
 
         // Add reference to object
         obj.outcoming.add(arr);
@@ -202,12 +202,149 @@ public class Category {
         return addIdentity(Arrow.makeIdentityName(objName), objName);
     }
 
+
+    /**
+     * Changes range of an arrow and, if no other things depend on it,
+     * removes the previous range from the category.
+     * @param arr Arrow on which to apply the change
+     * @param range New space that will be range
+     */
+    public void arrowChangeRange(Arrow arr, Space range) throws BadSpaceException {
+        // Look at arrowChangeImage's comments for a better explaination.
+        // on this method.
+
+        if(arr.range != arr.image)
+            arr.range.toArrows.remove(arr);
+        
+        Space temp = arr.range;
+        arr.range = range;
+        range.toArrows.add(arr);
+
+        for(Arrow comp: arr.dependencies) {
+            if(temp != comp.range) {
+                temp.toCompositions.remove(comp);
+                range.toCompositions.add(comp);
+            }
+            if(!comp.runCheck())
+                removeArrow(comp, arr);
+        }
+
+        if(temp.hasNoRefers()) {
+            changeSuperSpace(temp, range);
+            removeSpace(temp);
+        }
+    }
+
+    /**
+     * Changes range of an arrow and, if no other things depend on it,
+     * removes the previous range from the category.
+     * @param arr Arrow on which to apply the change.
+     * @param rangeName Name of the space that will be range (be it new or already present).
+     * @throws BadSpaceException
+     */
+    public void arrowChangeRange(Arrow arr, String rangeName) throws BadSpaceException {
+        Space range;
+        if((range = spaces.get(rangeName)) == null) {
+            if(arr.range == arr.src().getDomain())
+                range = addSpace(rangeName, arr.src().getDomain());
+            else
+                range = addSpace(rangeName, arr.range.superSpace);
+        }
+
+        arrowChangeRange(arr, range);
+    }
+
+    /**
+     * Changes range of an arrow and, if no other things depend on it,
+     * removes the previous range from the category.
+     * @param arrName Name of the arrow on which to apply the change.
+     * @param rangeName Name of the space that will be range (be it new or already present).
+     * @throws BadSpaceException
+     */
+    public void arrowChangeRange(String arrName, String rangeName) throws BadSpaceException  {
+        Arrow arr;
+        if((arr = arrows.get(arrName)) == null)
+            throw new NullPointerException("No arrow with this name exists.");
+        arrowChangeRange(arr, rangeName);
+    }
+
+    /**
+     * Changes image of an arrow and, if no other things depend on it,
+     * removes the previous image from the category.
+     * @param arr Arrow on which to apply the change
+     * @param image New space that will be image
+     */
+    public void arrowChangeImage(Arrow arr, Space image) throws BadSpaceException {
+        // Otherwise may get problems with identities
+        if(arr.range != arr.image)
+            arr.image.toArrows.remove(arr);
+
+        // Pass to new space
+        Space temp = arr.image;
+        arr.image = image;
+        image.toArrows.add(arr);
+
+        // Check compositions dependent on this
+        // if they will still work
+        for(Arrow comp: arr.dependencies) {
+            if(temp != comp.image) {
+                temp.toCompositions.remove(comp);
+                image.toCompositions.add(comp);
+            }
+
+            if(!comp.runCheck())
+                removeArrow(comp, arr);
+        }
+
+        //  Optionally remove this space
+        if(temp.hasNoRefers()) {
+            changeSuperSpace(temp, image);
+            removeSpace(temp);
+        }
+    }
+
+    /**
+     * Changes image of an arrow and, if no other things depend on it,
+     * removes the previous image from the category.
+     * @param arr Arrow on which to apply the change.
+     * @param imageName Name of the space that will be image (be it new or already present).
+     * @throws BadSpaceException
+     */
+    public void arrowChangeImage(Arrow arr, String imageName) throws BadSpaceException {
+        Space image;
+        if((image = spaces.get(imageName)) == null) {
+            if(arr.image == arr.trg().getDomain())
+                image = addSpace(imageName, arr.trg().getDomain());
+            else
+                image = addSpace(imageName, arr.image.superSpace);
+        }
+
+        arrowChangeImage(arr, image);
+    }
+
+    /**
+     * Changes image of an arrow and, if no other things depend on it,
+     * removes the previous image from the category.
+     * @param arrName Name of the arrow on which to apply the change.
+     * @param imageName Name of the space that will be image (be it new or already present).
+     * @throws BadSpaceException
+     */
+    public void arrowChangeImage(String arrName, String imageName) throws BadSpaceException  {
+        Arrow arr;
+        if((arr = arrows.get(arrName)) == null)
+            throw new NullPointerException("No arrow with this name exists.");
+        arrowChangeImage(arr, imageName);
+    }
+
+
     /**
      * Removes an {@link app.categories.Arrow Arrow} and all the other arrows that
      * compose (thus depend) on it from the {@link app.categories.Category Category}.
      * @param arr Reference to the arrow to remove.
+     * @param noTouchAncestor Needed such that we won't change sets
+     * being read at the same time.
      */
-    public void removeArrow(Arrow arr) {
+    public void removeArrow(Arrow arr, Arrow noTouchAncestor) {
         arrows.remove(arr.getName());
 
         // Remove reference from source
@@ -221,7 +358,44 @@ public class Category {
         // Remove from the Category all the compositions depending on the
         // current arrow.
         for(Arrow comp: arr.dependencies)
-            removeArrow(comp);
+            removeArrow(comp, arr);
+
+        // Remove references from ancestors
+        if(arr.firstAncestor != null) {
+            if(noTouchAncestor != null) {
+                if(arr.firstAncestor != noTouchAncestor)
+                    arr.firstAncestor.dependencies.remove(arr);
+                else
+                    arr.secondAncestor.dependencies.remove(arr);
+            } else {
+                arr.firstAncestor.dependencies.remove(arr);
+                arr.secondAncestor.dependencies.remove(arr);
+            }
+        }
+
+        // Remove references from image and range
+        arr.image.toArrows.remove(arr);
+        if(arr.image.hasNoRefers())
+            removeSpace(arr.image);
+
+        arr.range.toArrows.remove(arr);
+        if(arr.range.hasNoRefers())
+            removeSpace(arr.range);
+
+        // Remove references from ancestor's internal spaces
+        if(arr.firstAncestor != null)
+            arr.firstAncestor.image.toCompositions.remove(arr);
+        if(arr.secondAncestor != null)
+            arr.secondAncestor.range.toCompositions.remove(arr);
+    }
+
+    /**
+     * Removes an {@link app.categories.Arrow Arrow} and all the other arrows that
+     * compose (thus depend) on it from the {@link app.categories.Category Category}.
+     * @param arr Reference to the arrow to remove.
+     */
+    public void removeArrow(Arrow arr) {
+        removeArrow(arr, null);
     }
 
     /**
@@ -242,9 +416,9 @@ public class Category {
 
         // If here then g and f are composable, now we check for identity
         // (otherwise we do all the things such that we can add to category the new composition)
-        if (g.getType() == MorphType.IDENTITY)  // If g is identity then g•f = f (whether f is identity or not)
+        if (g.isIdentity())  // If g is identity then g•f = f (whether f is identity or not)
             return f;
-        if (f.getType() == MorphType.IDENTITY)  // If f is identity then g•f = g (if here then g is not id.)
+        if (f.isIdentity())  // If f is identity then g•f = g (if here then g is not id.)
             return g;
 
         
@@ -257,6 +431,14 @@ public class Category {
         // Add the arrow as dependent of f and g
         f.dependencies.add(arr);
         g.dependencies.add(arr);
+        arr.firstAncestor = f;
+        arr.secondAncestor = g;
+
+        f.range.toArrows.add(arr);
+        g.image.toArrows.add(arr);
+
+        f.image.toCompositions.add(arr);
+        g.range.toCompositions.add(arr);
 
         arrows.put(arr.getName(), arr);
         return arr;
@@ -269,7 +451,7 @@ public class Category {
      */
     public void removeArrowCompositions(Arrow arr) {
         for (Arrow comp: arr.dependencies)
-            removeArrow(comp);
+            removeArrow(comp, arr);
         arr.dependencies.clear();
     }
 
@@ -287,9 +469,10 @@ public class Category {
      * Adds a new Object to the {@link app.categories.Category Category}.
      * In Category Theory objects are called Obj.
      * @param name Name of the new object (watch out for a possible LaTeX implementation).
+     * @param domain Reference to the specified domain to give the object.
+     * @return
      * @throws BadObjectNameException If an object with the same name already exists in
      * the category.
-     * @see #removeObject(String name)
      */
     public Obj addObject(String name) throws BadObjectNameException {
         if (objects.containsKey(name)) throw new BadObjectNameException("An object with the same name already exists in the category.");
@@ -308,7 +491,6 @@ public class Category {
         if(obj.getRepr() != null)
             ((Pane) obj.getRepr().getParent()).getChildren().remove(obj.getRepr());
             // Oh god Dario... why the hell did you make me do this...
-            // beautiful OOP :P
         objects.remove(obj.getName());
         for(Arrow arr: obj.outcoming)
             removeArrow(arr);
@@ -332,6 +514,125 @@ public class Category {
             for(Arrow arr: obj.incoming)
                 removeArrow(arr);
         }
+    }
+
+    /**
+     * Adds a new space to the category
+     * @param spaceName Name of the new space
+     * @param superSpace Custom super space of the space
+     * @return a reference to the new space
+     * @throws BadSpaceException
+     */
+    public Space addSpace(String spaceName, Space superSpace) throws BadSpaceException {
+        if(spaces.containsKey(spaceName))
+            throw new BadSpaceException("A space with the same name already exists!");
+        Space space = new Space(spaceName);
+        spaces.put(spaceName, space);
+        superSpace.subspaces.add(space);
+        space.superSpace = superSpace;
+
+        return space;
+    }
+
+    /**
+     * Removes the space from the category, passes all its dependencies to its
+     * super space
+     * @param space
+     */
+    public void removeSpace(Space space) {
+        for(Arrow arr: space.toArrows) {
+            //Pretty much running a changeRange and changeImage 
+            // in combo.
+            if(arr.range == space) {
+                arr.range = space.superSpace;
+                space.superSpace.toArrows.add(arr);
+
+                for(Arrow comp: arr.dependencies) {
+                    if(space != comp.range) {
+                        space.toCompositions.remove(comp);
+                        space.superSpace.toCompositions.add(comp);
+                    }
+                }
+            }
+        
+            if(arr.image == space) {
+                arr.image = space.superSpace;
+                space.superSpace.toArrows.add(arr);
+
+                for(Arrow comp: arr.dependencies) {
+                    if(space != comp.image) {
+                        space.toCompositions.remove(comp);
+                        space.superSpace.toCompositions.add(comp);
+                    }
+                }
+            }
+        }
+        
+        // Checking existance of the dependencies
+        HashSet<Arrow> arrowsToRemove = new HashSet<Arrow>();
+        for(Arrow arr: space.toArrows)
+            for(Arrow comp: arr.dependencies)
+                if(!comp.runCheck())
+                    arrowsToRemove.add(comp);
+
+        for(Arrow comp: arrowsToRemove)
+            removeArrow(comp);
+
+
+        for(Space spc: space.subspaces) {
+            space.superSpace.subspaces.add(spc);
+            spc.superSpace = space.superSpace;
+        }
+
+        spaces.remove(space.getName());
+        space.superSpace.subspaces.remove(space);
+    }
+
+    /**
+     * Removes the space from the category, passes all its dependencies to its
+     * super space
+     * @param spaceName
+     * @throws BadSpaceException
+     */
+    public void removeSpace(String spaceName) throws BadSpaceException {
+        Space space;
+        if((space = spaces.get(spaceName)) == null)
+            throw new BadSpaceException();
+
+        removeSpace(space);
+    }
+
+    /**
+     * Changes a space's superspace
+     * @param space Space on which to apply the change
+     * @param newSuper New superspace to give.
+     * @throws BadSpaceException If newSuper.superSpace = space, that could bring to errors
+     */
+    public void changeSuperSpace(Space space, Space newSuper) throws BadSpaceException {
+        // May need to add further computation along the line,
+        // so it is better to give it a method now.
+        if(newSuper.superSpace == space)
+            throw new BadSpaceException("Would-be-superspace has this space as a superspace... unless you want to see infinite loops stop right here.");
+
+        if(space != newSuper) {
+            if(space.superSpace != null)
+                space.superSpace.subspaces.remove(space);
+            space.superSpace = newSuper;
+            newSuper.subspaces.add(space);
+        }
+    }
+
+    /**
+     * Changes a space's superspace
+     * @param space Space on which to apply the change
+     * @param newSuper Name of the new superspace
+     * @throws BadSpaceException
+     */
+    public void changeSuperSpace(Space space, String newSuper) throws BadSpaceException {
+        Space superSpace;
+        if((superSpace = spaces.get(newSuper)) == null)
+            throw new BadSpaceException("Super space does not exist in category.");
+        changeSuperSpace(space, superSpace);
     }
 
     /**
@@ -375,14 +676,48 @@ public class Category {
             throw new BadObjectNameException("Object does not exist in the category.");
         }
 
-        System.out.printf("Snapshot of all of %s's arrows:\n", objName);
-        System.out.println("Outcoming: ");
-        for(Arrow arr: obj.outcoming)
+        printObjectArrows(obj);
+    }
+
+    /**
+     * Prints all the spaces in the category
+     */
+    public void printSpaces() {
+        String str = "Snapshot of all the spaces: ";
+        for(String name: spaces.keySet())
+            str = String.format("%s%s ", str, name);
+        
+        System.out.println(str);
+    }
+
+    /**
+     * Prints all the arrows and objects which make use of the space
+     * @param space
+     */
+    public void printSpaceDependecies(Space space) {
+        System.out.printf("Snapshot of all of %s's dependencies:\n", space.getName());
+        System.out.println("Arrows: ");
+        for(Arrow arr: space.toArrows)
             System.out.printf("\t%s\n", arr.represent());
         
-        System.out.println("Incoming: ");
-        for(Arrow arr: obj.incoming)
-            System.out.printf("\t%s\n", arr.represent());
+        if(space.object != null)
+            System.out.println("Object: " + space.object.getName());
+    }
+
+    /**
+     * Prints all the arrows and objects which make use of the space
+     * @param spaceName
+     * @throws BadSpaceException
+     */
+    public void printSpaceDependecies(String spaceName) throws BadSpaceException {
+        Space spc;
+        try {
+            spc = spaces.get(spaceName);
+        } catch (NullPointerException e) {
+            throw new BadSpaceException("Space does not exist in the category.");
+        }
+
+        printSpaceDependecies(spc);
     }
 
     /**
@@ -432,6 +767,20 @@ public class Category {
         
         file.createNewFile();
 
+        JSONObject jsUni = new JSONObject();
+        jsUni.put("name", universeName);
+
+
+        JSONArray jsSpaces = new JSONArray();
+        for(Space space: spaces.values()) {
+            JSONObject jsSpc = new JSONObject();
+            jsSpc.put("name", space.getName());
+            JSONArray jsSubspc = new JSONArray();
+            for(Space sub: space.subspaces)
+                jsSubspc.put(sub.getName());
+            jsSpc.put("subspaces", jsSubspc);
+            jsSpaces.put(jsSpc);
+        }
 
         //Make array of objs json representations.
         JSONArray objs = new JSONArray();
@@ -452,6 +801,11 @@ public class Category {
             jsArr.put("name", arr.getName());
             jsArr.put("source", arr.src().getName());
             jsArr.put("target", arr.trg().getName());
+            if(arr.range != arr.src().getDomain())
+                jsArr.put("range", arr.range.getName());
+            if(arr.image != arr.trg().getDomain())
+                jsArr.put("image", arr.image.getName());
+            jsArr.put("identity", arr.isIdentity());
 
             // Make array of the arrows which compose from the current one.
             JSONArray deps = new JSONArray();
@@ -464,9 +818,10 @@ public class Category {
 
         //Make object representing the whole category
         JSONObject category = new JSONObject();
+        category.put("universe", jsUni);
+        category.put("spaces", jsSpaces);
         category.put("objects", objs);
         category.put("arrows", arrs);
-        //Will maybe add Spaces in the future
 
         //Save file
         FileWriter shakespeare = new FileWriter(file); // Hihihi I am so fun...
@@ -482,13 +837,138 @@ public class Category {
      * @throws BadObjectNameException
      * @throws ImpossibleArrowException
      */
-    public static Category load(String fileName) throws IOException, BadObjectNameException, ImpossibleArrowException {
+    public static Category load(String fileName) throws IOException, BadObjectNameException, ImpossibleArrowException, BadSpaceException {
         //Oh almighty god of the algorithms, please, have mercy on me
         //because I have sinned: this method is O(n^2), I beg of you,
         //shed the knowledge on me such that I may honour your name
         //with worthy runtimes.
 
-        Category ct = new Category();
+        //Leaving jokes aside, this method brakes the rules I gave myself of only using
+        //methods I already wrote to modify the category by directly mingling with its
+        //internal collections: it is damn good though, but don't ever try to do it yourself
+        //- or at least ask me first.
+
+        // Create file and throw error if can't overwrite.
+        File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
+        if(!file.exists())
+            throw new IOException("File does not exist.");
+        
+        FileReader reader = new FileReader(file);
+        JSONObject category = new JSONObject(new JSONTokener(reader));
+
+        reader.close();
+        JSONObject jsUniverse = category.getJSONObject("universe");
+
+        Category ct = new Category(jsUniverse.getString("name"));
+        JSONArray jsSpaces = category.getJSONArray("spaces");
+
+        // Load all the objs
+        JSONArray objs = category.getJSONArray("objects");
+        for(Integer i = 0; i < objs.length(); i++) {
+            JSONObject jsonObj = objs.getJSONObject(i);
+            ct.addObject(jsonObj.getString("name"));
+        }
+
+        // Load all spaces
+        for(Integer i = 0; i < jsSpaces.length(); i++) {
+            JSONObject jsonSpace = jsSpaces.getJSONObject(i);
+            //Essentially addSpace()
+            Space space = new Space(jsonSpace.getString("name"));
+            ct.spaces.put(space.getName(), space);
+        }
+
+        // Load all subspaces
+        for(Integer i = 0; i < jsSpaces.length(); i++) {
+            JSONObject jsonSpace = jsSpaces.getJSONObject(i);
+            Space currSpace = ct.spaces.get(jsonSpace.getString("name"));
+            JSONArray subspaces = jsonSpace.getJSONArray("subspaces");
+            for(Integer j = 0; j < subspaces.length(); j++) {
+                //Essentially changeSuperSpace()
+                Space subspace = ct.spaces.get(subspaces.getString(j));
+                subspace.superSpace = currSpace;
+                currSpace.subspaces.add(subspace);
+            }
+        }
+
+        // Load all the arrows
+        JSONArray arrs = category.getJSONArray("arrows");
+        for(Integer i = 0; i < arrs.length(); i++) {
+            JSONObject jsonArr = arrs.getJSONObject(i);
+            //Essentially a super version of addArrow()
+            String name = jsonArr.getString("name");
+            Obj source = ct.objects.get(jsonArr.getString("source"));
+            Obj target = ct.objects.get(jsonArr.getString("target"));
+            String spaceName;
+            Space range;
+            Space image;
+            if((spaceName = jsonArr.optString("range",null)) != null) {
+                range = ct.spaces.get(spaceName);
+                if(range.superSpace == null) {
+                    range.superSpace = source.getDomain();
+                    source.getDomain().subspaces.add(range);
+                }
+            }
+            else
+                range = source.getDomain();
+
+            if((spaceName = jsonArr.optString("image",null)) != null) {
+                image = ct.spaces.get(spaceName);
+                if(image.superSpace == null) {
+                    image.superSpace = target.getDomain();
+                    target.getDomain().subspaces.add(image);
+                }
+            }
+            else
+                image = target.getDomain();
+
+            Arrow arr = new Arrow(name, source, target, range, image, jsonArr.getBoolean("identity"));
+            range.toArrows.add(arr);
+            image.toArrows.add(arr);
+
+            source.outcoming.add(arr);
+            target.incoming.add(arr);
+
+            ct.arrows.put(name, arr);
+        }
+
+
+        //Put in the composition-dependencies
+        for(Integer i = 0; i < arrs.length(); i++) {
+            JSONObject jsonArr = arrs.getJSONObject(i);
+            Arrow arr = ct.arrows.get(jsonArr.getString("name"));
+            JSONArray deps = jsonArr.getJSONArray("dependencies");
+            for(Integer j = 0; j < deps.length(); j++) {
+                Arrow comp = ct.arrows.get(deps.getString(j));
+                arr.dependencies.add(comp);
+                if(comp.range == arr.range) {
+                    comp.firstAncestor = arr;
+                    arr.image.toCompositions.add(comp);
+                } else {
+                    comp.secondAncestor = arr;
+                    arr.range.toCompositions.add(comp);
+                }
+
+            }
+        }
+
+        for(Arrow arr: ct.arrows.values())
+            if(!arr.runCheck())
+                throw new IOException("Something went wrong with loading the category, some arrows shouldn't exist");
+
+        return ct;
+    }
+
+    /**
+     * Loads and returns the category corresponding to the given .json file
+     * @param fileName
+     * @return
+     * @throws IOException
+     * @throws BadObjectNameException
+     * @throws ImpossibleArrowException
+     */
+    public static Category loadForGUI(String fileName, Pane pane) throws IOException, BadObjectNameException, ImpossibleArrowException, IllegalArgumentsException, BadSpaceException {
+        Category ct = load(fileName);
+
         // Create file and throw error if can't overwrite.
         File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
         if(!file.exists())
@@ -499,34 +979,27 @@ public class Category {
 
         reader.close();
 
-        // Load all the objs
+        // Put objs in GUI
         JSONArray objs = category.getJSONArray("objects");
-        for(Integer i = 0; i < objs.length(); i++)
-            ct.addObject(objs.getJSONObject(i).getString("name"));
-
-        // Load all the arrows
-        JSONArray arrs = category.getJSONArray("arrows");
-        for(Integer i = 0; i < arrs.length(); i++) {
-            JSONObject jsonArr = arrs.getJSONObject(i);
-            ct.addArrow(jsonArr.getString("name"), jsonArr.getString("source"), jsonArr.getString("target"));
+        for(Integer i = 0; i < objs.length(); i++) {
+            JSONObject jsonObj = objs.getJSONObject(i);
+            Obj obj = ct.objects.get(jsonObj.getString("name"));
+            pane.getChildren().add(
+                new ObjectGUI(jsonObj.getDouble("x"), jsonObj.getDouble("y"), obj, pane));
         }
 
-        //Put in the composition-dependencies
-        for(Integer i = 0; i < arrs.length(); i++) {
-            JSONObject jsonArr = arrs.getJSONObject(i);
-            Arrow arr = ct.arrows.get(jsonArr.getString("name"));
-            JSONArray deps = jsonArr.getJSONArray("dependencies");
-            for(Integer j = 0; j < deps.length(); j++)
-                arr.dependencies.add(ct.arrows.get(deps.getString(j)));
+        /* Do things for arrow GUI spawning
+        for(Arrow arr: ct.arrows.values()) {
+            //Things
         }
-
+        */
         return ct;
     }
 
-    public static void main(String[] args) throws BadObjectNameException, ImpossibleArrowException, IOException {
+    public static void main(String[] args) throws BadObjectNameException, ImpossibleArrowException, IOException, BadSpaceException {
         /*
         // This is to test the model
-        Category ct = new Category();
+        Category ct = new Category("Pippo");
 
         // This is the premise of the five lemma
         ct.addObject("A");
@@ -541,32 +1014,48 @@ public class Category {
         ct.addObject("D'");
         ct.addObject("E'");
 
-        Arrow a1 = ct.addArrow("ƒ", "A", "B");
+        Arrow a1 = ct.addArrow("f", "A", "B");
         Arrow a2 = ct.addArrow("g", "B", "C");
         Arrow a3 = ct.addArrow("h", "C", "D");
         Arrow a4 = ct.addArrow("j", "D", "E");
 
-        Arrow b1 = ct.addArrow("l", "A", "A'", MorphType.EPIMORPHISM);
-        Arrow b2 = ct.addArrow("m", "B", "B'", MorphType.ISOMORPHISM);
+        Arrow b1 = ct.addArrow("l", "A", "A'");
+        ct.arrowChangeImage(b1, "dom(A')");
+        Arrow b2 = ct.addArrow("m", "B", "B'", true);
         Arrow b3 = ct.addArrow("n", "C", "C'");
-        Arrow b4 = ct.addArrow("p", "D", "D'", MorphType.ISOMORPHISM);
-        Arrow b5 = ct.addArrow("q", "E", "E'", MorphType.MONOMORPHISM);
+        Arrow b4 = ct.addArrow("p", "D", "D'", true);
+        Arrow b5 = ct.addArrow("q", "E", "E'");
+        ct.arrowChangeRange(b5, "dom(E)");
 
         Arrow c1 = ct.addArrow("r", "A'", "B'");
         Arrow c2 = ct.addArrow("s", "B'", "C'");
         Arrow c3 = ct.addArrow("t", "C'", "D'");
         Arrow c4 = ct.addArrow("u", "D'", "E'");
         */
-
-        Category ct = Category.load("base_composition.json");
+        
+        Category ct = new Category("Pluto");
+        ct.addObject("A");
+        Obj B = ct.addObject("B");
+        ct.addObject("C");
+        Arrow a1 = ct.addArrow("f", "A", "B");
+        Arrow a2 = ct.addArrow("g", "B", "C");
+        //ct.arrowChangeImage(a1, a2.range);
+        ct.changeSuperSpace(a1.image, a2.range);
+        ct.addComposition(a2, a1);
+        ct.arrowChangeImage(a1, a2.range); //a1.image <- a2.range
+        ct.removeSpace(a1.image); //a1.image, a2.range <- dom(B)
+        //Category ct = Category.load("five_lemma.json");
 
         ct.printArrows();
         ct.printObjects();
+        ct.printSpaces();
 
         for(Obj o: ct.getInitialObjs())
             System.out.println(o.getName());
 
         for(Obj o: ct.getTerminalObjs())
             System.out.println(o.getName());
+
+        //ct.save("five_lemma.json", true);
     }
 }

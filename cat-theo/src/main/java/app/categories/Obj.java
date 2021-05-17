@@ -12,7 +12,9 @@ import java.util.Set;
  * @see {@link app.categories.Arrow Arrow}
  */
 public class Obj {
+    public static final String DOMAIN_SYMBOL = "dom(%s)";
     private String name;
+    private Space domain;
     Set<Arrow> incoming = new HashSet<Arrow>();
     Set<Arrow> outcoming = new HashSet<Arrow>();
     ObjectGUI guiRepr;
@@ -23,6 +25,7 @@ public class Obj {
      */
     Obj(String name) {
         this.name = name;
+        this.domain = new Space(String.format(DOMAIN_SYMBOL, name), this);
     }
 
     /**
@@ -55,6 +58,20 @@ public class Obj {
      * @return
      */
     public ObjectGUI getRepr() { return guiRepr; }
+
+    /**
+     * Returns domain of the object (i.e. the "spiritual" collection of
+     * mathematical objects it represents)
+     * @return
+     */
+    public Space getDomain() { return domain; }
+
+    /**
+     * Standard for representing an object's domain
+     * @param objName Name of the object
+     * @return standard name for the object's domain
+     */
+    public static String makeDomainName(String objName) { return String.format(DOMAIN_SYMBOL, objName); }
 
     @Override
     public boolean equals(Object obj) {
