@@ -115,14 +115,27 @@ public class WorkController extends GenericController{
                 double[] src_coord = {src.getLayoutX(), src.getLayoutY()};
                 double[] trg_coord = {trg.getLayoutX(), trg.getLayoutY()};
 
+
                 scroll_wrap.getChildren().add(
                         new ArrGUI(src, trg,
-                                currCat.addArrow(event.getName(),src.getObject(), trg.getObject()), scroll_wrap)
+                        currCat.addArrow(event.getName(),src.getObject(), trg.getObject()), scroll_wrap)
                 );
 
 
             } catch (ImpossibleArrowException e) {
                 e.printStackTrace();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("Duplicate Arrow Error");
+                error.setContentText("Cannot have two arrows with the same name in the same category!");
+                error.showAndWait();
+            } catch (BadSpaceException e) {
+                e.printStackTrace();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("Space error");
+                error.setContentText("Some things related to spaces had an error while creating this arrow.");
+                error.showAndWait();
             }
             printCurrCat();
         });

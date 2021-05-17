@@ -48,6 +48,9 @@ public class Category {
      * @see app.categories.Arrow#Arrow(String, Obj, Obj, MorphType) Arrow(name, source, target, type)
      */
     public Arrow addArrow(String name, Obj src, Obj trg, boolean inheritsDomains) throws BadSpaceException, ImpossibleArrowException {
+        if(arrows.containsKey(name))
+            throw new ImpossibleArrowException("An arrow with the same name already exists!");
+    
         Arrow arr = new Arrow(name, src, trg, src.getDomain(), trg.getDomain());
 
         src.getDomain().toArrows.add(arr);
@@ -805,6 +808,10 @@ public class Category {
         spaces.remove(space.getName());
         spaces.put(newName, space);
         space.setName(newName);
+    }
+
+    public Obj getObject(String name) {
+        return objects.get(name);
     }
 
     /**
