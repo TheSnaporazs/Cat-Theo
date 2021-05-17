@@ -1,5 +1,6 @@
 package app.categories;
 
+import app.GUI.ArrGUI;
 import app.GUI.ObjectGUI;
 import app.exceptions.BadObjectNameException;
 import app.exceptions.BadSpaceException;
@@ -449,6 +450,25 @@ public class Category {
 
         arrows.put(arr.getName(), arr);
         return arr;
+    }
+
+    /**
+     * Inserts in the category, if possible, the composition g(f)
+     * @param g
+     * @param f
+     * @return A reference to the composition.
+     * @throws BadObjectNameException If one or both of the two functions do not exist in the category
+     * @throws ImpossibleArrowException If the composition is impossible
+     */
+    public Arrow addComposition(String g, String f) throws BadObjectNameException, ImpossibleArrowException {
+        Arrow gArr;
+        Arrow fArr;
+        if((gArr = arrows.get(g)) == null)
+            throw new BadObjectNameException("Arrow g does not exist in the category!");
+        if((fArr = arrows.get(f)) == null)
+            throw new BadObjectNameException("Arrow f does not exist in the category!");
+
+        return addComposition(gArr, fArr);
     }
 
     /**
@@ -1064,11 +1084,12 @@ public class Category {
                 new ObjectGUI(jsonObj.getDouble("x"), jsonObj.getDouble("y"), obj, pane));
         }
 
-        /* Do things for arrow GUI spawning
+        // Put arrows in the GUI
         for(Arrow arr: ct.arrows.values()) {
-            //Things
+            pane.getChildren().add(
+                new ArrGUI(arr.src().guiRepr, arr.trg().guiRepr, arr, pane));
         }
-        */
+
         return ct;
     }
 
