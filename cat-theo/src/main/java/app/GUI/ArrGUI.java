@@ -1,5 +1,6 @@
 package app.GUI;
 
+import app.GUI.Bindings.TrigBounding;
 import app.categories.Arrow;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -57,63 +58,20 @@ public class ArrGUI extends Line {
         this.parent.getChildren().remove(this);
     }
 
+    /**
+     * Binds the arrow's start and end to the X and Y properties of the source and target object
+     *
+     * @see app.GUI.Bindings.TrigBounding
+     */
     private void bindEndpoints()
     {
-        DoubleBinding xSrc = new DoubleBinding() {
-            {
-                // Specify the dependencies with super.bind()
-                super.bind(src.layoutXProperty(), trg.layoutYProperty(), trg.layoutXProperty(), trg.layoutYProperty());
-            }
-            @Override
-            protected double computeValue() {
-                // Return the computed value
-                return src.getLayoutX() + 30 + src.getRay() * Math.cos(GUIutil.computeAngle(src, trg));
-            }
-        };
+        //Bind start to source
+        this.startXProperty().bind(new TrigBounding(src, trg, TrigBounding.TRIG.Ax));
+        this.startYProperty().bind(new TrigBounding(src, trg, TrigBounding.TRIG.Ay));
 
-        this.startXProperty().bind(xSrc);
-
-        DoubleBinding ySrc = new DoubleBinding() {
-            {
-                // Specify the dependencies with super.bind()
-                super.bind(src.layoutXProperty(), trg.layoutYProperty(), trg.layoutXProperty(), trg.layoutYProperty());
-            }
-            @Override
-            protected double computeValue() {
-                // Return the computed value
-                return src.getLayoutY() + 30 + src.getRay() * Math.sin(GUIutil.computeAngle(src, trg));
-            }
-        };
-
-        this.startYProperty().bind(ySrc);
-
-        DoubleBinding xTrg = new DoubleBinding() {
-            {
-                // Specify the dependencies with super.bind()
-                super.bind(src.layoutXProperty(), trg.layoutYProperty(), trg.layoutXProperty(), trg.layoutYProperty());
-            }
-            @Override
-            protected double computeValue() {
-                // Return the computed value
-                return trg.getLayoutX() + 30 + trg.getRay() * Math.cos(GUIutil.computeAngle(trg, src));
-            }
-        };
-
-        this.endXProperty().bind(xTrg);
-
-        DoubleBinding yTrg = new DoubleBinding() {
-            {
-                // Specify the dependencies with super.bind()
-                super.bind(src.layoutXProperty(), trg.layoutYProperty(), trg.layoutXProperty(), trg.layoutYProperty());
-            }
-            @Override
-            protected double computeValue() {
-                // Return the computed value
-                return trg.getLayoutY() + 30 + trg.getRay() * Math.sin(GUIutil.computeAngle(trg, src));
-            }
-        };
-
-        this.endYProperty().bind(yTrg);
+        //Bind end to target
+        this.endXProperty().bind(new TrigBounding(trg, src, TrigBounding.TRIG.Ax));
+        this.endYProperty().bind(new TrigBounding(trg, src, TrigBounding.TRIG.Ay));
 
     }
 

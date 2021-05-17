@@ -1,5 +1,6 @@
 app\App.class
 app\GUI\ArrGUI$2.class
+app\GUI\Bindings\TrigBounding$1.class
 app\controllers\WorkController.class
 app\GUI\ArrGUI$4.class
 app\events\OBJECT_SPAWNED.class
@@ -13,6 +14,8 @@ app\events\ARROW_SPAWNED_TARGET.class
 app\GUI\GUIutil.class
 app\controllers\GenericController.class
 app\GUI\ArrGUI$1.class
+app\GUI\Bindings\TrigBounding.class
 app\events\ARROW_SPAWNED_SOURCE.class
 app\GUI\ArrGUI$3.class
 app\events\OBJECT_DELETED.class
+app\GUI\Bindings\TrigBounding$TRIG.class
