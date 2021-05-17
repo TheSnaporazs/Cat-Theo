@@ -5,23 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a32b215-2bf7-41e4-bf38-f0540b652510" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/app/GUI/ArrGUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/app/events/OBJECT_DELETED.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/GUI/GUIutil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/GUI/GUIutil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/GUI/ObjectGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/GUI/ObjectGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/categories/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/categories/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/events/ARROW_SPAWNED_SOURCE.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/events/ARROW_SPAWNED_SOURCE.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/events/ARROW_SPAWNED_TARGET.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/events/ARROW_SPAWNED_TARGET.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/GUI/ArrGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/GUI/ArrGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/GUIutil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/GUIutil.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/ObjectGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/ObjectGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Arrow.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Arrow.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Category.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Obj.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Obj.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/events/ARROW_SPAWNED_SOURCE.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/events/ARROW_SPAWNED_SOURCE.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/events/ARROW_SPAWNED_TARGET.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/events/ARROW_SPAWNED_TARGET.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/events/OBJECT_DELETED.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/events/OBJECT_DELETED.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
