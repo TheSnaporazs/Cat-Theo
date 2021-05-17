@@ -2,13 +2,17 @@ package app.controllers;
 
 
 import app.GUI.GUIutil;
+import app.GUI.ObjectGUI;
 import app.categories.Category;
-import app.categories.Obj;
 import app.events.OBJECT_SPAWNED;
 import app.exceptions.BadObjectNameException;
+import app.exceptions.BadSpaceException;
+import app.exceptions.IllegalArgumentsException;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -21,8 +25,8 @@ import javafx.scene.layout.AnchorPane;
  * @since 30/04/2021
  */
 public class WorkController extends GenericController{
-
-    private Category currCat = new Category();
+    public static ContextMenu CtxMenu = new ContextMenu();
+    private Category currCat = new Category("UniverseName");
 
     @FXML private AnchorPane scroll_wrap;
     @FXML private ToggleGroup tog1;
@@ -35,69 +39,59 @@ public class WorkController extends GenericController{
 
     @FXML
     public void initialize() {
-        scroll_wrap.addEventHandler(MouseEvent.ANY,
-                event -> {
-                    if (event.getEventType() == MouseEvent.MOUSE_CLICKED )
-                    {
-                        double X = event.getX();
-                        double Y = event.getY();
 
-                        switch (event.getButton())  //we catch all of them since switch is a O(1) hash table
-                        {
-                            case PRIMARY:
-                                //select object
-                                break;
-                            case SECONDARY:
-                                GUIutil.spawnCreationMenu(X, Y, scroll_wrap);
-                                break;
-                            case NONE:
-                                break;
-                            case MIDDLE:
-
-                                break;
-
-                            case BACK:
-                                break;
-                            case FORWARD:
-                                break;
-                        }
+        // Mapping right click to a context menu
+        scroll_wrap.addEventHandler(MouseEvent.MOUSE_CLICKED,
+            event -> {
+                if (event.getButton() == MouseButton.SECONDARY) { //we catch all of them since switch is a O(1) hash table
+                    String[] items = {"Create Object"};
+                    EventHandler[] actions = {
+                        ((event1) -> {
+                            String name = GUIutil.spawnPrompt("Name: ", "Insert Object Name");
+                            scroll_wrap.fireEvent(new OBJECT_SPAWNED(event.getX(),
+                                    event.getY(), name));
+                        })
+                    };
+                    try {
+                        GUIutil.pingCreationMenu(event.getScreenX(), event.getScreenY(), scroll_wrap, items, actions);
+                    } catch (IllegalArgumentsException e) {
+                        System.out.println("Something went wrong in the contextMenu init! " +
+                                "(This shouldn't really happen!)");
+                        e.printStackTrace();
                     }
-                    if (event.getButton() != MouseButton.MIDDLE)
-                    {
-                        event.consume();
-                    }
-
+                    event.consume();
                 }
-                );
+            });
+        
+        // Mapping left-button-drag to panning the scroll pane
+        scroll_wrap.addEventHandler(MouseEvent.MOUSE_DRAGGED,
+            event -> {
+                if(event.getButton() != MouseButton.PRIMARY)
+                    event.consume();
+            });
 
-        scroll_wrap.addEventHandler(OBJECT_SPAWNED.OBJECT_SPAWNED_TYPE, event -> {
-            try {
-                scroll_wrap.getChildren().add(
-                        GUIutil.spawnObject(event.getX(), event.getY(), currCat.addObject(event.getObjName()))
-                );  //Woah that's a lot!
-                printCurrCat();
-            } catch (BadObjectNameException e) {
-                e.printStackTrace();
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setTitle("Error");
-                error.setHeaderText("Duplicate Object Error");
-                error.setContentText("Cannot have two objects with the same name in the same category!");
-                error.showAndWait();
-            }
-        });
+        scroll_wrap.addEventHandler(OBJECT_SPAWNED.OBJECT_SPAWNED_TYPE,
+            event -> {
+                try {
+                    scroll_wrap.getChildren().add(
+                            new ObjectGUI(event.getX(), event.getY(), currCat.addObject(event.getObjName()), scroll_wrap)
+                    );  //Woah that's a lot!
+                    printCurrCat();
+                } catch (BadObjectNameException e) {
+                    e.printStackTrace();
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("Duplicate Object Error");
+                    error.setContentText("Cannot have two objects with the same name in the same category!");
+                    error.showAndWait();
+                } catch (IllegalArgumentsException e) {
+
+                    e.printStackTrace();
+                    System.out.println("Something went wrong in the contextMenu init! (This shouldn't really happen!)");
+                }
+            });
     }
 
-
-
-    /**
-     * Updates the model by adding the arrow specified by the user
-     * @param e
-     */
-    private void addArr(ActionEvent e)
-    {
-        // TODO get arrow attributes from View
-
-    }
 
     /**
      * Debug method, prints to terminal the contents of the current category
@@ -108,11 +102,4 @@ public class WorkController extends GenericController{
         currCat.printObjects();
         currCat.printArrows();
     }
-
-
-
-
-    
-
-
 }

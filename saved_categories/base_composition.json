@@ -1,28 +1,34 @@
 {
+    "universe": {"name": "Pluto"},
     "objects": [
         {"name": "A"},
         {"name": "B"},
         {"name": "C"}
     ],
+    "spaces": [
+        {
+            "subspaces": [],
+            "name": "rng(f)"
+        },
+        {
+            "subspaces": [],
+            "name": "img(g)"
+        }
+    ],
     "arrows": [
         {
-            "name": "ƒ",
+            "identity": false,
+            "name": "f",
+            "range": "rng(f)",
             "source": "A",
-            "type": 0,
             "target": "B",
-            "dependencies": ["g \u2022 ƒ"]
+            "dependencies": []
         },
         {
+            "image": "img(g)",
+            "identity": false,
             "name": "g",
             "source": "B",
-            "type": 0,
-            "target": "C",
-            "dependencies": ["g \u2022 ƒ"]
-        },
-        {
-            "name": "g \u2022 ƒ",
-            "source": "A",
-            "type": 0,
             "target": "C",
             "dependencies": []
         }

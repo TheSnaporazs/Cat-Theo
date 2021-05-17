@@ -1,14 +1,15 @@
 package app.GUI;
 
-import app.events.ARROW_SPAWNED;
-import app.events.OBJECT_SPAWNED;
 import app.categories.Obj;
+import app.exceptions.IllegalArgumentsException;
+import app.controllers.WorkController;
+import javafx.event.EventHandler;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -30,47 +31,80 @@ import java.util.ArrayList;
 public class GUIutil {
 
     /**
-     * Spawns a context menu prompting the user with the creation of an Object/Arrow, ensuring that it gets
-     * properly removed when the user is done with it's decision
-     *
+     * Positions the context menu abd prompts the user with generic options provided in the function's arguments
+     * the Strings and the corresponding events must be paired at the same index in the two arrays.
      * @see app.categories.Obj
      * @see app.categories.Arrow
-     * @param X A double representing the x coordinate at which to spawn the menu
-     * @param Y A double representing the y coordinate at which to spawn the menu
-     * @param parent    a JavaFX Pane object representing the parent object upon which to attach the context menu
+     * @param x X to position at
+     * @param y Y to position at
+     * @param parent 
+     * @param items An array of strings to be displayed as menuitems on the contextMenu
+     * @param actions An array of EventHandlers to be attached to each menuitems on the contextmenu
+     * @throws IllegalArgumentsException
      */
-    public static void spawnCreationMenu(double X, double Y, Pane parent)
-    {
-        ContextMenu contextMenu = new ContextMenu();
-        MenuItem obj = new MenuItem("Create new object");
-        MenuItem arr = new MenuItem("Create new morphism");
-
-        obj.setOnAction((event -> {
-            System.out.println("Object");
-            String objName = spawnPrompt("Insert Object Name", "Create Object");
-            parent.fireEvent(new OBJECT_SPAWNED(X, Y, objName));
-        }));
-
-        arr.setOnAction((event -> {
-            System.out.println("Arrow");
-            parent.fireEvent(new ARROW_SPAWNED(X, Y));
-        }));
-
-        contextMenu.getItems().addAll(obj, arr);
-
-        Button invisible = new Button();
-        invisible.setContextMenu(contextMenu);
-
-        invisible.relocate(X, Y);
-        invisible.fire();
-        parent.getChildren().add(invisible);
-
-        contextMenu.setOnHidden(event ->
+    public static void pingCreationMenu(Double x, Double y, Node parent, String[] items, EventHandler[] actions) throws IllegalArgumentsException {
+        if(items.length != actions.length)
         {
-            parent.getChildren().remove(invisible);
-        });
+            throw new IllegalArgumentsException("The Menu cannot have an unequal amount of items and actions!");
+        }
+
+        ArrayList<MenuItem> mItems = new ArrayList<MenuItem>();
+        for(int c = 0; c < items.length; c++)
+        {
+            mItems.add(new MenuItem(items[c]));
+            mItems.get(c).setOnAction(actions[c]);
+        }
+        WorkController.CtxMenu.getItems().clear();
+        WorkController.CtxMenu.getItems().addAll(mItems);
+        WorkController.CtxMenu.setAutoHide(true); //Dunno what this does
+        WorkController.CtxMenu.show(parent, x, y);
     }
 
+
+    /**
+     * Wrapper method for spawnCreationMenu, provides an automatic implementation
+     * of the ugly button trick utilized to pop a ContextMenu on a scrollPane
+     * so that I do not have to look at it directly when implementing it
+     * (sorry for the boilerplate, still friends? <3)
+     *
+     * WARNING: the button trick is not necessary anymore, one can instantiate
+     * the contextMenu and then call the show method on a parent object
+     * to cleanly display it without need for such voodoo tricks, therefore
+     * this method is deprecated.
+     * @see ContextMenu
+     * @see Pane
+     * @param X Double, the X coordinate at which to spawn the menu at
+     * @param Y Double, the Y coordinate at which to spawn the menu at
+     * @param items     Array of Strings, contains all the different text options
+     *                  to be displayed on the menu
+     * @param actions   Array of Eventhandlers, contains all the different actions
+     *                  to be performed by the option
+     * @param parent    Any child of class Pane, provides a parent upon which to attach
+     *                  the button to do the ugly trick
+     */
+    @Deprecated
+    public static void ButtonMenu(double X, double Y, String[] items, EventHandler[] actions, Pane parent)
+    {
+        Button temp = new Button();
+        temp.relocate(X, Y);
+
+        try {
+            GUIutil.pingCreationMenu(X, Y, parent, items, actions);
+        } catch (IllegalArgumentsException e) {
+            e.printStackTrace();
+        }
+
+        temp.setContextMenu(WorkController.CtxMenu);
+        temp.fire();
+        WorkController.CtxMenu.setOnHidden((event1) -> {
+            parent.getChildren().remove(temp);
+        });
+
+        parent.getChildren().add(temp);
+    }
+
+
+    // Isn't this method deprecated??? -Davide
     /**
      * Spawns the graphical representation of an Object, as a node of a graph
      *
