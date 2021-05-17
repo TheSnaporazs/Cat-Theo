@@ -26,7 +26,7 @@ import javafx.scene.layout.AnchorPane;
  */
 public class WorkController extends GenericController{
     public static ContextMenu CtxMenu = new ContextMenu();
-    private Category currCat = new Category("WUAW");
+    private Category currCat = new Category("UniverseName");
 
     @FXML private AnchorPane scroll_wrap;
     @FXML private ToggleGroup tog1;
