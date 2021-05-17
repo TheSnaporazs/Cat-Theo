@@ -168,5 +168,4 @@ public class ObjectGUI extends StackPane {
     public Obj getObject() {
         return object;
     }
-
 }
