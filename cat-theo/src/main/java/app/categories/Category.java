@@ -53,8 +53,8 @@ public class Category {
         src.getDomain().toArrows.add(arr);
         trg.getDomain().toArrows.add(arr);
         if(!inheritsDomains) {
-            arrowChangeRange(arr, String.format("rng(%s)", name));
-            arrowChangeImage(arr, String.format("img(%s)", name));
+            arrowChangeRange(arr, Space.makeRangeName(name));
+            arrowChangeImage(arr, Space.makeImageName(name));
         }
 
         src.outcoming.add(arr);
@@ -749,6 +749,65 @@ public class Category {
     }
 
     /**
+     * Changes name of the given object
+     * @param obj Reference to the object
+     * @param newName New name of the object
+     * @throws BadObjectNameException If an object of the same name already exists.
+     * @throws BadSpaceException If things happen while changing name of the identity based on this object.
+     */
+    public void objectChangeName(Obj obj, String newName) throws BadObjectNameException, BadSpaceException {
+        if(objects.containsKey(newName))
+            throw new BadObjectNameException("Object with the same name already exists!");
+        String oldIdName = Arrow.makeIdentityName(obj.getName());
+        String newIdName = Arrow.makeIdentityName(newName);
+        for(Arrow arr: obj.incoming)
+            if(arr.getName().equals(oldIdName))
+                arrowChangeName(arr, newIdName);
+        
+        objects.remove(obj.getName());
+        objects.put(newName, obj);
+
+        obj.setName(newName, true);
+    }
+
+    /**
+     * Changes name of the given arrow
+     * @param arr Reference to the arrow
+     * @param newName New name of the arrow
+     * @throws BadObjectNameException If an arrow of the same name already exists.
+     * @throws BadSpaceException If things happen while changing name of the range/image based on this arrow
+     */
+    public void arrowChangeName(Arrow arr, String newName) throws BadObjectNameException, BadSpaceException {
+        if(arrows.containsKey(newName))
+            throw new BadObjectNameException("Arrow with the same name already exists!");
+        if(arr.range.getName().equals(Space.makeRangeName(arr.getName())))
+            spaceChangeName(arr.range, Space.makeRangeName(newName));
+        if(arr.image.getName().equals(Space.makeImageName(arr.getName())))
+            spaceChangeName(arr.image, Space.makeImageName(newName));
+
+        arrows.remove(arr.getName());
+        arrows.put(newName, arr);
+
+        arr.setName(newName);
+    }
+
+
+    /**
+     * Changes the name of the given space.
+     * @param space Reference to the space 
+     * @param newName New name of the space
+     * @throws BadSpaceException If a space with the same name already exists.
+     */
+    public void spaceChangeName(Space space, String newName) throws BadSpaceException {
+        if(spaces.containsKey(newName))
+            throw new BadSpaceException("A space with the same name already exists!");
+
+        spaces.remove(space.getName());
+        spaces.put(newName, space);
+        space.setName(newName);
+    }
+
+    /**
      * Saves the category to a JSON file in '/saved_categories'
      * @param fileName name of the file (be sure to add .json at the end)
      * @param overwrite whether to overwrite existing files.
@@ -1043,18 +1102,17 @@ public class Category {
         ct.changeSuperSpace(a1.image, a2.range);
         ct.addComposition(a2, a1);
         ct.arrowChangeImage(a1, a2.range); //a1.image <- a2.range
-        ct.removeSpace(a1.image); //a1.image, a2.range <- dom(B)
         //Category ct = Category.load("five_lemma.json");
 
         ct.printArrows();
         ct.printObjects();
         ct.printSpaces();
 
-        for(Obj o: ct.getInitialObjs())
-            System.out.println(o.getName());
+        ct.arrowChangeName(a1, "Asdrubale");
 
-        for(Obj o: ct.getTerminalObjs())
-            System.out.println(o.getName());
+        ct.printArrows();
+        ct.printObjects();
+        ct.printSpaces();
 
         //ct.save("five_lemma.json", true);
     }

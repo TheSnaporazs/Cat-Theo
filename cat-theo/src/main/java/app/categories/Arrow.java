@@ -187,9 +187,8 @@ public class Arrow {
      */
     public static String makeIdentityName(String obj) { return String.format(IDENTITY_SYMBOL, obj); }
 
-    @Override
-    public int hashCode() {
-        return name.hashCode();
+    void setName(String newName) {
+        name = newName;
     }
 
     @Override

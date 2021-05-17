@@ -9,6 +9,9 @@ import java.util.HashSet;
  * @author Davide Marincione
  */
 public class Space {
+    public static final String RANGE_SYMBOL = "rng(%s)";
+    public static final String IMAGE_SYMBOL = "img(%s)";
+
     public static Space nullSpace = new Space("W̴̨̧̡͔͈̦̫̘̰̘̮̫͍̗̊̏̆̀̇̈́T̴̯̖̝̮̈́͋͊̃̚͝ͅF̸̟͚̜̘̠͓̣̠̖̗̪̘̟̈́̆̈̏̅͛̄̆̈́̋̄̋͠"){
         @Override
         public boolean contains(Space space) { return space == nullSpace; }
@@ -42,6 +45,8 @@ public class Space {
      * @return
      */
     public String getName() { return name; }
+
+    void setName(String newName) { name = newName; }
     
     /**
      * Returns the space's superspace
@@ -79,8 +84,6 @@ public class Space {
         return false;
     }
 
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
+    public static String makeRangeName(String name) { return String.format(RANGE_SYMBOL, name);}
+    public static String makeImageName(String name) { return String.format(IMAGE_SYMBOL, name);} 
 }

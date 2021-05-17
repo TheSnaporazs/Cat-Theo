@@ -66,6 +66,12 @@ public class Obj {
      */
     public Space getDomain() { return domain; }
 
+    void setName(String newName, boolean changeDomainName) {
+        name = newName;
+        if(changeDomainName)
+            domain.setName(makeDomainName(name));
+    }
+
     /**
      * Standard for representing an object's domain
      * @param objName Name of the object
@@ -73,15 +79,11 @@ public class Obj {
      */
     public static String makeDomainName(String objName) { return String.format(DOMAIN_SYMBOL, objName); }
 
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Obj))
             return false;
         return name.equals(((Obj) obj).getName());
-    }
-
-    @Override
-    public int hashCode() {
-        return name.hashCode();
     }
 }
