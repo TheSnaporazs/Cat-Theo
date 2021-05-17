@@ -194,6 +194,7 @@ public class WorkController extends GenericController{
 
     @FXML
     private void saveCategory() {
+        // Not the best looking thing, but I mean
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Standard", "*.json"),
@@ -216,6 +217,7 @@ public class WorkController extends GenericController{
 
     @FXML
     private void loadCategory() {
+        // Not the best looking thing, same as above pretty much
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Standard", "*.json"),
