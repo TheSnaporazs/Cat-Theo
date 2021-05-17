@@ -6,6 +6,7 @@ import app.exceptions.BadSpaceException;
 import app.exceptions.IllegalArgumentsException;
 import app.exceptions.ImpossibleArrowException;
 import javafx.scene.layout.Pane;
+import javafx.scene.Parent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -390,6 +391,9 @@ public class Category {
             arr.firstAncestor.image.toCompositions.remove(arr);
         if(arr.secondAncestor != null)
             arr.secondAncestor.range.toCompositions.remove(arr);
+
+        if(arr.guiRepr != null)
+            arr.guiRepr.removeArrGui();
     }
 
     /**
@@ -499,6 +503,9 @@ public class Category {
             removeArrow(arr);
         for(Arrow arr: obj.incoming)
             removeArrow(arr);
+
+        if(obj.guiRepr != null)
+            obj.guiRepr.removeObjGui();
     }
 
     /**
@@ -516,6 +523,9 @@ public class Category {
                 removeArrow(arr);
             for(Arrow arr: obj.incoming)
                 removeArrow(arr);
+
+            if(obj.guiRepr != null)
+                obj.guiRepr.removeObjGui();
         }
     }
 

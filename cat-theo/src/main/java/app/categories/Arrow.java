@@ -4,6 +4,7 @@ import app.exceptions.ImpossibleArrowException;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import app.GUI.ArrGUI;
 
 /**
  * Represents an Arrow from the Category Theory branch of mathematics.
@@ -23,6 +24,7 @@ public class Arrow {
     Space image;
     Arrow firstAncestor;
     Arrow secondAncestor;
+    public ArrGUI guiRepr;
 
     /**
      * Instances a new {@link app.categories.Arrow Arrow} representing a morphism from a source to a target.

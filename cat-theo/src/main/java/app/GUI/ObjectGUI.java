@@ -49,6 +49,7 @@ public class ObjectGUI extends StackPane {
 
         this.parent = parent;
         this.object = object;
+        object.guiRepr = this;
 
         drawCircle(X, Y, object);                   //Graphical representation
         addHandlers(parent);     //Event Handling
@@ -156,7 +157,7 @@ public class ObjectGUI extends StackPane {
     /**
      * removes the Object from the parent, leaving it at the mercy of the Garbage Collection
      */
-    private void removeObjGui()
+    public void removeObjGui()
     {
         this.parent.getChildren().remove(this);
     }

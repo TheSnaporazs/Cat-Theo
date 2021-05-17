@@ -39,16 +39,18 @@ public class ArrGUI extends Line {
         this.trg = target;
 
         this.arrow = arrow;
+        arrow.guiRepr = this;
         this.parent = parent;
 
         bindEndpoints();
     }
 
 
-    private void removeArrGui()
+    public void removeArrGui()
     {
         this.parent.getChildren().remove(this);
     }
+
     private void bindEndpoints()
     {
         this.startXProperty().bind(src.layoutXProperty().add(30 + src.getRay() * Math.cos(GUIutil.computeAngle(src, trg))));

@@ -17,7 +17,7 @@ public class Obj {
     private Space domain;
     Set<Arrow> incoming = new HashSet<Arrow>();
     Set<Arrow> outcoming = new HashSet<Arrow>();
-    ObjectGUI guiRepr;
+    public ObjectGUI guiRepr;
 
     /**
      * Instances a new {@link app.categories.Obj Obj} representing an object.
