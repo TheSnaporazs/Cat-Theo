@@ -543,7 +543,6 @@ public class Category {
         for(Arrow arr: space.toArrows) {
             //Pretty much running a changeRange and changeImage 
             // in combo.
-            HashSet<Arrow> arrowsToRemove = new HashSet<Arrow>();
             if(arr.range == space) {
                 arr.range = space.superSpace;
                 space.superSpace.toArrows.add(arr);
@@ -552,11 +551,6 @@ public class Category {
                     if(space != comp.range) {
                         space.toCompositions.remove(comp);
                         space.superSpace.toCompositions.add(comp);
-                    }
-
-                    if(!comp.runCheck()) {
-                        arrowsToRemove.add(comp);
-                        removeArrow(comp, arr);
                     }
                 }
             }
@@ -570,17 +564,20 @@ public class Category {
                         space.toCompositions.remove(comp);
                         space.superSpace.toCompositions.add(comp);
                     }
-
-                    if(!comp.runCheck()) {
-                        arrowsToRemove.add(comp);
-                        removeArrow(comp, arr);
-                    }
                 }
             }
-
-            for(Arrow comp: arrowsToRemove)
-                arr.dependencies.remove(comp);
         }
+        
+        // Checking existance of the dependencies
+        HashSet<Arrow> arrowsToRemove = new HashSet<Arrow>();
+        for(Arrow arr: space.toArrows)
+            for(Arrow comp: arr.dependencies)
+                if(!comp.runCheck())
+                    arrowsToRemove.add(comp);
+
+        for(Arrow comp: arrowsToRemove)
+            removeArrow(comp);
+
 
         for(Space spc: space.subspaces) {
             space.superSpace.subspaces.add(spc);
@@ -1038,15 +1035,15 @@ public class Category {
         
         Category ct = new Category("Pluto");
         ct.addObject("A");
-        ct.addObject("B");
+        Obj B = ct.addObject("B");
         ct.addObject("C");
         Arrow a1 = ct.addArrow("f", "A", "B");
         Arrow a2 = ct.addArrow("g", "B", "C");
         //ct.arrowChangeImage(a1, a2.range);
         ct.changeSuperSpace(a1.image, a2.range);
         ct.addComposition(a2, a1);
-        ct.removeSpace(a1.image);
-        ct.removeSpace(a1.image);
+        ct.arrowChangeImage(a1, a2.range); //a1.image <- a2.range
+        ct.removeSpace(a1.image); //a1.image, a2.range <- dom(B)
         //Category ct = Category.load("five_lemma.json");
 
         ct.printArrows();
