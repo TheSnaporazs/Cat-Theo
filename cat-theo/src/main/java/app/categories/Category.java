@@ -844,6 +844,10 @@ public class Category {
         return objects.get(name);
     }
 
+    public Arrow getArrow(String name) {
+        return arrows.get(name);
+    }
+
     /**
      * Saves the category to a JSON file in '/saved_categories'
      * @param fileName name of the file (be sure to add .json at the end)
