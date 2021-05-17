@@ -1,25 +1,13 @@
 package app.GUI;
 
-import app.categories.Obj;
-import app.exceptions.IllegalArgumentsException;
 import app.controllers.WorkController;
+import app.exceptions.IllegalArgumentsException;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 
@@ -165,5 +153,18 @@ public class GUIutil {
         });
 
         return prompt;
+    }
+
+    /**
+     * Wrapper for the usual arctan method to compute the angle between two objects
+     * @param A The source Object
+     * @param B The target Object
+     * @return  a Double alpha, between -pi and pi, representing the angle between A and B
+     */
+    public static double computeAngle(Node A, Node B)
+    {
+        return Math.atan2(
+                        B.getLayoutY() - A.getLayoutY(),
+                        B.getLayoutX() - A.getLayoutX());
     }
 }

@@ -308,6 +308,7 @@ public class Category {
         if(obj.getRepr() != null)
             ((Pane) obj.getRepr().getParent()).getChildren().remove(obj.getRepr());
             // Oh god Dario... why the hell did you make me do this...
+            // beautiful OOP :P
         objects.remove(obj.getName());
         for(Arrow arr: obj.outcoming)
             removeArrow(arr);

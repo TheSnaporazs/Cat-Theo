@@ -1,8 +1,7 @@
 package app.GUI;
 
 import app.categories.Obj;
-import app.events.ARROW_SPAWNED_SOURCE;
-import app.events.ARROW_SPAWNED_TARGET;
+import app.events.OBJECT_DELETED;
 import app.exceptions.IllegalArgumentsException;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -16,6 +15,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
+ * ObjectGUI.java
+ *
  * Child object of stackpane to provide a standardized implementation
  * of a graphical object, to reduce boilerplate from controllers
  * and control every ObjectGUI's behaviour from one place, avoiding the
@@ -23,26 +24,43 @@ import javafx.scene.text.Text;
  *
  * @author Dario Loi
  * @since 10/05/2021
- * @see StackPane
+ *
  * @see app.categories.Obj
+ * @see StackPane
  */
 public class ObjectGUI extends StackPane {
     double xCord;
     double yCord;
 
-    static private Pane parent;
+    private Pane parent;
     private Obj object;
-    
+    private double RAY = 30;
+
+    /**
+     *
+     * @param X X coord of the ObjGUI
+     * @param Y Y coord of the ObjGUI
+     * @param object    Model representation of the ObjGUI
+     * @param parent    Parent pane upon which the objGUI is attached
+     * @throws IllegalArgumentsException
+     */
     public ObjectGUI(double X, double Y, Obj object, Pane parent) throws IllegalArgumentsException {
         super();
 
         this.parent = parent;
         this.object = object;
 
-
         drawCircle(X, Y, object);                   //Graphical representation
         addHandlers(parent);     //Event Handling
         this.setCursor(Cursor.HAND);                //Cursor Icon, I think it's neat!
+    }
+
+    /**
+     *
+     * @return  Returns the size in pixels of the ray of the circle representing the ObjectGUI
+     */
+    public double getRay() {
+        return RAY;
     }
 
     private void drawCircle(double X, double Y, Obj object)
@@ -64,11 +82,6 @@ public class ObjectGUI extends StackPane {
      */
     private void addHandlers(Pane parent)
     {
-        //Lol, make this a property of the object mate... -Davide
-        //To be used in lambdas from an outside scope, we must do this treachery, or so I have been told
-        //final double[] xCord = new double[1];
-        //final double[] yCord = new double[1];
-
         this.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 event -> {
                     if(event.getButton().equals(MouseButton.SECONDARY)) {
@@ -110,22 +123,50 @@ public class ObjectGUI extends StackPane {
                     event.consume();
                 });
     }
+
+    /**
+     * Pings the ContextMenu at coordinates (X, Y)
+     *
+     * @param X X coord of the contextMenu
+     * @param Y Y coord of the contextMenu
+     * @param parent    parent pane of the ContextMenu
+     * @throws IllegalArgumentsException
+     */
     private void generateContext(Double X, Double Y, Pane parent) throws IllegalArgumentsException {
         /*
         Creation of the object contextMenu, wordy.
          */
-        String[] items = {"Spawn Morphism"};
+        String[] items = {"Spawn Morphism", "Remove Object"};
         EventHandler[] actions = {
                 (event -> {
                     String name = GUIutil.spawnPrompt("Name: ", "Insert Morphism Name");
+                }),
+                /*
+                        We bubble the event to parent level in order to have access to the currCat object
+                */
+                (event -> {
+                    System.out.println(parent);
+                    parent.fireEvent(new OBJECT_DELETED(this.object));
                 })
         };
+
         GUIutil.pingCreationMenu(X, Y, parent, items, actions);
+        }
+
+    /**
+     * removes the Object from the parent, leaving it at the mercy of the Garbage Collection
+     */
+    private void removeObjGui()
+    {
+        this.parent.getChildren().remove(this);
     }
 
+    /**
+     *
+     * @return returns the Model representation of this graphical object
+     */
     public Obj getObject() {
         return object;
     }
-
 
 }

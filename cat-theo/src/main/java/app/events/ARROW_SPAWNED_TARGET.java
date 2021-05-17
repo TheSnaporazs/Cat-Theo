@@ -1,8 +1,6 @@
 package app.events;
 
 import app.GUI.ObjectGUI;
-import app.categories.Obj;
-import javafx.event.Event;
 import javafx.event.EventType;
 
 /**
@@ -19,7 +17,7 @@ import javafx.event.EventType;
  */
 public class ARROW_SPAWNED_TARGET extends ANY_CAT {
 
-    public static final EventType<ARROW_SPAWNED_TARGET> ARROW_SPAWNED_TYPE = new EventType(ANY_CAT_EVENT_TYPE, "ARROW_SPAWNED_TARGET");
+    public static final EventType<ARROW_SPAWNED_TARGET> ARROW_SPAWNED_TARGET_TYPE = new EventType(ANY_CAT_EVENT_TYPE, "ARROW_SPAWNED_TARGET");
 
     private ObjectGUI src;
     private ObjectGUI trg;
@@ -32,7 +30,7 @@ public class ARROW_SPAWNED_TARGET extends ANY_CAT {
      * @param trg   The target object of the arrow
      */
     public ARROW_SPAWNED_TARGET(ObjectGUI src, ObjectGUI trg, String name) {
-        super(ARROW_SPAWNED_TYPE);
+        super(ARROW_SPAWNED_TARGET_TYPE);
         this.src = src;
         this.trg = trg;
         this.name = name;

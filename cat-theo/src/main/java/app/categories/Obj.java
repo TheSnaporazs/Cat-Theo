@@ -1,7 +1,6 @@
 package app.categories;
 
 import app.GUI.ObjectGUI;
-import javafx.scene.Node;
 
 import java.util.HashSet;
 import java.util.Set;

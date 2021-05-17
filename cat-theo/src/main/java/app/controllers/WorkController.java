@@ -1,11 +1,13 @@
 package app.controllers;
 
 
+import app.GUI.ArrGUI;
 import app.GUI.GUIutil;
 import app.GUI.ObjectGUI;
 import app.categories.Category;
 import app.events.ARROW_SPAWNED_SOURCE;
 import app.events.ARROW_SPAWNED_TARGET;
+import app.events.OBJECT_DELETED;
 import app.events.OBJECT_SPAWNED;
 import app.exceptions.BadObjectNameException;
 import app.exceptions.IllegalArgumentsException;
@@ -17,9 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Line;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -37,6 +37,7 @@ public class WorkController extends GenericController{
     @FXML private ToggleGroup tog1;
     @FXML private ToggleGroup tog2;
     @FXML private ScrollPane pannable;
+    @FXML private AnchorPane root;
     private boolean isCreatingArrow = false;
 
     public WorkController()
@@ -98,40 +99,44 @@ public class WorkController extends GenericController{
             }
         });
 
-        scroll_wrap.addEventHandler(ARROW_SPAWNED_SOURCE.ARROW_SPAWNED_TYPE, event -> {
+        scroll_wrap.addEventHandler(ARROW_SPAWNED_SOURCE.ARROW_SPAWNED_SOURCE_TYPE, event -> {
             //TODO add mouse chasing line effect
             isCreatingArrow = true;
 
         });
 
-        scroll_wrap.addEventHandler(ARROW_SPAWNED_TARGET.ARROW_SPAWNED_TYPE, event -> {
+        scroll_wrap.addEventHandler(ARROW_SPAWNED_TARGET.ARROW_SPAWNED_TARGET_TYPE, event -> {
             //TODO remove mouse chasing line effect
             try {
                 ObjectGUI src = event.getSrc();
                 ObjectGUI trg = event.getTrg();
 
-                currCat.addArrow(event.getName(),src.getObject(), trg.getObject());
-                Line line = new Line();
+                double[] src_coord = {src.getLayoutX(), src.getLayoutY()};
+                double[] trg_coord = {trg.getLayoutX(), trg.getLayoutY()};
 
-                line.startXProperty().bind(src.layoutXProperty().add(30));
-                line.startYProperty().bind(src.layoutYProperty().add(30));
-                line.endXProperty().bind(trg.layoutXProperty().add(30));
-                line.endYProperty().bind(trg.layoutYProperty().add(30));
+                scroll_wrap.getChildren().add(
+                        new ArrGUI(src, trg,
+                                currCat.addArrow(event.getName(),src.getObject(), trg.getObject()), scroll_wrap)
+                );
 
 
-                scroll_wrap.getChildren().add(line);
             } catch (ImpossibleArrowException e) {
                 e.printStackTrace();
             }
             printCurrCat();
         });
 
-    }
+        scroll_wrap.addEventHandler(OBJECT_DELETED.OBJECT_DELETED_TYPE, event -> {
 
+                currCat.removeObject(event.getObject());
+
+        });
+    }
 
     /**
      * Debug method, prints to terminal the contents of the current category
      * being displayed
+     *
      */
     public void printCurrCat()
     {

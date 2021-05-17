@@ -5,33 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a32b215-2bf7-41e4-bf38-f0540b652510" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/app/GUI/ArrGUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/app/events/OBJECT_DELETED.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/GUI/GUIutil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/GUI/GUIutil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/GUI/ObjectGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/GUI/ObjectGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/categories/Arrow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/categories/Arrow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/categories/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/categories/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/categories/Obj.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/categories/Obj.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/events/ARROW_SPAWNED_SOURCE.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/events/ARROW_SPAWNED_SOURCE.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/events/ARROW_SPAWNED_TARGET.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/events/ARROW_SPAWNED_TARGET.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/app/workpage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/workpage.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/GUIutil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/GUIutil.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/ObjectGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/ObjectGUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Arrow.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Arrow.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Category.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Obj.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Obj.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/controllers/GenericController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/controllers/GenericController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/controllers/MenuController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/controllers/MenuController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/controllers/WorkController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/controllers/WorkController$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/events/ANY_CAT.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/events/ANY_CAT.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/events/ARROW_SPAWNED_SOURCE.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/events/ARROW_SPAWNED_SOURCE.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/events/ARROW_SPAWNED_TARGET.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/events/ARROW_SPAWNED_TARGET.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/events/OBJECT_SPAWNED.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/events/OBJECT_SPAWNED.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/workpage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/workpage.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +57,8 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+    <property name="full.screen.before.presentation.mode" value="false" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunManager" selected="Application.Category">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
