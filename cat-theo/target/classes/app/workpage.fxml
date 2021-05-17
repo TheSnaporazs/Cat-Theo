@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.WorkController">
@@ -27,13 +19,22 @@
         AnchorPane.rightAnchor="0.0">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
-
+                    <MenuItem mnemonicParsing="false" onAction="#switchPage"
+                               text="Save" />
+                    <MenuItem mnemonicParsing="false" onAction="#switchPage"
+                               text="Load" />
+                    <MenuItem mnemonicParsing="false" onAction="#switchPage"
+                               text="Exit" />
                 </Menu>
 
                 <Menu mnemonicParsing="false" text="Actions">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#switchPage"
                                   userData="mainmenu" text="Back to main" />
+                        <MenuItem mnemonicParsing="false" onAction="#objectFromMenu"
+                                  text="Create Object" />
+                        <MenuItem mnemonicParsing="false" onAction="#arrowFromMenu"
+                                  text="Create Arrow" />
                     </items>
                 </Menu>
         </menus>

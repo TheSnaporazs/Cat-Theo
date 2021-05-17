@@ -1,6 +1,6 @@
 package app.events;
 
-import app.categories.Obj;
+import app.GUI.ObjectGUI;
 import javafx.event.EventType;
 
 /**
@@ -17,28 +17,30 @@ import javafx.event.EventType;
  */
 public class ARROW_SPAWNED_TARGET extends ANY_CAT {
 
-    public static final EventType<ARROW_SPAWNED_TARGET> ARROW_SPAWNED_TYPE = new EventType(ANY_CAT_EVENT_TYPE, "ARROW_SPAWNED");
+    public static final EventType<ARROW_SPAWNED_TARGET> ARROW_SPAWNED_TARGET_TYPE = new EventType(ANY_CAT_EVENT_TYPE, "ARROW_SPAWNED_TARGET");
 
-    private final Obj src;
-    private final Obj trg;
+    private ObjectGUI src;
+    private ObjectGUI trg;
 
+    private String name;
 
     /**
      * Initialized an ARROW_SPAWNED_TARGET Object
      * @param src   The source object of the arrow
      * @param trg   The target object of the arrow
      */
-    public ARROW_SPAWNED_TARGET(Obj src, Obj trg) {
-        super(ARROW_SPAWNED_TYPE);
+    public ARROW_SPAWNED_TARGET(ObjectGUI src, ObjectGUI trg, String name) {
+        super(ARROW_SPAWNED_TARGET_TYPE);
         this.src = src;
         this.trg = trg;
+        this.name = name;
     }
 
     /**
      *
      * @return  Returns the source object of the arrow
      */
-    public Obj getSrc() {
+    public ObjectGUI getSrc() {
         return src;
     }
 
@@ -46,7 +48,13 @@ public class ARROW_SPAWNED_TARGET extends ANY_CAT {
      *
      * @return  Returns the target object of the arrow
      */
-    public Obj getTrg() {
+    public ObjectGUI getTrg() {
         return trg;
     }
+
+    public String getName() {
+        return name;
+    }
+
+
 }

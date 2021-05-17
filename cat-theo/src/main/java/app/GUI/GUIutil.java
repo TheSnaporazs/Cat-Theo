@@ -1,21 +1,13 @@
 package app.GUI;
 
-import app.categories.Obj;
-import app.exceptions.IllegalArgumentsException;
 import app.controllers.WorkController;
+import app.exceptions.IllegalArgumentsException;
 import javafx.event.EventHandler;
-import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputDialog;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
@@ -37,12 +29,12 @@ public class GUIutil {
      * @see app.categories.Arrow
      * @param x X to position at
      * @param y Y to position at
-     * @param parent 
+     * @param parent The parent pane upon which to ping the contextMenu
      * @param items An array of strings to be displayed as menuitems on the contextMenu
      * @param actions An array of EventHandlers to be attached to each menuitems on the contextmenu
      * @throws IllegalArgumentsException
      */
-    public static void pingCreationMenu(Double x, Double y, Node parent, String[] items, EventHandler[] actions) throws IllegalArgumentsException {
+    public static void pingCreationMenu(Double x, Double y, Pane parent, String[] items, EventHandler[] actions) throws IllegalArgumentsException {
         if(items.length != actions.length)
         {
             throw new IllegalArgumentsException("The Menu cannot have an unequal amount of items and actions!");
@@ -104,52 +96,6 @@ public class GUIutil {
     }
 
 
-    // Isn't this method deprecated??? -Davide
-    /**
-     * Spawns the graphical representation of an Object, as a node of a graph
-     *
-     * @see app.categories.Obj
-     * @see app.categories.Category
-     * @param X     Double, the X coordinate of the Object
-     * @param Y     Double, the Y coordinate of the Object
-     * @param obj   Obj, the Object
-     */
-    public static StackPane spawnObject(double X, double Y, Obj obj) {
-        final double[] xCord = new double[1];
-        final double[] yCord = new double[1];
-
-        Circle circle = new Circle(60,60,30, Color.WHITE);
-        circle.setStroke(Color.BLACK);
-
-        Text testo = new Text(obj.getName());
-        testo.setFont(new Font(30));
-
-        StackPane stackPane = new StackPane();
-        stackPane.getChildren().addAll(circle, testo);
-        stackPane.relocate(X, Y);
-
-        obj.setRepr(stackPane); //After all we have to let the object know of this...
-
-        stackPane.setCursor(Cursor.HAND);
-        stackPane.setOnMousePressed((t) -> {
-            xCord[0] = t.getSceneX();
-            yCord[0] = t.getSceneY();
-        });
-        stackPane.setOnMouseDragged((t) -> {
-
-            double offsetX = t.getSceneX() - xCord[0];
-            double offsetY = t.getSceneY() - yCord[0];
-
-            stackPane.setLayoutX(stackPane.getLayoutX() + offsetX);
-            stackPane.setLayoutY(stackPane.getLayoutY() + offsetY);
-
-            xCord[0] = t.getSceneX();
-            yCord[0] = t.getSceneY();
-        });
-
-        return stackPane;
-    }
-
 
     /**
      * Utility method to spawn a prompt (TextInputDialog), the prompts acts as an interrupt, waiting for the input
@@ -170,5 +116,55 @@ public class GUIutil {
         prova.showAndWait();
 
         return prova.getEditor().getText();
+    }
+
+    public static Dialog<ArrayList<String>> spawnMultiPrompt(String[] msgs, String Title) {
+
+        Dialog<ArrayList<String>> prompt = new Dialog<>();
+        prompt.setTitle(Title);
+
+        prompt.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        ArrayList<TextField> fields = new ArrayList();
+        for(int c = 0; c < msgs.length; c++)
+        {
+            TextField field = new TextField();
+            fields.add(field);
+
+            field.setPromptText(msgs[c]);
+            grid.add(new Label(msgs[c] + ":"), 0, c);
+            grid.add(field, 1, c);
+        }
+
+        prompt.getDialogPane().setContent(grid);
+
+        prompt.setResultConverter(dialogButton -> {
+            if (dialogButton.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                ArrayList<String> returns = new ArrayList<>();
+                fields.forEach(textField -> returns.add(textField.getText()));
+                return returns;
+            }
+            return null;
+        });
+
+        return prompt;
+    }
+
+    /**
+     * Wrapper for the usual arctan method to compute the angle between two objects
+     * @param A The source Object
+     * @param B The target Object
+     * @return  a Double alpha, between -pi and pi, representing the angle between A and B
+     */
+    public static double computeAngle(Node A, Node B)
+    {
+        return Math.atan2(
+                        B.getLayoutY() - A.getLayoutY(),
+                        B.getLayoutX() - A.getLayoutX());
     }
 }

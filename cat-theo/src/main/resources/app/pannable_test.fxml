@@ -2,14 +2,11 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.CubicCurve?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Text?>
-
 <BorderPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.MenuController">
    <right>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
