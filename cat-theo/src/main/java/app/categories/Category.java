@@ -840,10 +840,20 @@ public class Category {
         space.setName(newName);
     }
 
+    /**
+     * Returns object with the given name, if it exists.
+     * @param name
+     * @return
+     */
     public Obj getObject(String name) {
         return objects.get(name);
     }
 
+    /**
+     * Returns arrow with the given name, if it exists.
+     * @param name
+     * @return
+     */
     public Arrow getArrow(String name) {
         return arrows.get(name);
     }
@@ -854,19 +864,28 @@ public class Category {
      * @param overwrite whether to overwrite existing files.
      * @throws IOException
      */
-    public void save(String fileName, boolean overwrite) throws IOException{
+    public void save(String path, String fileName, boolean overwrite) throws IOException {
         // Create folder if it doesn't exist
-        File folder = new File(System.getProperty("user.dir") +"/saved_categories");
+        File folder = new File(path);
         if(!folder.exists())
             folder.mkdir();
 
         // Create file and throw error if can't overwrite.
-        File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
+        File file = new File(path + fileName);
         if(file.exists() && !overwrite)
             throw new IOException("File already exists.");
         
         file.createNewFile();
 
+        save(file);
+    }
+
+    /**
+     * Saves the category to a JSON file
+     * @param file
+     * @throws IOException
+     */
+    public void save(File file) throws IOException{
         JSONObject jsUni = new JSONObject();
         jsUni.put("name", universeName);
 
@@ -938,6 +957,22 @@ public class Category {
      * @throws ImpossibleArrowException
      */
     public static Category load(String fileName) throws IOException, BadObjectNameException, ImpossibleArrowException, BadSpaceException {
+        File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
+        if(!file.exists())
+            throw new IOException("File does not exist.");
+
+        return load(file);
+    }
+
+    /**
+     * Loads and returns the category corresponding to the given .json file
+     * @param file
+     * @return
+     * @throws IOException
+     * @throws BadObjectNameException
+     * @throws ImpossibleArrowException
+     */
+    public static Category load(File file) throws IOException, BadObjectNameException, ImpossibleArrowException, BadSpaceException {
         //Oh almighty god of the algorithms, please, have mercy on me
         //because I have sinned: this method is O(n^2), I beg of you,
         //shed the knowledge on me such that I may honour your name
@@ -947,11 +982,6 @@ public class Category {
         //methods I already wrote to modify the category by directly mingling with its
         //internal collections: it is damn good though, but don't ever try to do it yourself
         //- or at least ask me first.
-
-        // Create file and throw error if can't overwrite.
-        File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
-        if(!file.exists())
-            throw new IOException("File does not exist.");
         
         FileReader reader = new FileReader(file);
         JSONObject category = new JSONObject(new JSONTokener(reader));
@@ -1066,13 +1096,9 @@ public class Category {
      * @throws BadObjectNameException
      * @throws ImpossibleArrowException
      */
-    public static Category loadForGUI(String fileName, Pane pane) throws IOException, BadObjectNameException, ImpossibleArrowException, IllegalArgumentsException, BadSpaceException {
-        Category ct = load(fileName);
-
-        // Create file and throw error if can't overwrite.
-        File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
-        if(!file.exists())
-            throw new IOException("File does not exist.");
+    public static Category loadForGUI(File file, Pane pane) throws IOException, BadObjectNameException, ImpossibleArrowException, IllegalArgumentsException, BadSpaceException {
+        Category ct = load(file);
+        pane.getChildren().clear();
         
         FileReader reader = new FileReader(file);
         JSONObject category = new JSONObject(new JSONTokener(reader));
@@ -1156,6 +1182,6 @@ public class Category {
         ct.printObjects();
         ct.printSpaces();
 
-        //ct.save("five_lemma.json", true);
+        //ct.save(System.getProperty("user.dir") +"/saved_categories", "five_lemma.json", true);
     }
 }
