@@ -86,7 +86,7 @@ public class Arrow {
      * @return A string representing the arrow
      */
     public String represent() {
-        return String.format("%s: %s→%s", getName(), src.getName(), trg.getName());
+        return String.format("%s: %s->%s", getName(), src.getName(), trg.getName());
     }
 
 
