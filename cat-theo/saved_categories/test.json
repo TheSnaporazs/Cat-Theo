@@ -1,0 +1,34 @@
+{
+    "universe": {"name": "UniverseName"},
+    "objects": [
+        {
+            "name": "A",
+            "x": 425,
+            "y": 342
+        },
+        {
+            "name": "B",
+            "x": 630,
+            "y": 431
+        }
+    ],
+    "spaces": [
+        {
+            "subspaces": [],
+            "name": "img(f)"
+        },
+        {
+            "subspaces": [],
+            "name": "rng(f)"
+        }
+    ],
+    "arrows": [{
+        "image": "img(f)",
+        "identity": false,
+        "name": "f",
+        "range": "rng(f)",
+        "source": "A",
+        "target": "B",
+        "dependencies": []
+    }]
+}

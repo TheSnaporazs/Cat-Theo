@@ -3,6 +3,7 @@ d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\GUI\GUIutil.java
 d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\App.java
 d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\controllers\GenericController.java
 d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\events\ARROW_SPAWNED_SOURCE.java
+d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\GUI\Bindings\TrigBounding.java
 d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\exceptions\IllegalArgumentsException.java
 d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\events\OBJECT_DELETED.java
 d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\exceptions\BadSpaceException.java

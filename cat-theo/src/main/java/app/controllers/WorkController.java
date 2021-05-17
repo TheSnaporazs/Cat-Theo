@@ -20,9 +20,12 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Java-FX controller for the work page
@@ -187,6 +190,50 @@ public class WorkController extends GenericController{
                 (currCat.getObject(list.get(0))).getRepr(),   //Source object
                 (currCat.getObject(list.get(1))).getRepr(),   //Target object
                 list.get(2)));                              //Arrow  Name
+    }
+
+    @FXML
+    private void saveCategory() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Standard", "*.json"),
+                new FileChooser.ExtensionFilter("Any file", "*.*")
+            );
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.setTitle("Save current category");
+        File file = fileChooser.showSaveDialog(root.getScene().getWindow());
+        try {
+            currCat.save(file);
+        } catch (IOException e){
+            e.printStackTrace();
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Save error");
+            error.setContentText("Something went wrong while saving.");
+            error.showAndWait();
+        }
+    }
+
+    @FXML
+    private void loadCategory() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Standard", "*.json"),
+                new FileChooser.ExtensionFilter("Any file", "*.*")
+            );
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.setTitle("Load new category");
+        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+        try {
+            currCat = Category.loadForGUI(file, scroll_wrap);
+        } catch (Exception e){
+            e.printStackTrace();
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Load error");
+            error.setContentText("Something went wrong while loading.");
+            error.showAndWait();
+        }
     }
 
     public boolean isCreatingArrow() {
