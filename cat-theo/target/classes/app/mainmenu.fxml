@@ -4,49 +4,39 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-<?import javafx.stage.Screen?>
-<AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="${screen.visualBounds.height}" prefWidth="${screen.visualBounds.width}"
-            xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="app.controllers.MenuController">
 
-    <fx:define>
-        <Screen fx:factory="getPrimary" fx:id="screen"/>
-    </fx:define>
-
-   <children>
-      <Text layoutX="163.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Cat-Theo" wrappingWidth="262.037109375">
-         <font>
-            <Font name="Times New Roman" size="33.0" />
-         </font>
-      </Text>
-      <ImageView fitHeight="304.0" fitWidth="351.0" layoutX="14.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@gatpng.png" />
-         </image>
-      </ImageView>
-      <MenuBar prefHeight="28.0" prefWidth="600.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0"
-               AnchorPane.leftAnchor="0.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <Button layoutX="425.0" layoutY="292.0" mnemonicParsing="false" onAction="#switchPage" userData="workpage" text="Button" />
-   </children>
+<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.MenuController">
+    <children>
+        <ImageView fx:id="CatView" fitHeight="404.0" fitWidth="301.0" layoutX="48.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../Theo-down.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="385.0" fitWidth="536.0" layoutX="33.0" layoutY="-58.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../CT-scritta.png" />
+            </image>
+        </ImageView>
+        <MenuBar prefHeight="28.0" prefWidth="601.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <Button fx:id="NewCat" layoutX="234.0" layoutY="260.0" mnemonicParsing="false" onAction="#switchPage" prefHeight="26.0" prefWidth="105.0" text="New Category" userData="workpage" />
+        <Button fx:id="LoadCat" layoutX="234.0" layoutY="295.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="105.0" text="Load Category" />
+    </children>
 </AnchorPane>
