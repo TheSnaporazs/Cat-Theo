@@ -2,6 +2,10 @@ package app.categories;
 
 import app.exceptions.ImpossibleArrowException;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import app.GUI.ArrGUI;
+
 /**
  * Represents an Arrow from the Category Theory branch of mathematics.
  * @author Davide Marincione
@@ -14,36 +18,49 @@ public class Arrow {
     private String name;
     private Obj src;
     private Obj trg;
-    private MorphType type;
+    private Boolean identity = false;
+    HashSet<Arrow> dependencies = new HashSet<Arrow>();
+    Space range;
+    Space image;
+    Arrow firstAncestor;
+    Arrow secondAncestor;
+    public ArrGUI guiRepr;
 
     /**
-     * Instances a new {@link app.categories.Arrow Arrow} representing a morphism from a source to a target
-     * with custom type.
-     * @param name Name of the arrow.
-     * @param src Name of the source object.
-     * @param trg Name of the target object.
-     * @param type Type of the arrow.
-     * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
+     * Instances a new {@link app.categories.Arrow Arrow} representing a morphism from a source to a target.
+     * Furthermore it is possible to define the range and the image of the morphism (also deciding if it is an
+     * identity or not)
+     * @param name
+     * @param src
+     * @param trg
+     * @param range
+     * @param image
+     * @param identity
+     * @throws ImpossibleArrowException
      */
-    public Arrow(String name, Obj src, Obj trg, MorphType type) throws ImpossibleArrowException {
-        if (type == MorphType.IDENTITY && !src.equals(trg))
+    Arrow(String name, Obj src, Obj trg, Space range, Space image, Boolean identity) throws ImpossibleArrowException {
+        if (identity && !src.equals(trg))
             throw new ImpossibleArrowException("An identity has to have same source and target!");
 
         this.name = name;
         this.src = src;
         this.trg = trg;
-        this.type = type;
+        this.range = range;
+        this.image = image;
     }
 
     /**
      * Instances a new {@link app.categories.Arrow Arrow} representing a morphism from a source to a target.
-     * @param name Name of the arrow.
-     * @param src Name of the source object.
-     * @param trg Name of the target object.
-     * @see app.categories.Category#addArrow(String, String, String) addArrow(name, source, target)
+     * Furthermore it is possible to define the range and the image of the morphism.
+     * @param name
+     * @param src
+     * @param trg
+     * @param range
+     * @param image
+     * @throws ImpossibleArrowException
      */
-    public Arrow(String name, Obj src, Obj trg) throws ImpossibleArrowException {
-        this(name, src, trg, MorphType.MORPHISM);
+    Arrow(String name, Obj src, Obj trg, Space range, Space image) throws ImpossibleArrowException {
+        this(name, src, trg, range, image, false);
     }
 
     /**
@@ -65,17 +82,83 @@ public class Arrow {
     public Obj trg() { return trg; }
 
     /**
-     * Returns the arrow's type.
-     * @return Type of the arrow.
-     */
-    public MorphType getType() { return type; }
-
-    /**
      * Function to easily compute a pretty print of the arrow
      * @return A string representing the arrow
      */
     public String represent() {
-        return String.format("%s: %s→%s", getName(), src.getName(), trg.getName());
+        return String.format("%s: %s->%s", getName(), src.getName(), trg.getName());
+    }
+
+
+    /**
+     * Checks if the arrow is an identity
+     * @return
+     */
+    public boolean isIdentity() { return identity; }
+
+    /**
+     * Checks if the arrow is a monomorphism
+     * @return
+     */
+    public boolean isMonic() {
+        Iterator<Arrow> iter = src.incoming.iterator();
+        Space baseImage = Space.nullSpace;
+        if (iter.hasNext())
+            baseImage = iter.next().image;
+
+        for(Space img = baseImage; iter.hasNext(); img = iter.next().image)
+            if(!img.equals(baseImage))
+                return false;
+
+        return true;
+    }
+
+    /**
+     * Checks if the arrow is an epimorphism
+     * @return
+     */
+    public boolean isEpic() {
+        Iterator<Arrow> iter = trg.outcoming.iterator();
+        Space baseRange = Space.nullSpace;
+        if (iter.hasNext())
+            baseRange = iter.next().range;
+
+        for(Space rng = baseRange; iter.hasNext(); rng = iter.next().range)
+            if(!rng.equals(baseRange))
+                return false;
+
+        return true;
+    }
+
+    /**
+     * Checks if the arrow is an isomorphism
+     * @return
+     */
+    public boolean isIsomorphism() { return isMonic() && isEpic(); }
+
+    /**
+     * Checks whether the arrow is and endomorphism or not
+     * (if the source and the target are the same)
+     * @return
+     */
+    public boolean isEndomorphism() { return src.equals(trg); }
+
+    /**
+     * Checks whether the arrow is an automorphism or not
+     * (if it is an {@link app.categories.Arrow#isEndomorphism() Endomorphism}
+     * and an {@link app.categories.MorphType#ISOMORPHISM Isomorphism})
+     * @return
+     */
+    public boolean isAutomorphism() { return isIsomorphism() && isEndomorphism(); }
+
+    /**
+     * Returns validity of the arrow.
+     * @return
+     */
+    public boolean runCheck() {
+        if(firstAncestor != null)
+            return secondAncestor.range.contains(firstAncestor.image);
+        return true;
     }
 
     /**
@@ -92,8 +175,10 @@ public class Arrow {
      * @see app.categories.Category#addComposition(Arrow g, Arrow f)
      */
     public static Arrow compose(Arrow g, Arrow f) throws ImpossibleArrowException {
-        if (f.trg().equals(g.src())) // Condition for a composition to be possible.
-            return new Arrow(String.format(COMPOSITION_SYMBOL, g.getName(), f.getName()), f.src(), g.trg());
+
+        if (f.trg().equals(g.src()) && g.range.contains(f.image)) {// Condition for a composition to be possible.
+            return new Arrow(String.format(COMPOSITION_SYMBOL, g.getName(), f.getName()), f.src(), g.trg(), f.range, g.image);
+        }
         else throw new ImpossibleArrowException(String.format("Tried to compose %s(%s), conditions not met.", g.getName(), f.getName()));
     }
 
@@ -104,9 +189,8 @@ public class Arrow {
      */
     public static String makeIdentityName(String obj) { return String.format(IDENTITY_SYMBOL, obj); }
 
-    @Override
-    public int hashCode() {
-        return String.format("%s%s%s%s", name, src.getName(), trg.getName(), type.toString()).hashCode();
+    void setName(String newName) {
+        name = newName;
     }
 
     @Override
@@ -116,7 +200,6 @@ public class Arrow {
     
         Arrow arr = (Arrow) obj;
 
-        return arr.getType() == type && arr.getName().equals(name)
-               && arr.src().equals(src) && arr.trg().equals(trg);
+        return arr.range.equals(range) && arr.image.equals(image) && arr.src().equals(src) && arr.trg().equals(trg);
     }
 }
