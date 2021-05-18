@@ -116,41 +116,8 @@ public class Category {
     }
 
     /**
-     * Gets an Obj object from the Hashmap
-     * @param name  the Object name
-     * @return      the Object
-     */
-    public Obj getObject(String name) {
-        return objects.get(name);
-    }
-
-    /**
-     * Gets an Arrow object from the Hashmap
-     * @param name the Arrow's name
-     * @return     the Arrow
-     */
-    public Arrow getArrow(String name)
-    {
-        return arrows.get(name);
-    }
-
-    /**
-     * Adds a new {@link app.categories.Arrow Arrow} to the {@link app.categories.Category Category}.
-     * @param name Name of the new arrow (watch out for a possible LaTeX implementation).
-     * @param src Source object.
-     * @param trg Target object.
-     * @return Reference to the added arrow.
-     * @throws ImpossibleArrowException
-     * @see #removeArrow(Arrow)
-     * @see app.categories.Arrow#Arrow(String, Obj, Obj) Arrow(name, source, target)
-     */
-    public Arrow addArrow(String name, Obj src, Obj trg) throws ImpossibleArrowException {
-
-        return addArrow(name, src, trg, MorphType.MORPHISM);
-    }
-
-    /**
-     * Adds a new {@link app.categories.Arrow Arrow} to the {@link app.categories.Category Category}.
+     * Adds a new {@link app.categories.Arrow Arrow} with custom type
+     * to the {@link app.categories.Category Category}.
      * @param name Name of the new arrow (watch out for a possible LaTeX implementation).
      * @param srcName Name of the source object.
      * @param trgName Name of the target object.
@@ -524,7 +491,6 @@ public class Category {
         if(obj.getRepr() != null)
             ((Pane) obj.getRepr().getParent()).getChildren().remove(obj.getRepr());
             // Oh god Dario... why the hell did you make me do this...
-            // beautiful OOP :P
         objects.remove(obj.getName());
         for(Arrow arr: obj.outcoming)
             removeArrow(arr);
