@@ -1,9 +1,6 @@
 package app.GUI;
 
-import app.GUI.Bindings.LabelBinding;
-import app.GUI.Bindings.LineCollision;
-import app.GUI.Bindings.TrigBounding;
-import app.GUI.Bindings.VEC;
+import app.GUI.Bindings.*;
 import app.categories.Arrow;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -43,6 +40,8 @@ public class ArrGUI extends Group {
     //graphical components
     private Line line;
     private Label nameGUI;
+    private Line rightPoint;
+    private Line leftPoint;
 
 
     /**
@@ -72,8 +71,12 @@ public class ArrGUI extends Group {
     {
         nameGUI = new Label(arrow.getName());
         nameGUI.setFont(new Font(15));
+
+        rightPoint = new Line();
+        leftPoint = new Line();
         this.line = new Line();
-        this.getChildren().addAll(line, nameGUI);
+
+        this.getChildren().addAll(line, nameGUI, rightPoint, leftPoint);
     }
 
 
@@ -98,8 +101,20 @@ public class ArrGUI extends Group {
         line.endYProperty().bind(new TrigBounding(trg, src, VEC.Ay));
         line.visibleProperty().bind(new LineCollision(src, trg));
 
+        //Bind the label name to the middle of the arrow
         nameGUI.layoutXProperty().bind(new LabelBinding(line, VEC.Ax));
         nameGUI.layoutYProperty().bind(new LabelBinding(line, VEC.Ay));
+
+        //Bind the arrow tip's start to the arrow's end
+        leftPoint.startXProperty().bind(line.endXProperty());
+        leftPoint.startYProperty().bind(line.endYProperty());
+        rightPoint.startXProperty().bind(line.endXProperty());
+        rightPoint.startYProperty().bind(line.endYProperty());
+
+        leftPoint.endXProperty().bind(new TrigBoundingConst(trg, src, line, 12, 30, VEC.Ax));
+        leftPoint.endYProperty().bind(new TrigBoundingConst(trg, src, line, 12, 30, VEC.Ay));
+        rightPoint.endXProperty().bind(new TrigBoundingConst(trg, src, line, 12, -30, VEC.Ax));
+        rightPoint.endYProperty().bind(new TrigBoundingConst(trg, src, line, 12, -30, VEC.Ay));
     }
 
     public ObjectGUI getSrc() {
