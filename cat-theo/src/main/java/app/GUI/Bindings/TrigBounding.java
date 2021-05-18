@@ -24,14 +24,10 @@ public class TrigBounding extends DoubleBinding {
     ObjectGUI A;
     ObjectGUI B;
 
-    public enum TRIG {
-        Ax,
-        Ay,
-    }
 
-    private final TRIG computation;
+    private final VEC computation;
 
-    public TrigBounding(ObjectGUI a, ObjectGUI b, TRIG computation) {
+    public TrigBounding(ObjectGUI a, ObjectGUI b, VEC computation) {
         A = a;
         B = b;
         super.bind(A.layoutXProperty(), A.layoutYProperty(), B.layoutXProperty(), B.layoutYProperty());

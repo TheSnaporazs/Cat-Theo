@@ -1,7 +1,9 @@
 package app.GUI;
 
+import app.GUI.Bindings.LabelBinding;
 import app.GUI.Bindings.LineCollision;
 import app.GUI.Bindings.TrigBounding;
+import app.GUI.Bindings.VEC;
 import app.categories.Arrow;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -9,8 +11,13 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+
 
 /**
  *  ArrGUI.java
@@ -26,12 +33,16 @@ import javafx.scene.shape.Line;
  * @see app.categories.Arrow
  * @see Line
  */
-public class ArrGUI extends Line {
+public class ArrGUI extends Group {
 
     private ObjectGUI src;
     private ObjectGUI trg;
     private Arrow arrow;
     private Pane parent;
+
+    //graphical components
+    private Line line;
+    private Label nameGUI;
 
 
     /**
@@ -44,14 +55,25 @@ public class ArrGUI extends Line {
      */
     public ArrGUI(ObjectGUI source, ObjectGUI target, Arrow arrow, Pane parent) {
 
+        super();
         this.src = source;
         this.trg = target;
 
         this.arrow = arrow;
         arrow.guiRepr = this;
         this.parent = parent;
+
+        initGraphics();
         bindEndpoints();
 
+    }
+
+    private void initGraphics()
+    {
+        nameGUI = new Label(arrow.getName());
+        nameGUI.setFont(new Font(15));
+        this.line = new Line();
+        this.getChildren().addAll(line, nameGUI);
     }
 
 
@@ -68,13 +90,16 @@ public class ArrGUI extends Line {
     private void bindEndpoints()
     {
         //Bind start to source
-        this.startXProperty().bind(new TrigBounding(src, trg, TrigBounding.TRIG.Ax));
-        this.startYProperty().bind(new TrigBounding(src, trg, TrigBounding.TRIG.Ay));
+        line.startXProperty().bind(new TrigBounding(src, trg, VEC.Ax));
+        line.startYProperty().bind(new TrigBounding(src, trg, VEC.Ay));
 
         //Bind end to target
-        this.endXProperty().bind(new TrigBounding(trg, src, TrigBounding.TRIG.Ax));
-        this.endYProperty().bind(new TrigBounding(trg, src, TrigBounding.TRIG.Ay));
-        this.visibleProperty().bind(new LineCollision(src, trg));
+        line.endXProperty().bind(new TrigBounding(trg, src, VEC.Ax));
+        line.endYProperty().bind(new TrigBounding(trg, src, VEC.Ay));
+        line.visibleProperty().bind(new LineCollision(src, trg));
+
+        nameGUI.layoutXProperty().bind(new LabelBinding(line, VEC.Ax));
+        nameGUI.layoutYProperty().bind(new LabelBinding(line, VEC.Ay));
     }
 
     public ObjectGUI getSrc() {

@@ -167,8 +167,8 @@ public class WorkController extends GenericController{
                 e.printStackTrace();
                 Alert error = new Alert(Alert.AlertType.ERROR);
                 error.setTitle("Error");
-                error.setHeaderText("Duplicate Arrow Error");
-                error.setContentText("Cannot have two arrows with the same name in the same category!");
+                error.setHeaderText("Impossible Composition!");
+                error.setContentText("The proposed composition is not feasible!");
                 error.showAndWait();
             } catch (BadObjectNameException e) {
                 e.printStackTrace();
@@ -238,7 +238,6 @@ public class WorkController extends GenericController{
         // The fact that I am using this is giving me an aneurysm the same way that seeing it is giving it to you
         Optional<ArrayList<String>> objects = prompt.showAndWait();
         ArrayList<String> list = objects.orElseThrow(NullPointerException::new);
-
 
         scroll_wrap.fireEvent(new COMPOSITION_SPAWNED(
                 currCat.getArrow(list.get(0)),

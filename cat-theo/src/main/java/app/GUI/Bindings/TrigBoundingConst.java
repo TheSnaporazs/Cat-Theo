@@ -12,14 +12,9 @@ public class TrigBoundingConst extends DoubleBinding {
     Node B;
 
 
-    public enum TRIG {
-        Ax,
-        Ay,
-    }
+    private final VEC computation;
 
-    private final TrigBounding.TRIG computation;
-
-    public TrigBoundingConst(double magnitude, double angle, Node a, Node b, TrigBounding.TRIG computation) {
+    public TrigBoundingConst(double magnitude, double angle, Node a, Node b, VEC computation) {
         this.magnitude = magnitude;
         this.angle = angle;
         A = a;
