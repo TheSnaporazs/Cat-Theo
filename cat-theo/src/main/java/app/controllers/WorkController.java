@@ -174,8 +174,8 @@ public class WorkController extends GenericController{
                 e.printStackTrace();
                 Alert error = new Alert(Alert.AlertType.ERROR);
                 error.setTitle("Error");
-                error.setHeaderText("Duplicate Arrow Error");
-                error.setContentText("Cannot have two arrows with the same name in the same category!");
+                error.setHeaderText("Impossible Composition!");
+                error.setContentText("The proposed composition is not feasible!");
                 error.showAndWait();
             } catch (BadObjectNameException e) {
                 e.printStackTrace();
@@ -250,7 +250,6 @@ public class WorkController extends GenericController{
         Optional<ArrayList<String>> objects = prompt.showAndWait();
         ArrayList<String> list = objects.orElseThrow(NullPointerException::new);
 
-
         scroll_wrap.fireEvent(new COMPOSITION_SPAWNED(
                 currCat.getArrow(list.get(0)),
                 currCat.getArrow(list.get(1))));
@@ -264,7 +263,7 @@ public class WorkController extends GenericController{
                 new FileChooser.ExtensionFilter("Standard", "*.json"),
                 new FileChooser.ExtensionFilter("Any file", "*.*")
             );
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir" + "/saved_categories" )));
         fileChooser.setTitle("Save current category");
         File file = fileChooser.showSaveDialog(root.getScene().getWindow());
         try {

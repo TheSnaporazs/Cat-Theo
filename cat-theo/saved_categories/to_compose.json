@@ -1,0 +1,48 @@
+{
+    "universe": {"name": "UniverseName"},
+    "objects": [
+        {
+            "name": "A",
+            "x": 430,
+            "y": 533
+        },
+        {
+            "name": "B",
+            "x": 777,
+            "y": 370
+        },
+        {
+            "name": "C",
+            "x": 418,
+            "y": 141
+        }
+    ],
+    "spaces": [
+        {
+            "subspaces": [],
+            "name": "img(f)"
+        },
+        {
+            "subspaces": [],
+            "name": "rng(f)"
+        }
+    ],
+    "arrows": [
+        {
+            "image": "img(f)",
+            "identity": false,
+            "name": "f",
+            "range": "rng(f)",
+            "source": "A",
+            "target": "B",
+            "dependencies": []
+        },
+        {
+            "identity": false,
+            "name": "h",
+            "source": "B",
+            "target": "C",
+            "dependencies": []
+        }
+    ]
+}

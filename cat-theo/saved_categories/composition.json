@@ -1,0 +1,56 @@
+{
+    "universe": {"name": "UniverseName"},
+    "objects": [
+        {
+            "name": "A",
+            "x": 430,
+            "y": 533
+        },
+        {
+            "name": "B",
+            "x": 777,
+            "y": 370
+        },
+        {
+            "name": "C",
+            "x": 429.5,
+            "y": 74.5
+        }
+    ],
+    "spaces": [
+        {
+            "subspaces": [],
+            "name": "img(f)"
+        },
+        {
+            "subspaces": [],
+            "name": "rng(f)"
+        }
+    ],
+    "arrows": [
+        {
+            "identity": false,
+            "name": "h \u2022 f",
+            "range": "rng(f)",
+            "source": "A",
+            "target": "C",
+            "dependencies": []
+        },
+        {
+            "image": "img(f)",
+            "identity": false,
+            "name": "f",
+            "range": "rng(f)",
+            "source": "A",
+            "target": "B",
+            "dependencies": ["h \u2022 f"]
+        },
+        {
+            "identity": false,
+            "name": "h",
+            "source": "B",
+            "target": "C",
+            "dependencies": ["h \u2022 f"]
+        }
+    ]
+}

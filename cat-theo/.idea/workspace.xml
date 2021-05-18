@@ -5,16 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a32b215-2bf7-41e4-bf38-f0540b652510" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/app/GUI/Bindings/LineCollision.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/GUI/ArrGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/GUI/ArrGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/ArrGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/ArrGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/Bindings/TrigBounding.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/Bindings/TrigBounding.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/GUIutil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/GUIutil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Category.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,14 +47,11 @@
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/resources" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/resources" />
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="app.GUI.Bindings" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.App">
+  <component name="RunManager" selected="Application.Category">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="app.App" />
       <module name="cat-theo" />
@@ -128,6 +118,10 @@
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.reflect.InvocationTargetException" package="java.lang.reflect" />
           <option name="timeStamp" value="2" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.RuntimeException" package="java.lang" />
+          <option name="timeStamp" value="3" />
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
