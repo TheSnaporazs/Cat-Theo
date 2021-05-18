@@ -48,7 +48,7 @@
             <Image url="@../ObjBtn.png" />
          </image>
       </ImageView>
-      <TextField fx:id="NameField" layoutX="440.0" layoutY="70.0" prefHeight="26.0" prefWidth="117.0" />
+      <TextField fx:id="NameField" layoutX="440.0" layoutY="70.0" onAction="#getInp" prefHeight="26.0" prefWidth="117.0" />
       <Label layoutX="395.0" layoutY="73.0" text="Name:">
          <font>
             <Font size="14.0" />

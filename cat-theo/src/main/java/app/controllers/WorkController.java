@@ -35,7 +35,8 @@ import java.io.IOException;
  */
 public class WorkController extends GenericController{
     public static ContextMenu CtxMenu = new ContextMenu();
-    private Category currCat = new Category("UniverseName");
+    private static Category currCat = new Category("UniverseName");
+    private static ObjectGUI currObj;
 
     @FXML private AnchorPane scroll_wrap;
     @FXML private ToggleGroup tog1;
@@ -54,7 +55,7 @@ public class WorkController extends GenericController{
     public void initialize() {
 
 
-
+        NameField.setEditable(false);
 
         // Mapping right click to a context menu
         scroll_wrap.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -148,14 +149,13 @@ public class WorkController extends GenericController{
         });
 
         scroll_wrap.addEventHandler(OBJECT_DELETED.OBJECT_DELETED_TYPE, event -> {
-
                 currCat.removeObject(event.getObject());
 
         });
 
         scroll_wrap.addEventHandler(OBJECT_SELECTED.OBJECT_SELECTED_TYPE, event -> {
+            currObj = event.getObj();
             ToolBar.updateToolBar(event.getObj(), NameField);
-
         });
     }
 
@@ -251,4 +251,17 @@ public class WorkController extends GenericController{
         return isCreatingArrow;
     }
 
+    public void getInp() {
+        System.out.println(currObj.getObject().getName());
+        System.out.println(NameField.getText());
+        if (NameField.getText()!= currObj.getObject().getName()) {
+            try {
+                currCat.objectChangeName(currObj.getObject(),NameField.getText());
+            } catch (BadObjectNameException e) {
+                e.printStackTrace();
+            } catch (BadSpaceException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
