@@ -191,6 +191,8 @@ public class Arrow {
 
     void setName(String newName) {
         name = newName;
+        if(guiRepr != null)
+            guiRepr.nameGUI.setText(newName);
     }
 
     @Override

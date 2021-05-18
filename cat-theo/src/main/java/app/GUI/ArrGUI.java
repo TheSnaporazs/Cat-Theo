@@ -39,7 +39,7 @@ public class ArrGUI extends Group {
 
     //graphical components
     private Line line;
-    private Label nameGUI;
+    public Label nameGUI;
     private Line rightPoint;
     private Line leftPoint;
 

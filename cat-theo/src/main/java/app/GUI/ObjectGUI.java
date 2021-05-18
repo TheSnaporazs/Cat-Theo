@@ -35,6 +35,7 @@ import javafx.scene.text.Text;
 public class ObjectGUI extends StackPane {
     double xCord;
     double yCord;
+    public Label txt;
 
     private Pane parent;
     private Obj object;
@@ -74,7 +75,7 @@ public class ObjectGUI extends StackPane {
         circle.setStroke(Color.BLACK);
 
 
-        Label txt = new Label(object.getName());
+        txt = new Label(object.getName());
         txt.setFont(new Font(30));
 
         txt.setMaxWidth(this.getRay() * Math.sqrt(2));
