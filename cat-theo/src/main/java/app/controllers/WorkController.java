@@ -265,7 +265,7 @@ public class WorkController extends GenericController{
                 new FileChooser.ExtensionFilter("Standard", "*.json"),
                 new FileChooser.ExtensionFilter("Any file", "*.*")
             );
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir" + "/saved_categories" )));
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         fileChooser.setTitle("Save current category");
         File file = fileChooser.showSaveDialog(root.getScene().getWindow());
         try {
