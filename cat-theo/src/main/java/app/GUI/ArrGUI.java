@@ -1,5 +1,6 @@
 package app.GUI;
 
+import app.GUI.Bindings.LineCollision;
 import app.GUI.Bindings.TrigBounding;
 import app.categories.Arrow;
 import javafx.beans.InvalidationListener;
@@ -73,7 +74,7 @@ public class ArrGUI extends Line {
         //Bind end to target
         this.endXProperty().bind(new TrigBounding(trg, src, TrigBounding.TRIG.Ax));
         this.endYProperty().bind(new TrigBounding(trg, src, TrigBounding.TRIG.Ay));
-
+        this.visibleProperty().bind(new LineCollision(src, trg));
     }
 
     public ObjectGUI getSrc() {
