@@ -3,7 +3,7 @@ package app.events;
 import app.categories.Arrow;
 import javafx.event.EventType;
 
-public class COMPOSITION_SPAWNED extends ANY_CAT{
+public class COMPOSITION_SPAWNED extends ANY_CAT {
 
     public static final EventType<COMPOSITION_SPAWNED> COMPOSITION_SPAWNED_TYPE = new EventType(ANY_CAT_EVENT_TYPE, "COMPONENT_SPAWNED");
 

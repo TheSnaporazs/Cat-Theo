@@ -268,17 +268,7 @@ public class WorkController extends GenericController{
         }
     }
 
-    @FXML
-    private void loadCategory() {
-        // Not the best looking thing, same as above pretty much
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Standard", "*.json"),
-                new FileChooser.ExtensionFilter("Any file", "*.*")
-            );
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-        fileChooser.setTitle("Load new category");
-        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+    private void loadCategory(File file) {
         try {
             currCat = Category.loadForGUI(file, scroll_wrap);
         } catch (Exception e){
@@ -289,6 +279,19 @@ public class WorkController extends GenericController{
             error.setContentText("Something went wrong while loading.");
             error.showAndWait();
         }
+    }
+
+    @FXML
+    private void loadCategory() {
+        // Not the best looking thing, same as above pretty much
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Standard", "*.json"),
+                new FileChooser.ExtensionFilter("Any file", "*.*")
+            );
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.setTitle("Load new category");
+        loadCategory(fileChooser.showOpenDialog(root.getScene().getWindow()));
     }
 
     public boolean isCreatingArrow() {
