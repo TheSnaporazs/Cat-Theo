@@ -35,6 +35,8 @@
                                   text="Create Object" />
                         <MenuItem mnemonicParsing="false" onAction="#arrowFromMenu"
                                   text="Create Arrow" />
+                        <MenuItem mnemonicParsing="false" onAction="#compositionFromMenu"
+                                  text="Make composition" />
                     </items>
                 </Menu>
         </menus>

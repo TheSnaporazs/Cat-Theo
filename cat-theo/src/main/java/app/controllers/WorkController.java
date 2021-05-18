@@ -4,9 +4,11 @@ package app.controllers;
 import app.GUI.ArrGUI;
 import app.GUI.GUIutil;
 import app.GUI.ObjectGUI;
+import app.categories.Arrow;
 import app.categories.Category;
 import app.events.ARROW_SPAWNED_SOURCE;
 import app.events.ARROW_SPAWNED_TARGET;
+import app.events.COMPOSITION_SPAWNED;
 import app.events.OBJECT_DELETED;
 import app.events.OBJECT_SPAWNED;
 import app.exceptions.BadObjectNameException;
@@ -121,7 +123,7 @@ public class WorkController extends GenericController{
 
                 scroll_wrap.getChildren().add(
                         new ArrGUI(src, trg,
-                        currCat.addArrow(event.getName(),src.getObject(), trg.getObject()), scroll_wrap)
+                        currCat.addArrow(event.getName(),src.getObject(), trg.getObject(), true), scroll_wrap)
                 );
 
 
@@ -138,6 +140,42 @@ public class WorkController extends GenericController{
                 error.setTitle("Error");
                 error.setHeaderText("Space error");
                 error.setContentText("Some things related to spaces had an error while creating this arrow.");
+                error.showAndWait();
+            }
+            printCurrCat();
+        });
+
+        scroll_wrap.addEventHandler(COMPOSITION_SPAWNED.COMPOSITION_SPAWNED_TYPE, event -> {
+            //TODO remove mouse chasing line effect
+            try {
+                Arrow g = event.getG();
+                Arrow f = event.getF();
+                ObjectGUI src = g.trg().getRepr();
+                ObjectGUI trg = f.src().getRepr();
+
+                double[] src_coord = {src.getLayoutX(), src.getLayoutY()};
+                double[] trg_coord = {trg.getLayoutX(), trg.getLayoutY()};
+
+
+                scroll_wrap.getChildren().add(
+                        new ArrGUI(src, trg,
+                        currCat.addComposition(g, f), scroll_wrap)
+                );
+
+
+            } catch (ImpossibleArrowException e) {
+                e.printStackTrace();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("Duplicate Arrow Error");
+                error.setContentText("Cannot have two arrows with the same name in the same category!");
+                error.showAndWait();
+            } catch (BadObjectNameException e) {
+                e.printStackTrace();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("Object error");
+                error.setContentText("Some things related to objects had an error while creating this composition.");
                 error.showAndWait();
             }
             printCurrCat();
@@ -190,6 +228,21 @@ public class WorkController extends GenericController{
                 (currCat.getObject(list.get(0))).getRepr(),   //Source object
                 (currCat.getObject(list.get(1))).getRepr(),   //Target object
                 list.get(2)));                              //Arrow  Name
+    }
+
+    @FXML
+    private void compositionFromMenu() {
+        String[] msgs = {"Outer arrow", "Inner arrow"};
+        Dialog<ArrayList<String>> prompt = GUIutil.spawnMultiPrompt(msgs,"Spawn Arrow");
+
+        // The fact that I am using this is giving me an aneurysm the same way that seeing it is giving it to you
+        Optional<ArrayList<String>> objects = prompt.showAndWait();
+        ArrayList<String> list = objects.orElseThrow(NullPointerException::new);
+
+
+        scroll_wrap.fireEvent(new COMPOSITION_SPAWNED(
+                currCat.getArrow(list.get(0)),
+                currCat.getArrow(list.get(1))));
     }
 
     @FXML
