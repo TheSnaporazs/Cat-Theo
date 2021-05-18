@@ -7,7 +7,6 @@ import app.exceptions.BadSpaceException;
 import app.exceptions.IllegalArgumentsException;
 import app.exceptions.ImpossibleArrowException;
 import javafx.scene.layout.Pane;
-import javafx.scene.Parent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -1162,7 +1161,7 @@ public class Category {
         
         Category ct = new Category("Pluto");
         ct.addObject("A");
-        Obj B = ct.addObject("B");
+        ct.addObject("B");
         ct.addObject("C");
         Arrow a1 = ct.addArrow("f", "A", "B");
         Arrow a2 = ct.addArrow("g", "B", "C");

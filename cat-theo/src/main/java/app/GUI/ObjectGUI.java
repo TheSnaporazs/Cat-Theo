@@ -2,6 +2,7 @@ package app.GUI;
 
 import app.categories.Obj;
 import app.events.OBJECT_DELETED;
+import app.events.OBJECT_SELECTED;
 import app.exceptions.IllegalArgumentsException;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -34,6 +35,7 @@ import javafx.scene.text.Text;
 public class ObjectGUI extends StackPane {
     double xCord;
     double yCord;
+    public Label txt;
 
     private Pane parent;
     private Obj object;
@@ -73,7 +75,7 @@ public class ObjectGUI extends StackPane {
         circle.setStroke(Color.BLACK);
 
 
-        Label txt = new Label(object.getName());
+        txt = new Label(object.getName());
         txt.setFont(new Font(30));
 
         txt.setMaxWidth(this.getRay() * Math.sqrt(2));
@@ -99,12 +101,18 @@ public class ObjectGUI extends StackPane {
                     if(event.getButton().equals(MouseButton.SECONDARY)) {
                         try {
                             generateContext(event.getScreenX(), event.getScreenY(), parent);
-                        } catch(IllegalArgumentsException e) {
+                        } catch (IllegalArgumentsException e) {
                             System.out.println(e.getMessage() + "\n" + "error got while creating context menu for object");
                             e.printStackTrace();
                         }
                         event.consume();
-                    }});
+                    }
+                    if(event.getButton().equals(MouseButton.PRIMARY)) {
+                        parent.fireEvent(new OBJECT_SELECTED(this));
+                        event.consume();
+                    }
+                    });
+
         this.addEventHandler(MouseEvent.MOUSE_DRAGGED,
                 event -> {
                     this.setCursor(Cursor.MOVE);
@@ -177,7 +185,5 @@ public class ObjectGUI extends StackPane {
      *
      * @return returns the Model representation of this graphical object
      */
-    public Obj getObject() {
-        return object;
-    }
+    public Obj getObject() { return object; }
 }

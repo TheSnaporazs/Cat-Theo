@@ -70,13 +70,13 @@ public class Arrow {
     public String getName() { return name; }
 
     /**
-     * Returns the name of the arrow's source.
+     * Returns the arrow's source.
      * @return Name of the source.
      */
     public Obj src() { return src; }
 
     /**
-     * Returns the name of the arrow's target.
+     * Returns the arrow's target.
      * @return Name of the target.
      */
     public Obj trg() { return trg; }
@@ -191,6 +191,8 @@ public class Arrow {
 
     void setName(String newName) {
         name = newName;
+        if(guiRepr != null)
+            guiRepr.nameGUI.setText(newName);
     }
 
     @Override

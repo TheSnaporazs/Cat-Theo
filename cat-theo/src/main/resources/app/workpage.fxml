@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.WorkController">
+
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.WorkController">
     <children>
 
-        <ScrollPane fx:id="pannable" pannable="true" layoutX="-1.0" layoutY="51.0" prefHeight="349.0" prefWidth="424.0"
-                    AnchorPane.topAnchor="55.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="300.0" AnchorPane.bottomAnchor="0.0">
+        <ScrollPane fx:id="pannable" layoutX="-1.0" layoutY="60.0" pannable="true" prefHeight="340.0" prefWidth="364.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="236.0" AnchorPane.topAnchor="60.0">
             <content>
                 <AnchorPane fx:id="scroll_wrap" minHeight="0.0" minWidth="0.0" prefHeight="3076.0" prefWidth="3993.0" />
             </content>
         </ScrollPane>
 
-        <MenuBar layoutX="-7.0" prefHeight="19.0" prefWidth="607.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0"
-        AnchorPane.rightAnchor="0.0">
+        <MenuBar layoutX="-7.0" prefHeight="19.0" prefWidth="607.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
-                    <MenuItem mnemonicParsing="false" onAction="#saveCategory"
-                               text="Save" />
-                    <MenuItem mnemonicParsing="false" onAction="#loadCategory"
-                               text="Load" />
-                    <MenuItem mnemonicParsing="false" onAction="#switchPage"
-                               text="Exit" />
+                    <MenuItem mnemonicParsing="false" onAction="#saveCategory" text="Save" />
+                    <MenuItem mnemonicParsing="false" onAction="#loadCategory" text="Load" />
+                    <MenuItem mnemonicParsing="false" onAction="#switchPage" text="Exit" />
                 </Menu>
 
                 <Menu mnemonicParsing="false" text="Actions">
@@ -47,24 +48,17 @@
             <Font size="18.0" />
         </font>
     </Label>
-
-    <RadioButton fx:id="nObj" layoutX="191.0" layoutY="31.0" mnemonicParsing="false" text="New_Obj" userData="obj" selected="true"
-    prefHeight="20.0">
-        <toggleGroup>
-            <ToggleGroup fx:id="tog2" />
-        </toggleGroup>
-    </RadioButton>
-    <RadioButton fx:id="nArr" layoutX="276.0" layoutY="31.0" mnemonicParsing="false" text="New_Arr" toggleGroup="$tog2"
-    userData="arr" prefHeight="20.0"/>
-
-    <RadioButton fx:id="Select" layoutX="12.0" layoutY="31.0" mnemonicParsing="false" text="Select" userData="sel" selected="true"
-                 prefHeight="20.0">
-        <toggleGroup>
-            <ToggleGroup fx:id="tog1" />
-        </toggleGroup>
-    </RadioButton>
-    <RadioButton fx:id="Move" layoutX="75.0" layoutY="31.0" mnemonicParsing="false" text="Move" toggleGroup="$tog1"
-    userData="mov" prefHeight="20.0" />
+      <ImageView fitHeight="28.0" fitWidth="38.0" layoutX="13.0" layoutY="30.0" onMousePressed="#objectFromMenu" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../ObjBtn.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="NameField" layoutX="440.0" layoutY="70.0" onAction="#getInp" prefHeight="26.0" prefWidth="117.0" />
+      <Label layoutX="395.0" layoutY="73.0" text="Name:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
 
 </children>
         </AnchorPane>

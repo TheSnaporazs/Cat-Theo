@@ -70,6 +70,8 @@ public class Obj {
         name = newName;
         if(changeDomainName)
             domain.setName(makeDomainName(name));
+        if(guiRepr != null)
+            guiRepr.txt.setText(newName);
     }
 
     /**

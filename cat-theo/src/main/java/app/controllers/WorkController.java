@@ -4,6 +4,7 @@ package app.controllers;
 import app.GUI.ArrGUI;
 import app.GUI.GUIutil;
 import app.GUI.ObjectGUI;
+import app.GUI.ToolBar;
 import app.categories.Arrow;
 import app.categories.Category;
 import app.events.ARROW_SPAWNED_SOURCE;
@@ -11,6 +12,7 @@ import app.events.ARROW_SPAWNED_TARGET;
 import app.events.COMPOSITION_SPAWNED;
 import app.events.OBJECT_DELETED;
 import app.events.OBJECT_SPAWNED;
+import app.events.OBJECT_SELECTED;
 import app.exceptions.BadObjectNameException;
 import app.exceptions.BadSpaceException;
 import app.exceptions.IllegalArgumentsException;
@@ -19,6 +21,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -37,13 +41,15 @@ import java.io.IOException;
  */
 public class WorkController extends GenericController{
     public static ContextMenu CtxMenu = new ContextMenu();
-    private Category currCat = new Category("UniverseName");
+    private static Category currCat = new Category("UniverseName");
+    private static ObjectGUI currObj;
 
     @FXML private AnchorPane scroll_wrap;
     @FXML private ToggleGroup tog1;
     @FXML private ToggleGroup tog2;
     @FXML private ScrollPane pannable;
     @FXML private AnchorPane root;
+    @FXML private TextField NameField;
     private boolean isCreatingArrow = false;
 
     public WorkController()
@@ -53,6 +59,9 @@ public class WorkController extends GenericController{
 
     @FXML
     public void initialize() {
+
+
+        NameField.setEditable(false);
 
         // Mapping right click to a context menu
         scroll_wrap.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -182,9 +191,13 @@ public class WorkController extends GenericController{
         });
 
         scroll_wrap.addEventHandler(OBJECT_DELETED.OBJECT_DELETED_TYPE, event -> {
-
                 currCat.removeObject(event.getObject());
 
+        });
+
+        scroll_wrap.addEventHandler(OBJECT_SELECTED.OBJECT_SELECTED_TYPE, event -> {
+            currObj = event.getObj();
+            ToolBar.updateToolBar(event.getObj(), NameField);
         });
     }
 
@@ -267,17 +280,7 @@ public class WorkController extends GenericController{
         }
     }
 
-    @FXML
-    private void loadCategory() {
-        // Not the best looking thing, same as above pretty much
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Standard", "*.json"),
-                new FileChooser.ExtensionFilter("Any file", "*.*")
-            );
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir") + "/saved_categories" ));
-        fileChooser.setTitle("Load new category");
-        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+    private void loadCategory(File file) {
         try {
             currCat = Category.loadForGUI(file, scroll_wrap);
         } catch (Exception e){
@@ -290,8 +293,34 @@ public class WorkController extends GenericController{
         }
     }
 
+    @FXML
+    private void loadCategory() {
+        // Not the best looking thing, same as above pretty much
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Standard", "*.json"),
+                new FileChooser.ExtensionFilter("Any file", "*.*")
+            );
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.setTitle("Load new category");
+        loadCategory(fileChooser.showOpenDialog(root.getScene().getWindow()));
+    }
+
     public boolean isCreatingArrow() {
         return isCreatingArrow;
     }
 
+    public void getInp() {
+        System.out.println(currObj.getObject().getName());
+        System.out.println(NameField.getText());
+        if (NameField.getText()!= currObj.getObject().getName()) {
+            try {
+                currCat.objectChangeName(currObj.getObject(),NameField.getText());
+            } catch (BadObjectNameException e) {
+                e.printStackTrace();
+            } catch (BadSpaceException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
