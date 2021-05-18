@@ -4,7 +4,10 @@ import app.categories.Obj;
 import app.events.OBJECT_DELETED;
 import app.exceptions.IllegalArgumentsException;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -49,6 +52,7 @@ public class ObjectGUI extends StackPane {
 
         this.parent = parent;
         this.object = object;
+        object.guiRepr = this;
 
         drawCircle(X, Y, object);                   //Graphical representation
         addHandlers(parent);     //Event Handling
@@ -67,8 +71,16 @@ public class ObjectGUI extends StackPane {
     {
         Circle circle = new Circle(60,60,30, Color.WHITE);
         circle.setStroke(Color.BLACK);
-        Text txt = new Text(object.getName());
+
+
+        Label txt = new Label(object.getName());
         txt.setFont(new Font(30));
+
+        txt.setMaxWidth(this.getRay() * Math.sqrt(2));
+        txt.setMaxHeight(this.getRay() * Math.sqrt(2));
+        txt.setAlignment(Pos.CENTER);
+
+        txt.setWrapText(true);
 
         this.getChildren().addAll(circle, txt);
         this.relocate(X, Y);
@@ -156,7 +168,7 @@ public class ObjectGUI extends StackPane {
     /**
      * removes the Object from the parent, leaving it at the mercy of the Garbage Collection
      */
-    private void removeObjGui()
+    public void removeObjGui()
     {
         this.parent.getChildren().remove(this);
     }

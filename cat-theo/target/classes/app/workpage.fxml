@@ -19,9 +19,9 @@
         AnchorPane.rightAnchor="0.0">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
-                    <MenuItem mnemonicParsing="false" onAction="#switchPage"
+                    <MenuItem mnemonicParsing="false" onAction="#saveCategory"
                                text="Save" />
-                    <MenuItem mnemonicParsing="false" onAction="#switchPage"
+                    <MenuItem mnemonicParsing="false" onAction="#loadCategory"
                                text="Load" />
                     <MenuItem mnemonicParsing="false" onAction="#switchPage"
                                text="Exit" />

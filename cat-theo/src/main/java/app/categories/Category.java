@@ -1,11 +1,13 @@
 package app.categories;
 
+import app.GUI.ArrGUI;
 import app.GUI.ObjectGUI;
 import app.exceptions.BadObjectNameException;
 import app.exceptions.BadSpaceException;
 import app.exceptions.IllegalArgumentsException;
 import app.exceptions.ImpossibleArrowException;
 import javafx.scene.layout.Pane;
+import javafx.scene.Parent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -48,13 +50,16 @@ public class Category {
      * @see app.categories.Arrow#Arrow(String, Obj, Obj, MorphType) Arrow(name, source, target, type)
      */
     public Arrow addArrow(String name, Obj src, Obj trg, boolean inheritsDomains) throws BadSpaceException, ImpossibleArrowException {
+        if(arrows.containsKey(name))
+            throw new ImpossibleArrowException("An arrow with the same name already exists!");
+    
         Arrow arr = new Arrow(name, src, trg, src.getDomain(), trg.getDomain());
 
         src.getDomain().toArrows.add(arr);
         trg.getDomain().toArrows.add(arr);
         if(!inheritsDomains) {
-            arrowChangeRange(arr, String.format("rng(%s)", name));
-            arrowChangeImage(arr, String.format("img(%s)", name));
+            arrowChangeRange(arr, Space.makeRangeName(name));
+            arrowChangeImage(arr, Space.makeImageName(name));
         }
 
         src.outcoming.add(arr);
@@ -387,6 +392,9 @@ public class Category {
             arr.firstAncestor.image.toCompositions.remove(arr);
         if(arr.secondAncestor != null)
             arr.secondAncestor.range.toCompositions.remove(arr);
+
+        if(arr.guiRepr != null)
+            arr.guiRepr.removeArrGui();
     }
 
     /**
@@ -445,6 +453,25 @@ public class Category {
     }
 
     /**
+     * Inserts in the category, if possible, the composition g(f)
+     * @param g
+     * @param f
+     * @return A reference to the composition.
+     * @throws BadObjectNameException If one or both of the two functions do not exist in the category
+     * @throws ImpossibleArrowException If the composition is impossible
+     */
+    public Arrow addComposition(String g, String f) throws BadObjectNameException, ImpossibleArrowException {
+        Arrow gArr;
+        Arrow fArr;
+        if((gArr = arrows.get(g)) == null)
+            throw new BadObjectNameException("Arrow g does not exist in the category!");
+        if((fArr = arrows.get(f)) == null)
+            throw new BadObjectNameException("Arrow f does not exist in the category!");
+
+        return addComposition(gArr, fArr);
+    }
+
+    /**
      * Removes all the {@link app.categories.Arrow Arrows} which compose from the given one.
      * @param arr Reference to the arrow from which the arrows to remove compose.
      * @see #addComposition(Arrow, Arrow)
@@ -496,6 +523,9 @@ public class Category {
             removeArrow(arr);
         for(Arrow arr: obj.incoming)
             removeArrow(arr);
+
+        if(obj.guiRepr != null)
+            obj.guiRepr.removeObjGui();
     }
 
     /**
@@ -513,6 +543,9 @@ public class Category {
                 removeArrow(arr);
             for(Arrow arr: obj.incoming)
                 removeArrow(arr);
+
+            if(obj.guiRepr != null)
+                obj.guiRepr.removeObjGui();
         }
     }
 
@@ -749,24 +782,110 @@ public class Category {
     }
 
     /**
+     * Changes name of the given object
+     * @param obj Reference to the object
+     * @param newName New name of the object
+     * @throws BadObjectNameException If an object of the same name already exists.
+     * @throws BadSpaceException If things happen while changing name of the identity based on this object.
+     */
+    public void objectChangeName(Obj obj, String newName) throws BadObjectNameException, BadSpaceException {
+        if(objects.containsKey(newName))
+            throw new BadObjectNameException("Object with the same name already exists!");
+        String oldIdName = Arrow.makeIdentityName(obj.getName());
+        String newIdName = Arrow.makeIdentityName(newName);
+        for(Arrow arr: obj.incoming)
+            if(arr.getName().equals(oldIdName))
+                arrowChangeName(arr, newIdName);
+        
+        objects.remove(obj.getName());
+        objects.put(newName, obj);
+
+        obj.setName(newName, true);
+    }
+
+    /**
+     * Changes name of the given arrow
+     * @param arr Reference to the arrow
+     * @param newName New name of the arrow
+     * @throws BadObjectNameException If an arrow of the same name already exists.
+     * @throws BadSpaceException If things happen while changing name of the range/image based on this arrow
+     */
+    public void arrowChangeName(Arrow arr, String newName) throws BadObjectNameException, BadSpaceException {
+        if(arrows.containsKey(newName))
+            throw new BadObjectNameException("Arrow with the same name already exists!");
+        if(arr.range.getName().equals(Space.makeRangeName(arr.getName())))
+            spaceChangeName(arr.range, Space.makeRangeName(newName));
+        if(arr.image.getName().equals(Space.makeImageName(arr.getName())))
+            spaceChangeName(arr.image, Space.makeImageName(newName));
+
+        arrows.remove(arr.getName());
+        arrows.put(newName, arr);
+
+        arr.setName(newName);
+    }
+
+
+    /**
+     * Changes the name of the given space.
+     * @param space Reference to the space 
+     * @param newName New name of the space
+     * @throws BadSpaceException If a space with the same name already exists.
+     */
+    public void spaceChangeName(Space space, String newName) throws BadSpaceException {
+        if(spaces.containsKey(newName))
+            throw new BadSpaceException("A space with the same name already exists!");
+
+        spaces.remove(space.getName());
+        spaces.put(newName, space);
+        space.setName(newName);
+    }
+
+    /**
+     * Returns object with the given name, if it exists.
+     * @param name
+     * @return
+     */
+    public Obj getObject(String name) {
+        return objects.get(name);
+    }
+
+    /**
+     * Returns arrow with the given name, if it exists.
+     * @param name
+     * @return
+     */
+    public Arrow getArrow(String name) {
+        return arrows.get(name);
+    }
+
+    /**
      * Saves the category to a JSON file in '/saved_categories'
      * @param fileName name of the file (be sure to add .json at the end)
      * @param overwrite whether to overwrite existing files.
      * @throws IOException
      */
-    public void save(String fileName, boolean overwrite) throws IOException{
+    public void save(String path, String fileName, boolean overwrite) throws IOException {
         // Create folder if it doesn't exist
-        File folder = new File(System.getProperty("user.dir") +"/saved_categories");
+        File folder = new File(path);
         if(!folder.exists())
             folder.mkdir();
 
         // Create file and throw error if can't overwrite.
-        File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
+        File file = new File(path + fileName);
         if(file.exists() && !overwrite)
             throw new IOException("File already exists.");
         
         file.createNewFile();
 
+        save(file);
+    }
+
+    /**
+     * Saves the category to a JSON file
+     * @param file
+     * @throws IOException
+     */
+    public void save(File file) throws IOException{
         JSONObject jsUni = new JSONObject();
         jsUni.put("name", universeName);
 
@@ -838,6 +957,22 @@ public class Category {
      * @throws ImpossibleArrowException
      */
     public static Category load(String fileName) throws IOException, BadObjectNameException, ImpossibleArrowException, BadSpaceException {
+        File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
+        if(!file.exists())
+            throw new IOException("File does not exist.");
+
+        return load(file);
+    }
+
+    /**
+     * Loads and returns the category corresponding to the given .json file
+     * @param file
+     * @return
+     * @throws IOException
+     * @throws BadObjectNameException
+     * @throws ImpossibleArrowException
+     */
+    public static Category load(File file) throws IOException, BadObjectNameException, ImpossibleArrowException, BadSpaceException {
         //Oh almighty god of the algorithms, please, have mercy on me
         //because I have sinned: this method is O(n^2), I beg of you,
         //shed the knowledge on me such that I may honour your name
@@ -847,11 +982,6 @@ public class Category {
         //methods I already wrote to modify the category by directly mingling with its
         //internal collections: it is damn good though, but don't ever try to do it yourself
         //- or at least ask me first.
-
-        // Create file and throw error if can't overwrite.
-        File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
-        if(!file.exists())
-            throw new IOException("File does not exist.");
         
         FileReader reader = new FileReader(file);
         JSONObject category = new JSONObject(new JSONTokener(reader));
@@ -966,13 +1096,9 @@ public class Category {
      * @throws BadObjectNameException
      * @throws ImpossibleArrowException
      */
-    public static Category loadForGUI(String fileName, Pane pane) throws IOException, BadObjectNameException, ImpossibleArrowException, IllegalArgumentsException, BadSpaceException {
-        Category ct = load(fileName);
-
-        // Create file and throw error if can't overwrite.
-        File file = new File(System.getProperty("user.dir") +"/saved_categories/"+ fileName);
-        if(!file.exists())
-            throw new IOException("File does not exist.");
+    public static Category loadForGUI(File file, Pane pane) throws IOException, BadObjectNameException, ImpossibleArrowException, IllegalArgumentsException, BadSpaceException {
+        Category ct = load(file);
+        pane.getChildren().clear();
         
         FileReader reader = new FileReader(file);
         JSONObject category = new JSONObject(new JSONTokener(reader));
@@ -988,11 +1114,12 @@ public class Category {
                 new ObjectGUI(jsonObj.getDouble("x"), jsonObj.getDouble("y"), obj, pane));
         }
 
-        /* Do things for arrow GUI spawning
+        // Put arrows in the GUI
         for(Arrow arr: ct.arrows.values()) {
-            //Things
+            pane.getChildren().add(
+                new ArrGUI(arr.src().guiRepr, arr.trg().guiRepr, arr, pane));
         }
-        */
+
         return ct;
     }
 
@@ -1043,19 +1170,18 @@ public class Category {
         ct.changeSuperSpace(a1.image, a2.range);
         ct.addComposition(a2, a1);
         ct.arrowChangeImage(a1, a2.range); //a1.image <- a2.range
-        ct.removeSpace(a1.image); //a1.image, a2.range <- dom(B)
         //Category ct = Category.load("five_lemma.json");
 
         ct.printArrows();
         ct.printObjects();
         ct.printSpaces();
 
-        for(Obj o: ct.getInitialObjs())
-            System.out.println(o.getName());
+        ct.arrowChangeName(a1, "Asdrubale");
 
-        for(Obj o: ct.getTerminalObjs())
-            System.out.println(o.getName());
+        ct.printArrows();
+        ct.printObjects();
+        ct.printSpaces();
 
-        //ct.save("five_lemma.json", true);
+        //ct.save(System.getProperty("user.dir") +"/saved_categories", "five_lemma.json", true);
     }
 }

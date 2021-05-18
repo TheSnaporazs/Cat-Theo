@@ -5,10 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a32b215-2bf7-41e4-bf38-f0540b652510" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/app/GUI/Bindings/TrigBounding.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/app/GUI/Bindings/LineCollision.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/GUI/ArrGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/GUI/ArrGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/ArrGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/ArrGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/Bindings/TrigBounding.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/Bindings/TrigBounding.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/GUIutil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/GUIutil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Category.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

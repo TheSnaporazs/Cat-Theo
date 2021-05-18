@@ -26,7 +26,7 @@ public class TrigBounding extends DoubleBinding {
 
     public enum TRIG {
         Ax,
-        Ay
+        Ay,
     }
 
     private final TRIG computation;
@@ -48,6 +48,7 @@ public class TrigBounding extends DoubleBinding {
             case Ay -> {
                 return A.getLayoutY() + A.getRay() * (1 + Math.sin(GUIutil.computeAngle(A, B)));
             }
+
             default -> {
                 //This shouldn't happen at all! (but if it happens it will let you notice it!)
                 return 0.0d;
