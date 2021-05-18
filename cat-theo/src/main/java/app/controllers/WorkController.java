@@ -4,11 +4,9 @@ package app.controllers;
 import app.GUI.ArrGUI;
 import app.GUI.GUIutil;
 import app.GUI.ObjectGUI;
+import app.GUI.ToolBar;
 import app.categories.Category;
-import app.events.ARROW_SPAWNED_SOURCE;
-import app.events.ARROW_SPAWNED_TARGET;
-import app.events.OBJECT_DELETED;
-import app.events.OBJECT_SPAWNED;
+import app.events.*;
 import app.exceptions.BadObjectNameException;
 import app.exceptions.BadSpaceException;
 import app.exceptions.IllegalArgumentsException;
@@ -17,6 +15,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -42,6 +42,7 @@ public class WorkController extends GenericController{
     @FXML private ToggleGroup tog2;
     @FXML private ScrollPane pannable;
     @FXML private AnchorPane root;
+    @FXML private TextField NameField;
     private boolean isCreatingArrow = false;
 
     public WorkController()
@@ -51,6 +52,9 @@ public class WorkController extends GenericController{
 
     @FXML
     public void initialize() {
+
+
+
 
         // Mapping right click to a context menu
         scroll_wrap.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -146,6 +150,11 @@ public class WorkController extends GenericController{
         scroll_wrap.addEventHandler(OBJECT_DELETED.OBJECT_DELETED_TYPE, event -> {
 
                 currCat.removeObject(event.getObject());
+
+        });
+
+        scroll_wrap.addEventHandler(OBJECT_SELECTED.OBJECT_SELECTED_TYPE, event -> {
+            ToolBar.updateToolBar(event.getObj(), NameField);
 
         });
     }
