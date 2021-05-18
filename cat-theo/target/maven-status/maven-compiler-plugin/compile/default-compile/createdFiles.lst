@@ -1,4 +1,5 @@
 app\App.class
+app\GUI\Bindings\TrigBounding$1.class
 app\controllers\WorkController.class
 app\events\OBJECT_SPAWNED.class
 app\GUI\ObjectGUI.class
