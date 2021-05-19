@@ -132,7 +132,7 @@ public class WorkController extends GenericController{
 
                 scroll_wrap.getChildren().add(
                         new ArrGUI(src, trg,
-                        currCat.addArrow(event.getName(),src.getObject(), trg.getObject(), true), scroll_wrap)
+                        currCat.addArrow(event.getName(),src.getObject(), trg.getObject()), scroll_wrap)
                 );
 
 
@@ -159,8 +159,8 @@ public class WorkController extends GenericController{
             try {
                 Arrow g = event.getG();
                 Arrow f = event.getF();
-                ObjectGUI src = g.trg().getRepr();
-                ObjectGUI trg = f.src().getRepr();
+                ObjectGUI src = f.src().getRepr();
+                ObjectGUI trg = g.trg().getRepr();
 
                 double[] src_coord = {src.getLayoutX(), src.getLayoutY()};
                 double[] trg_coord = {trg.getLayoutX(), trg.getLayoutY()};

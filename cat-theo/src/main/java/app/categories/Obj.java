@@ -14,7 +14,8 @@ import java.util.Set;
 public class Obj {
     public static final String DOMAIN_SYMBOL = "dom(%s)";
     private String name;
-    private Space domain;
+    Space domain;
+    Set<Space> spaces = new HashSet<Space>();
     Set<Arrow> incoming = new HashSet<Arrow>();
     Set<Arrow> outcoming = new HashSet<Arrow>();
     public ObjectGUI guiRepr;
@@ -25,7 +26,7 @@ public class Obj {
      */
     Obj(String name) {
         this.name = name;
-        this.domain = new Space(String.format(DOMAIN_SYMBOL, name), this);
+        this.domain = new Space(String.format(DOMAIN_SYMBOL, name), this, true);
     }
 
     /**
@@ -66,10 +67,9 @@ public class Obj {
      */
     public Space getDomain() { return domain; }
 
-    void setName(String newName, boolean changeDomainName) {
+    void setName(String newName) {
         name = newName;
-        if(changeDomainName)
-            domain.setName(makeDomainName(name));
+        domain.setName(makeDomainName(name));
         if(guiRepr != null)
             guiRepr.txt.setText(newName);
     }

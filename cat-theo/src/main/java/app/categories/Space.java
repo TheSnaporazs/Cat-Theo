@@ -12,32 +12,20 @@ public class Space {
     public static final String RANGE_SYMBOL = "rng(%s)";
     public static final String IMAGE_SYMBOL = "img(%s)";
 
-    public static Space nullSpace = new Space("W̴̨̧̡͔͈̦̫̘̰̘̮̫͍̗̊̏̆̀̇̈́T̴̯̖̝̮̈́͋͊̃̚͝ͅF̸̟͚̜̘̠͓̣̠̖̗̪̘̟̈́̆̈̏̅͛̄̆̈́̋̄̋͠"){
-        @Override
-        public boolean contains(Space space) { return space == nullSpace; }
-    };
     private String name;
-    Space superSpace = null;
-    HashSet<Space> subspaces = new HashSet<Space>();
     HashSet<Arrow> toArrows = new HashSet<Arrow>();
     HashSet<Arrow> toCompositions = new HashSet<Arrow>();
     Obj object;
+    boolean isOfObject = false;
 
     /**
      * Constructs a space with custom name.
      * @param name
      */
-    Space(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Constructs a space with custom name.
-     * @param name
-     */
-    Space(String name, Obj object) {
+    Space(String name, Obj object, boolean isOfObject) {
         this.name = name;
         this.object = object;
+        this.isOfObject = isOfObject;
     }
 
     /**
@@ -47,42 +35,12 @@ public class Space {
     public String getName() { return name; }
 
     void setName(String newName) { name = newName; }
-    
-    /**
-     * Returns the space's superspace
-     * @return
-     */
-    public Space getSuperSpace() { return superSpace; }
 
     /**
      * If the space as any references left on it, useful for deletion.
      * @return
      */
-    public boolean hasNoRefers() { return toArrows.isEmpty() && object == null; }
-
-    /**
-     * Checks if the space or any of its subspaces contains a space as a subspace
-     * @param subspace 
-     * @return
-     */
-    public boolean contains(Space subspace) {
-        //Anything contains itself
-        if(this == subspace)
-            return true;
-
-        //nullSpace is contained to any space
-        if(subspace == nullSpace)
-            return true;
-
-        if (subspaces.contains(subspace))
-            return true;
-        
-        for (Space spc : subspaces)
-            if (spc.contains(subspace))
-                return true;
-        
-        return false;
-    }
+    public boolean hasNoRefers() { return !isOfObject && toArrows.isEmpty(); }
 
     public static String makeRangeName(String name) { return String.format(RANGE_SYMBOL, name);}
     public static String makeImageName(String name) { return String.format(IMAGE_SYMBOL, name);} 
