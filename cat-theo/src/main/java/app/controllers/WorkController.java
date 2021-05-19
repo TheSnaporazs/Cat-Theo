@@ -159,8 +159,8 @@ public class WorkController extends GenericController{
             try {
                 Arrow g = event.getG();
                 Arrow f = event.getF();
-                ObjectGUI src = g.trg().getRepr();
-                ObjectGUI trg = f.src().getRepr();
+                ObjectGUI src = f.src().getRepr();
+                ObjectGUI trg = g.trg().getRepr();
 
                 double[] src_coord = {src.getLayoutX(), src.getLayoutY()};
                 double[] trg_coord = {trg.getLayoutX(), trg.getLayoutY()};
