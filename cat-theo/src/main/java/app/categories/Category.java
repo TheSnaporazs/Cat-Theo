@@ -7,6 +7,8 @@ import app.exceptions.BadSpaceException;
 import app.exceptions.IllegalArgumentsException;
 import app.exceptions.ImpossibleArrowException;
 import javafx.scene.layout.Pane;
+import javafx.util.Pair;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -15,9 +17,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  * Represents a category from the Category Theory branch of mathematics.
@@ -1007,6 +1015,88 @@ public class Category {
         return ct;
     }
 
+    class PairSetup<A,B> {
+        A a;
+        B b;
+
+        PairSetup(A a, B b) {
+            this.a = a;
+            this.b = b;
+        }
+
+        @Override
+        public int hashCode() {
+            return a.hashCode() + b.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if(!(obj instanceof PairSetup))
+                return false;
+            PairSetup other = (PairSetup) obj;
+            return other.a.equals(a) && other.b.equals(b);
+        }
+    }
+
+    /**
+     * Checks whether the category commutes or not.
+     * Peak Algorithm-class moment
+     * @return
+     */
+    public boolean commutes() {
+        Map<Space, Set<Arrow>> spacesGoTo = new HashMap<Space, Set<Arrow>>();
+        Map<PairSetup<Space, Obj>, Space> mapping = new HashMap<PairSetup<Space, Obj>, Space>();
+        Set<Obj> objectsCopy = new HashSet<Obj>();
+
+        for(Obj o: objects.values())
+            objectsCopy.add(o);
+
+        while(!objectsCopy.isEmpty()) {
+            Obj currO = objectsCopy.iterator().next();
+            objectsCopy.remove(currO);
+
+            Set<PairSetup<Space, Arrow>> checkingPairs = new HashSet<PairSetup<Space, Arrow>>();
+            for(Arrow arr: currO.outcoming)
+                checkingPairs.add(new PairSetup<Space, Arrow>(arr.range, arr));
+
+            while(!checkingPairs.isEmpty()) {
+                PairSetup<Space, Arrow> pair = checkingPairs.iterator().next();
+                Arrow arr = pair.b;
+
+                // Check if holds the commutative condition
+                PairSetup<Space,Obj> expPair = new PairSetup<Space,Obj>(pair.a, arr.trg());
+                Space expectedSpace;
+                if((expectedSpace = mapping.get(expPair)) == null) {
+                    expectedSpace = arr.image;
+                    mapping.put(expPair, expectedSpace);
+                } else if(expectedSpace != arr.image)
+                    return false;
+
+                // Check if it is new space
+                Set<Arrow> spaceSet;
+                if((spaceSet = spacesGoTo.get(pair.a)) == null) {
+                    spaceSet = new HashSet<Arrow>();
+                    spacesGoTo.put(pair.a, spaceSet);
+                }
+
+                // Check if for space it is new arrow
+                if(!spaceSet.contains(arr)) {
+                    for(Arrow othr: arr.trg().outcoming) {
+                        if(othr.range == arr.image || othr.range == arr.trg().domain)
+                            checkingPairs.add(new PairSetup<Space, Arrow>(pair.a, othr));
+                        if(objectsCopy.contains(arr.trg()))
+                            checkingPairs.add(new PairSetup<Space, Arrow>(othr.range, othr));
+                    }
+                    objectsCopy.remove(arr.trg());
+                    spaceSet.add(arr);
+                }
+                checkingPairs.remove(pair);
+            }
+        }
+
+        return true;
+    }
+
     public static void main(String[] args) throws BadObjectNameException, ImpossibleArrowException, IOException, BadSpaceException {
         /*
         // This is to test the model
@@ -1050,20 +1140,17 @@ public class Category {
         ct.addObject("C");
         Arrow a1 = ct.addArrow("f", "A", "B");
         Arrow a2 = ct.addArrow("g", "B", "C");
+        Arrow a3 = ct.addArrow("h", "A", "C");
         ct.arrowChangeImage(a1, "img(f)");
         ct.arrowChangeRange(a2, a1.image);
+        ct.arrowChangeImage(a3, "img(h)");
         ct.addComposition(a2, a1);
         //Category ct = Category.load("five_lemma.json");
 
         ct.printArrows();
         ct.printObjects();
         ct.printSpaces();
-
-        ct.arrowChangeName(a1, "Asdrubale");
-
-        ct.printArrows();
-        ct.printObjects();
-        ct.printSpaces();
+        System.out.println(ct.commutes());
 
         //ct.save(System.getProperty("user.dir") +"/saved_categories", "five_lemma.json", true);
     }

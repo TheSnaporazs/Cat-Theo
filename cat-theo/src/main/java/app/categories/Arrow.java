@@ -157,8 +157,13 @@ public class Arrow {
      */
     public boolean runCheck() {
         if(firstAncestor != null)
-            return secondAncestor.range.equals(firstAncestor.image);
+            return (secondAncestor.range == secondAncestor.src.domain || secondAncestor.range.equals(firstAncestor.image));
         return true;
+    }
+
+    public boolean mathematicallyEqual(Arrow other) {
+        return src == other.src && trg == other.trg &&
+               image == other.image && range == other.range;
     }
 
     /**
@@ -176,7 +181,7 @@ public class Arrow {
      */
     public static Arrow compose(Arrow g, Arrow f) throws ImpossibleArrowException {
 
-        if (f.trg().equals(g.src()) && g.range.equals(f.image)) {// Condition for a composition to be possible.
+        if (f.trg().equals(g.src()) && (g.range == g.src.domain || g.range.equals(f.image))) {// Condition for a composition to be possible.
             return new Arrow(String.format(COMPOSITION_SYMBOL, g.getName(), f.getName()), f.src(), g.trg(), f.range, g.image);
         }
         else throw new ImpossibleArrowException(String.format("Tried to compose %s(%s), conditions not met.", g.getName(), f.getName()));

@@ -38,6 +38,8 @@
                                   text="Create Arrow" />
                         <MenuItem mnemonicParsing="false" onAction="#compositionFromMenu"
                                   text="Make composition" />
+                        <MenuItem mnemonicParsing="false" onAction="#checkCommutativity"
+                                  text="Check commutativity" />
                     </items>
                 </Menu>
         </menus>

@@ -258,6 +258,14 @@ public class WorkController extends GenericController{
     }
 
     @FXML
+    private void checkCommutativity() {
+        if(currCat.commutes())
+            System.out.println("Commutes");
+        else
+            System.out.println("Does not commute");
+    }
+
+    @FXML
     private void saveCategory() {
         // Not the best looking thing, but I mean
         FileChooser fileChooser = new FileChooser();
