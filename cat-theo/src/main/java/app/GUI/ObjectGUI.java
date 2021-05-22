@@ -1,5 +1,7 @@
 package app.GUI;
 
+import java.util.Set;
+
 import app.categories.Obj;
 import app.events.OBJECT_DELETED;
 import app.events.OBJECT_SELECTED;
@@ -35,6 +37,7 @@ import javafx.scene.text.Text;
 public class ObjectGUI extends StackPane {
     double xCord;
     double yCord;
+    Set<ArrGUI> guis;
     public Label txt;
 
     private Pane parent;
@@ -118,15 +121,28 @@ public class ObjectGUI extends StackPane {
                     this.setCursor(Cursor.MOVE);
                     double offsetX = event.getSceneX() - xCord;
                     double offsetY = event.getSceneY() - yCord;
+                    double currX = this.getLayoutX();
+                    double currY = this.getLayoutY();
 
-                    //TODO: also bound to the max X and Y of the pane
                     // God, being a 2D videogame programmer has its benefits...
+                    double temp = currX + offsetX;
+                    if(temp < 0.0f)
+                        offsetX = -currX;
+                    else if(temp > parent.getWidth())
+                        offsetX = parent.getWidth() - currX;
 
-                    double temp = this.getLayoutX() + offsetX;
-                    this.setLayoutX(temp < 0.0f ? 0.0f : temp);
+                    temp = currY + offsetY;
+                    if(temp < 0.0f)
+                        offsetY = -currY;
+                    else if(temp > parent.getHeight())
+                        offsetY = parent.getHeight() - currY;
 
-                    temp = this.getLayoutY() + offsetY;
-                    this.setLayoutY(temp < 0.0f ? 0.0f : temp);
+                    this.setLayoutX(currX + offsetX);
+                    this.setLayoutY(currY + offsetY);
+
+                    for(ArrGUI arr: guis) {
+                        arr.processLine();
+                    }
 
                     xCord = event.getSceneX();
                     yCord = event.getSceneY();
@@ -136,7 +152,8 @@ public class ObjectGUI extends StackPane {
         this.addEventHandler(MouseEvent.MOUSE_PRESSED,
                 event -> {
                     xCord = event.getSceneX();
-                    yCord = event.getSceneY();});
+                    yCord = event.getSceneY();
+                    guis = object.getArrowGUIs();});
         this.addEventHandler(MouseEvent.MOUSE_RELEASED,
                 event -> {
                     this.setCursor(Cursor.HAND);

@@ -1,5 +1,6 @@
 package app.categories;
 
+import app.GUI.ArrGUI;
 import app.GUI.ObjectGUI;
 
 import java.util.HashSet;
@@ -72,6 +73,17 @@ public class Obj {
         domain.setName(makeDomainName(name));
         if(guiRepr != null)
             guiRepr.txt.setText(newName);
+    }
+
+    public Set<ArrGUI> getArrowGUIs() {
+        Set<ArrGUI> guis = new HashSet<ArrGUI>();
+        for(Arrow arr: incoming)
+            guis.add(arr.guiRepr);
+        
+        for(Arrow arr: outcoming)
+            guis.add(arr.guiRepr);
+
+        return guis;
     }
 
     /**

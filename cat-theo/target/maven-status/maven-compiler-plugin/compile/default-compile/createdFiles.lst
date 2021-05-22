@@ -1,3 +1,4 @@
+app\GUI\Bindings\TrigBounding$1.class
 app\GUI\Bindings\LabelBinding$1.class
 app\GUI\ObjectGUI.class
 app\GUI\ArrGUI.class
@@ -8,6 +9,7 @@ app\exceptions\IllegalArgumentsException.class
 app\GUI\Bindings\LabelBinding.class
 app\events\ARROW_SPAWNED_TARGET.class
 app\GUI\GUIutil.class
+app\GUI\Bindings\TrigBoundingConst$1.class
 app\events\ARROW_SPAWNED_SOURCE.class
 app\GUI\Bindings\LineCollision.class
 app\events\OBJECT_DELETED.class
