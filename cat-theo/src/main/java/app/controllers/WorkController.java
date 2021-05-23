@@ -167,7 +167,7 @@ public class WorkController extends GenericController{
 
 
                 scroll_wrap.getChildren().add(
-                        new ArrGUI(src, trg,
+                        new ArrGUI(trg, src,
                         currCat.addComposition(g, f), scroll_wrap)
                 );
 
@@ -273,7 +273,7 @@ public class WorkController extends GenericController{
                 new FileChooser.ExtensionFilter("Standard", "*.json"),
                 new FileChooser.ExtensionFilter("Any file", "*.*")
             );
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir" + "/saved_categories" )));
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir") + "/saved_categories"));
         fileChooser.setTitle("Save current category");
         File file = fileChooser.showSaveDialog(root.getScene().getWindow());
         try {
@@ -309,7 +309,7 @@ public class WorkController extends GenericController{
                 new FileChooser.ExtensionFilter("Standard", "*.json"),
                 new FileChooser.ExtensionFilter("Any file", "*.*")
             );
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir") +  "/saved_categories"));
         fileChooser.setTitle("Load new category");
         loadCategory(fileChooser.showOpenDialog(root.getScene().getWindow()));
     }
