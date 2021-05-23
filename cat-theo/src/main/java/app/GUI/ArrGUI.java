@@ -90,7 +90,7 @@ public class ArrGUI extends Group {
 
     public void removeArrGui()
     {
-        this.parent.getChildren().remove(this);
+        this.parent.getChildren().removeAll(this, line, nameGUI, rightPoint, leftPoint);
     }
 
     /**
