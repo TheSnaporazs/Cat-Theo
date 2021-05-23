@@ -68,6 +68,10 @@ public class Obj {
      */
     public Space getDomain() { return domain; }
 
+    /**
+     * Changes the name of this object.
+     * @param newName
+     */
     void setName(String newName) {
         name = newName;
         domain.setName(makeDomainName(name));
@@ -75,6 +79,10 @@ public class Obj {
             guiRepr.txt.setText(newName);
     }
 
+    /**
+     * Returns the ArrowGUIs of the arrows connected to this object.
+     * @return
+     */
     public Set<ArrGUI> getArrowGUIs() {
         Set<ArrGUI> guis = new HashSet<ArrGUI>();
         for(Arrow arr: incoming)
@@ -85,6 +93,12 @@ public class Obj {
 
         return guis;
     }
+
+    /**
+     * Returns the subspaces of this object's space 
+     * @return
+     */
+    public Set<Space> getSubspaces() { return spaces; }
 
     /**
      * Standard for representing an object's domain
