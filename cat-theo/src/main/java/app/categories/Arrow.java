@@ -161,10 +161,28 @@ public class Arrow {
         return true;
     }
 
+    /**
+     * Checks if the two arrows are mathematically equal
+     * (hold same range, image, source and target)
+     * @param other
+     * @return
+     */
     public boolean mathematicallyEqual(Arrow other) {
         return src == other.src && trg == other.trg &&
                image == other.image && range == other.range;
     }
+
+    /**
+     * Returns the range of this arrow
+     * @return
+     */
+    public Space getRange() { return range; }
+    
+    /**
+     * Returns the image of this arrow
+     * @return
+     */
+    public Space getImage() { return image; }
 
     /**
      * Creates (if possible) a new {@link app.categories.Arrow Arrow} result of the
