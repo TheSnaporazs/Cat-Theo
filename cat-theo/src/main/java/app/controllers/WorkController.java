@@ -167,7 +167,7 @@ public class WorkController extends GenericController{
 
 
                 scroll_wrap.getChildren().add(
-                        new ArrGUI(trg, src,
+                        new ArrGUI(src, trg,
                         currCat.addComposition(g, f), scroll_wrap)
                 );
 

@@ -48,8 +48,6 @@ public class MovableLabel extends StackPane {
         txt = new Label(arrow.getArrow().getName());
         txt.setFont(new Font(15));
 
-        txt.setMaxWidth(RAY * Math.sqrt(2));
-        txt.setMaxHeight(RAY * Math.sqrt(2));
         txt.setAlignment(Pos.CENTER);
 
         txt.setWrapText(true);

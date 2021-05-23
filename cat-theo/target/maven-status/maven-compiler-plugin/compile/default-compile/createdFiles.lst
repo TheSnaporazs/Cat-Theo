@@ -14,7 +14,6 @@ app\controllers\MenuController.class
 app\GUI\Bindings\VEC.class
 app\events\ANY_CAT.class
 app\exceptions\IllegalArgumentsException.class
-app\categories\Space$1.class
 app\GUI\Bindings\LabelBinding.class
 app\GUI\ToolBar.class
 app\exceptions\BadObjectNameException.class
