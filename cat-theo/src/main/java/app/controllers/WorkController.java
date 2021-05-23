@@ -132,7 +132,7 @@ public class WorkController extends GenericController{
 
                 scroll_wrap.getChildren().add(
                         new ArrGUI(src, trg,
-                        currCat.addArrow(event.getName(),src.getObject(), trg.getObject(), true), scroll_wrap)
+                        currCat.addArrow(event.getName(),src.getObject(), trg.getObject()), scroll_wrap)
                 );
 
 
@@ -255,6 +255,14 @@ public class WorkController extends GenericController{
         scroll_wrap.fireEvent(new COMPOSITION_SPAWNED(
                 currCat.getArrow(list.get(0)),
                 currCat.getArrow(list.get(1))));
+    }
+
+    @FXML
+    private void checkCommutativity() {
+        if(currCat.commutes())
+            System.out.println("Commutes");
+        else
+            System.out.println("Does not commute");
     }
 
     @FXML
