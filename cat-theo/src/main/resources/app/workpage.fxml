@@ -4,8 +4,10 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,7 +18,7 @@
 
         <ScrollPane fx:id="pannable" layoutX="-1.0" layoutY="60.0" pannable="true" prefHeight="340.0" prefWidth="364.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="236.0" AnchorPane.topAnchor="60.0">
             <content>
-                <AnchorPane fx:id="scroll_wrap" minHeight="0.0" minWidth="0.0" prefHeight="3076.0" prefWidth="3993.0" />
+                <AnchorPane fx:id="scroll_wrap" minHeight="0.0" minWidth="0.0" prefHeight="3300.0" prefWidth="4000.0" />
             </content>
         </ScrollPane>
 
@@ -33,6 +35,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#switchPage" text="Back to main" userData="mainmenu" />
                         <MenuItem mnemonicParsing="false" onAction="#objectFromMenu" text="Create Object" />
                         <MenuItem mnemonicParsing="false" onAction="#arrowFromMenu" text="Create Arrow" />
+                        <MenuItem mnemonicParsing="false" onAction="#compositionFromMenu" text="Make composition" />
                     </items>
                 </Menu>
         </menus>
@@ -48,12 +51,35 @@
             <Image url="@../ObjBtn.png" />
          </image>
       </ImageView>
-      <TextField fx:id="NameField" layoutX="440.0" layoutY="70.0" onAction="#getInp" prefHeight="26.0" prefWidth="117.0" />
-      <Label layoutX="395.0" layoutY="73.0" text="Name:">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
+      <AnchorPane fx:id="ObjInsp" layoutX="362.0" layoutY="60.0" prefHeight="340.0" prefWidth="238.0" visible="false">
+         <children>
+            <TextField fx:id="NameFieldObj" layoutX="70.0" layoutY="27.0" onAction="#getInp" />
+            <Label layoutX="18.0" layoutY="32.0" text="Name:" />
+            <TextField fx:id="XField" layoutX="70.0" layoutY="67.0" onAction="#inpX" prefHeight="26.0" prefWidth="55.0" />
+            <Label layoutX="21.0" layoutY="72.0" text="X:" />
+            <Label layoutX="150.0" layoutY="72.0" text="Y:" />
+            <TextField fx:id="YField" layoutX="175.0" layoutY="67.0" onAction="#inpY" prefHeight="26.0" prefWidth="54.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="ArrInsp" layoutX="362.0" layoutY="60.0" prefHeight="340.0" prefWidth="238.0" visible="false">
+         <children>
+            <TextField fx:id="NameFieldArr" layoutX="70.0" layoutY="27.0" onAction="#getInp2" />
+            <Label layoutX="18.0" layoutY="32.0" text="Name:" />
+            <TextField fx:id="SourceField" editable="false" layoutX="70.0" layoutY="63.0" onAction="#getInp2" />
+            <TextField fx:id="TargetField" editable="false" layoutX="70.0" layoutY="99.0" onAction="#getInp2" />
+            <Label layoutX="18.0" layoutY="68.0" text="Source:" />
+            <Label layoutX="18.0" layoutY="104.0" text="Target:" />
+            <RadioButton fx:id="Mor" layoutX="24.0" layoutY="152.0" mnemonicParsing="false" text="Morphism">
+               <toggleGroup>
+                  <ToggleGroup fx:id="Morphisms" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="Epi" layoutX="24.0" layoutY="177.0" mnemonicParsing="false" text="Epimorphism" toggleGroup="$Morphisms" />
+            <RadioButton fx:id="Mono" layoutX="24.0" layoutY="202.0" mnemonicParsing="false" text="Monomorphism" toggleGroup="$Morphisms" />
+            <RadioButton fx:id="Iso" layoutX="24.0" layoutY="227.0" mnemonicParsing="false" text="Isomorphism" toggleGroup="$Morphisms" />
+            <AnchorPane layoutX="4.0" layoutY="140.0" prefHeight="118.0" prefWidth="152.0" visible="false" />
+         </children>
+      </AnchorPane>
 
 </children>
         </AnchorPane>

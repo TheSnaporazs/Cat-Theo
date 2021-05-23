@@ -1,0 +1,44 @@
+{
+    "universe": {"name": "UniverseName"},
+    "objects": [
+        {
+            "name": "A",
+            "x": 889,
+            "y": 380
+        },
+        {
+            "name": "B",
+            "x": 599,
+            "y": 440
+        },
+        {
+            "name": "C",
+            "x": 627,
+            "y": 191
+        }
+    ],
+    "spaces": [],
+    "arrows": [
+        {
+            "identity": false,
+            "name": "f",
+            "source": "A",
+            "target": "B",
+            "dependencies": ["g \u2022 f"]
+        },
+        {
+            "identity": false,
+            "name": "g",
+            "source": "B",
+            "target": "C",
+            "dependencies": ["g \u2022 f"]
+        },
+        {
+            "identity": false,
+            "name": "g \u2022 f",
+            "source": "A",
+            "target": "C",
+            "dependencies": []
+        }
+    ]
+}

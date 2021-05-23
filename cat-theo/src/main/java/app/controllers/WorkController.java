@@ -1,10 +1,9 @@
 package app.controllers;
 
 
-import app.GUI.ArrGUI;
-import app.GUI.GUIutil;
-import app.GUI.ObjectGUI;
+import app.GUI.*;
 import app.GUI.ToolBar;
+import app.categories.Arrow;
 import app.categories.Category;
 import app.events.*;
 import app.exceptions.BadObjectNameException;
@@ -15,8 +14,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -37,13 +34,24 @@ public class WorkController extends GenericController{
     public static ContextMenu CtxMenu = new ContextMenu();
     private static Category currCat = new Category("UniverseName");
     private static ObjectGUI currObj;
+    private static ArrGUI currArr;
 
     @FXML private AnchorPane scroll_wrap;
-    @FXML private ToggleGroup tog1;
-    @FXML private ToggleGroup tog2;
+    @FXML private RadioButton Mor;
+    @FXML private RadioButton Epi;
+    @FXML private RadioButton Mono;
+    @FXML private RadioButton Iso;
+
     @FXML private ScrollPane pannable;
     @FXML private AnchorPane root;
-    @FXML private TextField NameField;
+    @FXML private TextField NameFieldObj;
+    @FXML private TextField NameFieldArr;
+    @FXML private TextField SourceField;
+    @FXML private TextField TargetField;
+    @FXML private TextField XField;
+    @FXML private TextField YField;
+    @FXML private AnchorPane ObjInsp;
+    @FXML private AnchorPane ArrInsp;
     private boolean isCreatingArrow = false;
 
     public WorkController()
@@ -55,7 +63,9 @@ public class WorkController extends GenericController{
     public void initialize() {
 
 
-        NameField.setEditable(false);
+
+
+        NameFieldObj.setEditable(false);
 
         // Mapping right click to a context menu
         scroll_wrap.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -126,7 +136,7 @@ public class WorkController extends GenericController{
 
                 scroll_wrap.getChildren().add(
                         new ArrGUI(src, trg,
-                        currCat.addArrow(event.getName(),src.getObject(), trg.getObject()), scroll_wrap)
+                                currCat.addArrow(event.getName(),src.getObject(), trg.getObject()), scroll_wrap)
                 );
 
 
@@ -148,14 +158,63 @@ public class WorkController extends GenericController{
             printCurrCat();
         });
 
+        scroll_wrap.addEventHandler(COMPOSITION_SPAWNED.COMPOSITION_SPAWNED_TYPE, event -> {
+            //TODO remove mouse chasing line effect
+            try {
+                Arrow g = event.getG();
+                Arrow f = event.getF();
+                ObjectGUI src = f.src().getRepr();
+                ObjectGUI trg = g.trg().getRepr();
+
+                double[] src_coord = {src.getLayoutX(), src.getLayoutY()};
+                double[] trg_coord = {trg.getLayoutX(), trg.getLayoutY()};
+
+
+                scroll_wrap.getChildren().add(
+                        new ArrGUI(trg, src,
+                        currCat.addComposition(g, f), scroll_wrap)
+                );
+
+
+            } catch (ImpossibleArrowException e) {
+                e.printStackTrace();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("Impossible Composition!");
+                error.setContentText("The proposed composition is not feasible!");
+                error.showAndWait();
+            } catch (BadObjectNameException e) {
+                e.printStackTrace();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("Object error");
+                error.setContentText("Some things related to objects had an error while creating this composition.");
+                error.showAndWait();
+            }
+            printCurrCat();
+        });
+
         scroll_wrap.addEventHandler(OBJECT_DELETED.OBJECT_DELETED_TYPE, event -> {
                 currCat.removeObject(event.getObject());
 
         });
 
         scroll_wrap.addEventHandler(OBJECT_SELECTED.OBJECT_SELECTED_TYPE, event -> {
+
             currObj = event.getObj();
-            ToolBar.updateToolBar(event.getObj(), NameField);
+            ObjInsp.setVisible(true);
+            ArrInsp.setVisible(false);
+            System.out.println(currObj.getObject().getSubspaces());
+            ToolBar.updateToolBar(currObj, NameFieldObj, XField, YField);
+        });
+
+        scroll_wrap.addEventHandler(ARROW_SELECTED.ARROW_SELECTED_TYPE, event -> {
+
+            currArr = event.getArr();
+            ArrInsp.setVisible(true);
+            ObjInsp.setVisible(false);
+            ToolBarArr.updateToolBArr(currArr, NameFieldArr, SourceField, TargetField,Mor,Epi,Mono, Iso);
+
         });
     }
 
@@ -202,6 +261,20 @@ public class WorkController extends GenericController{
     }
 
     @FXML
+    private void compositionFromMenu() {
+        String[] msgs = {"Outer arrow", "Inner arrow"};
+        Dialog<ArrayList<String>> prompt = GUIutil.spawnMultiPrompt(msgs,"Spawn Arrow");
+
+        // The fact that I am using this is giving me an aneurysm the same way that seeing it is giving it to you
+        Optional<ArrayList<String>> objects = prompt.showAndWait();
+        ArrayList<String> list = objects.orElseThrow(NullPointerException::new);
+
+        scroll_wrap.fireEvent(new COMPOSITION_SPAWNED(
+                currCat.getArrow(list.get(0)),
+                currCat.getArrow(list.get(1))));
+    }
+
+    @FXML
     private void saveCategory() {
         // Not the best looking thing, but I mean
         FileChooser fileChooser = new FileChooser();
@@ -209,7 +282,7 @@ public class WorkController extends GenericController{
                 new FileChooser.ExtensionFilter("Standard", "*.json"),
                 new FileChooser.ExtensionFilter("Any file", "*.*")
             );
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir") + "/saved_categories"));
         fileChooser.setTitle("Save current category");
         File file = fileChooser.showSaveDialog(root.getScene().getWindow());
         try {
@@ -224,17 +297,7 @@ public class WorkController extends GenericController{
         }
     }
 
-    @FXML
-    private void loadCategory() {
-        // Not the best looking thing, same as above pretty much
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Standard", "*.json"),
-                new FileChooser.ExtensionFilter("Any file", "*.*")
-            );
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-        fileChooser.setTitle("Load new category");
-        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+    private void loadCategory(File file) {
         try {
             currCat = Category.loadForGUI(file, scroll_wrap);
         } catch (Exception e){
@@ -247,21 +310,57 @@ public class WorkController extends GenericController{
         }
     }
 
+    @FXML
+    private void loadCategory() {
+        // Not the best looking thing, same as above pretty much
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Standard", "*.json"),
+                new FileChooser.ExtensionFilter("Any file", "*.*")
+            );
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir") +  "/saved_categories"));
+        fileChooser.setTitle("Load new category");
+        loadCategory(fileChooser.showOpenDialog(root.getScene().getWindow()));
+    }
+
     public boolean isCreatingArrow() {
         return isCreatingArrow;
     }
 
     public void getInp() {
         System.out.println(currObj.getObject().getName());
-        System.out.println(NameField.getText());
-        if (NameField.getText()!= currObj.getObject().getName()) {
+        System.out.println(NameFieldObj.getText());
+        if (NameFieldObj.getText()!= currObj.getObject().getName()) {
             try {
-                currCat.objectChangeName(currObj.getObject(),NameField.getText());
+                currCat.objectChangeName(currObj.getObject(), NameFieldObj.getText());
             } catch (BadObjectNameException e) {
                 e.printStackTrace();
             } catch (BadSpaceException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void getInp2() {
+        System.out.println(currObj.getObject().getName());
+        System.out.println(NameFieldObj.getText());
+        if (NameFieldObj.getText()!= currArr.getArrow().getName()) {
+            try {
+                currCat.arrowChangeName(currArr.getArrow(), NameFieldArr.getText());
+            } catch (BadObjectNameException e) {
+                e.printStackTrace();
+            } catch (BadSpaceException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void inpX() {
+        currObj.setxCord(XField.getText());
+    }
+
+    public void inpY() {
+        currObj.setyCord(YField.getText());
+
     }
 }

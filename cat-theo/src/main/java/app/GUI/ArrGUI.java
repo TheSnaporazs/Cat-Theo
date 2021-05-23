@@ -1,16 +1,25 @@
 package app.GUI;
 
-import app.GUI.Bindings.LineCollision;
-import app.GUI.Bindings.TrigBounding;
+import app.GUI.Bindings.*;
 import app.categories.Arrow;
+import app.events.ARROW_SELECTED;
+import app.events.OBJECT_SELECTED;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Cursor;
+import javafx.scene.Group;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+
 
 /**
  *  ArrGUI.java
@@ -26,12 +35,18 @@ import javafx.scene.shape.Line;
  * @see app.categories.Arrow
  * @see Line
  */
-public class ArrGUI extends Line {
+public class ArrGUI extends Group {
 
     private ObjectGUI src;
     private ObjectGUI trg;
     private Arrow arrow;
     private Pane parent;
+
+    //graphical components
+    private Line line;
+    public Label nameGUI;
+    private Line rightPoint;
+    private Line leftPoint;
 
 
     /**
@@ -44,14 +59,30 @@ public class ArrGUI extends Line {
      */
     public ArrGUI(ObjectGUI source, ObjectGUI target, Arrow arrow, Pane parent) {
 
+        super();
         this.src = source;
         this.trg = target;
 
         this.arrow = arrow;
         arrow.guiRepr = this;
         this.parent = parent;
+        addHandlers();
+        initGraphics();
         bindEndpoints();
+        this.setCursor(Cursor.HAND);
 
+    }
+
+    private void initGraphics()
+    {
+        nameGUI = new Label(arrow.getName());
+        nameGUI.setFont(new Font(15));
+
+        rightPoint = new Line();
+        leftPoint = new Line();
+        this.line = new Line();
+
+        this.getChildren().addAll(line, nameGUI, rightPoint, leftPoint);
     }
 
 
@@ -68,13 +99,38 @@ public class ArrGUI extends Line {
     private void bindEndpoints()
     {
         //Bind start to source
-        this.startXProperty().bind(new TrigBounding(src, trg, TrigBounding.TRIG.Ax));
-        this.startYProperty().bind(new TrigBounding(src, trg, TrigBounding.TRIG.Ay));
+        line.startXProperty().bind(new TrigBounding(src, trg, VEC.Ax));
+        line.startYProperty().bind(new TrigBounding(src, trg, VEC.Ay));
 
         //Bind end to target
-        this.endXProperty().bind(new TrigBounding(trg, src, TrigBounding.TRIG.Ax));
-        this.endYProperty().bind(new TrigBounding(trg, src, TrigBounding.TRIG.Ay));
-        this.visibleProperty().bind(new LineCollision(src, trg));
+        line.endXProperty().bind(new TrigBounding(trg, src, VEC.Ax));
+        line.endYProperty().bind(new TrigBounding(trg, src, VEC.Ay));
+        line.visibleProperty().bind(new LineCollision(src, trg));
+
+        //Bind the label name to the middle of the arrow
+        nameGUI.layoutXProperty().bind(new LabelBinding(line, VEC.Ax));
+        nameGUI.layoutYProperty().bind(new LabelBinding(line, VEC.Ay));
+
+        //Bind the arrow tip's start to the arrow's end
+        leftPoint.startXProperty().bind(line.endXProperty());
+        leftPoint.startYProperty().bind(line.endYProperty());
+        rightPoint.startXProperty().bind(line.endXProperty());
+        rightPoint.startYProperty().bind(line.endYProperty());
+
+        leftPoint.endXProperty().bind(new TrigBoundingConst(trg, src, line, 12, 30, VEC.Ax));
+        leftPoint.endYProperty().bind(new TrigBoundingConst(trg, src, line, 12, 30, VEC.Ay));
+        rightPoint.endXProperty().bind(new TrigBoundingConst(trg, src, line, 12, -30, VEC.Ax));
+        rightPoint.endYProperty().bind(new TrigBoundingConst(trg, src, line, 12, -30, VEC.Ay));
+    }
+
+    private void addHandlers() {
+        this.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                event -> {
+            if(event.getButton().equals(MouseButton.PRIMARY)) {
+                        parent.fireEvent(new ARROW_SELECTED(this));
+                        event.consume();
+                    }
+                });
     }
 
     public ObjectGUI getSrc() {
@@ -88,4 +144,5 @@ public class ArrGUI extends Line {
     public Arrow getArrow() {
         return arrow;
     }
+
 }
