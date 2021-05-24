@@ -9,19 +9,24 @@ public class ToolBarArr {
         NameField.setText(arr.getArrow().getName());
         SourceField.setText(arr.getSrc().getObject().getName());
         TargetField.setText(arr.getTrg().getObject().getName());
-        
 
         if (arr.getArrow().isIsomorphism()) {
+            Iso.setDisable(false);
             Iso.fire();
+            Iso.setDisable(true);
         }
-        if (arr.getArrow().isEpic() & !arr.getArrow().isMonic()) {
+        if (arr.getArrow().isEpic() ^ arr.getArrow().isMonic()) {
+            Epi.setDisable(false);
             Epi.fire();
+            Epi.setDisable(true);
         }
         if (arr.getArrow().isMonic() & !arr.getArrow().isEpic()) {
             Epi.fire();
         }
         else {
+            Mor.setDisable(false);
             Mor.fire();
+            Mor.setDisable(true);
         }
 
 

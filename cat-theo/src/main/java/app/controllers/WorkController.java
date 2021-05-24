@@ -62,8 +62,10 @@ public class WorkController extends GenericController{
     @FXML
     public void initialize() {
 
-
-
+        Mor.setDisable(true);
+        Epi.setDisable(true);
+        Mono.setDisable(true);
+        Iso.setDisable(true);
 
         NameFieldObj.setEditable(false);
 
