@@ -20,12 +20,14 @@ import app.exceptions.ImpossibleArrowException;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 
 import java.util.ArrayList;
@@ -50,7 +52,10 @@ public class WorkController extends GenericController{
     @FXML private ScrollPane pannable;
     @FXML private AnchorPane root;
     @FXML private TextField NameField;
-    private boolean isCreatingArrow = false;
+
+    private static boolean isCreatingArrow = false;
+    private static ARROW_SPAWNED_SOURCE currSource;
+    private Line tempArrow = new Line();
 
     public WorkController()
     {
@@ -62,6 +67,7 @@ public class WorkController extends GenericController{
 
 
         NameField.setEditable(false);
+        tempArrow.setMouseTransparent(true);
 
         // Mapping right click to a context menu
         scroll_wrap.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -114,14 +120,41 @@ public class WorkController extends GenericController{
             }
         });
 
+        scroll_wrap.addEventHandler(MouseEvent.MOUSE_MOVED, (event) ->
+        {
+            if(isCreatingArrow)
+            {
+                double MouseX = event.getX();
+                double MouseY = event.getY();
+
+                tempArrow.setEndX(MouseX);
+                tempArrow.setEndY(MouseY);
+            }
+        });
+
         scroll_wrap.addEventHandler(ARROW_SPAWNED_SOURCE.ARROW_SPAWNED_SOURCE_TYPE, event -> {
-            //TODO add mouse chasing line effect
+            System.out.println("This happened!");
+
+            currSource = event;
+
+            Point2D objCenter = event.getSrc().getCenter();
+
+            tempArrow.setStartX(objCenter.getX());
+            tempArrow.setStartY(objCenter.getY());
+
+            tempArrow.setEndX(objCenter.getX());
+            tempArrow.setEndY(objCenter.getY());
+
+            scroll_wrap.getChildren().add(tempArrow);
+
             isCreatingArrow = true;
 
         });
 
         scroll_wrap.addEventHandler(ARROW_SPAWNED_TARGET.ARROW_SPAWNED_TARGET_TYPE, event -> {
-            //TODO remove mouse chasing line effect
+            scroll_wrap.getChildren().remove(tempArrow);
+            isCreatingArrow = false;
+
             try {
                 ObjectGUI src = event.getSrc();
                 ObjectGUI trg = event.getTrg();
@@ -155,7 +188,6 @@ public class WorkController extends GenericController{
         });
 
         scroll_wrap.addEventHandler(COMPOSITION_SPAWNED.COMPOSITION_SPAWNED_TYPE, event -> {
-            //TODO remove mouse chasing line effect
             try {
                 Arrow g = event.getG();
                 Arrow f = event.getF();
@@ -306,8 +338,13 @@ public class WorkController extends GenericController{
         loadCategory(fileChooser.showOpenDialog(root.getScene().getWindow()));
     }
 
-    public boolean isCreatingArrow() {
+    public static boolean isCreatingArrow() {
         return isCreatingArrow;
+    }
+
+    public static ARROW_SPAWNED_SOURCE getCurrSource()
+    {
+        return currSource;
     }
 
     public void getInp() {
