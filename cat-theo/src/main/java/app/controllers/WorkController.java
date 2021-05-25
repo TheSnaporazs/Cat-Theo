@@ -52,6 +52,10 @@ public class WorkController extends GenericController{
     @FXML private TextField YField;
     @FXML private AnchorPane ObjInsp;
     @FXML private AnchorPane ArrInsp;
+    @FXML private ComboBox<String> combor;
+    @FXML private ComboBox<String> comboi;
+    @FXML private ComboBox<String> combogg;
+
     private boolean isCreatingArrow = false;
 
     public WorkController()
@@ -61,12 +65,6 @@ public class WorkController extends GenericController{
 
     @FXML
     public void initialize() {
-
-        Mor.setDisable(true);
-        Epi.setDisable(true);
-        Mono.setDisable(true);
-        Iso.setDisable(true);
-
         NameFieldObj.setEditable(false);
 
         // Mapping right click to a context menu
@@ -207,7 +205,10 @@ public class WorkController extends GenericController{
             ObjInsp.setVisible(true);
             ArrInsp.setVisible(false);
             System.out.println(currObj.getObject().getSubspaces());
-            ToolBar.updateToolBar(currObj, NameFieldObj, XField, YField);
+            System.out.println(currObj.getObject().getDomain().getName());
+            combogg.getItems().clear();
+
+            ToolBar.updateToolBar(currObj, NameFieldObj, XField, YField, combogg);
         });
 
         scroll_wrap.addEventHandler(ARROW_SELECTED.ARROW_SELECTED_TYPE, event -> {
@@ -215,7 +216,11 @@ public class WorkController extends GenericController{
             currArr = event.getArr();
             ArrInsp.setVisible(true);
             ObjInsp.setVisible(false);
-            ToolBarArr.updateToolBArr(currArr, NameFieldArr, SourceField, TargetField,Mor,Epi,Mono, Iso);
+            combor.getItems().clear();
+            comboi.getItems().clear();
+            ToolBarArr.updateToolBArr(currArr, NameFieldArr, SourceField, TargetField,Mor,Epi,Mono, Iso, combor, comboi);
+            System.out.println("range: " + currArr.getArrow().getRange().getName());
+            System.out.println("image: " + currArr.getArrow().getImage().getName());
 
         });
     }
@@ -313,7 +318,7 @@ public class WorkController extends GenericController{
     }
 
     @FXML
-    private void loadCategory() {
+    public void loadCategory() {
         // Not the best looking thing, same as above pretty much
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(

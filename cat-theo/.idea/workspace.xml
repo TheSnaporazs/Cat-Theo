@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a32b215-2bf7-41e4-bf38-f0540b652510" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/GUI/ToolBarArr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/GUI/ToolBarArr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" afterDir="false" />
-    </list>
+    <list default="true" id="9a32b215-2bf7-41e4-bf38-f0540b652510" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -120,10 +115,11 @@
           <properties class="java.lang.reflect.InvocationTargetException" package="java.lang.reflect" />
           <option name="timeStamp" value="2" />
         </breakpoint>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.lang.RuntimeException" package="java.lang" />
-          <option name="timeStamp" value="3" />
-        </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java</url>
+          <line>203</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

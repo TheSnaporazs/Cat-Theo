@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -11,6 +12,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.WorkController">
@@ -46,7 +48,7 @@
             <Font size="18.0" />
         </font>
     </Label>
-      <ImageView fitHeight="28.0" fitWidth="38.0" layoutX="13.0" layoutY="30.0" onMousePressed="#objectFromMenu" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="20.0" layoutY="27.0" onMousePressed="#objectFromMenu" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../ObjBtn.png" />
          </image>
@@ -59,27 +61,40 @@
             <Label layoutX="21.0" layoutY="72.0" text="X:" />
             <Label layoutX="150.0" layoutY="72.0" text="Y:" />
             <TextField fx:id="YField" layoutX="175.0" layoutY="67.0" onAction="#inpY" prefHeight="26.0" prefWidth="54.0" />
+            <ComboBox fx:id="combogg" layoutX="70.0" layoutY="118.0" prefWidth="150.0" promptText="Spaces" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="ArrInsp" layoutX="362.0" layoutY="60.0" prefHeight="340.0" prefWidth="238.0" visible="false">
          <children>
+            <RadioButton fx:id="Mor" layoutX="24.0" layoutY="142.0" mnemonicParsing="false" text="Morphism">
+               <toggleGroup>
+                  <ToggleGroup fx:id="Morphisms" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="Epi" layoutX="24.0" layoutY="167.0" mnemonicParsing="false" text="Epimorphism" toggleGroup="$Morphisms" />
+            <RadioButton fx:id="Iso" layoutX="24.0" layoutY="217.0" mnemonicParsing="false" text="Isomorphism" toggleGroup="$Morphisms" />
+            <RadioButton fx:id="Mono" layoutX="24.0" layoutY="192.0" mnemonicParsing="false" text="Monomorphism" toggleGroup="$Morphisms" />
             <TextField fx:id="NameFieldArr" layoutX="70.0" layoutY="27.0" onAction="#getInp2" />
             <Label layoutX="18.0" layoutY="32.0" text="Name:" />
             <TextField fx:id="SourceField" editable="false" layoutX="70.0" layoutY="63.0" onAction="#getInp2" />
             <TextField fx:id="TargetField" editable="false" layoutX="70.0" layoutY="99.0" onAction="#getInp2" />
             <Label layoutX="18.0" layoutY="68.0" text="Source:" />
             <Label layoutX="18.0" layoutY="104.0" text="Target:" />
-            <RadioButton fx:id="Mor" layoutX="24.0" layoutY="152.0" mnemonicParsing="false" text="Morphism">
-               <toggleGroup>
-                  <ToggleGroup fx:id="Morphisms" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton fx:id="Epi" layoutX="24.0" layoutY="177.0" mnemonicParsing="false" text="Epimorphism" toggleGroup="$Morphisms" />
-            <RadioButton fx:id="Mono" layoutX="24.0" layoutY="202.0" mnemonicParsing="false" text="Monomorphism" toggleGroup="$Morphisms" />
-            <RadioButton fx:id="Iso" layoutX="24.0" layoutY="227.0" mnemonicParsing="false" text="Isomorphism" toggleGroup="$Morphisms" />
-            <AnchorPane layoutX="4.0" layoutY="140.0" prefHeight="118.0" prefWidth="152.0" visible="false" />
+            <StackPane layoutX="11.0" layoutY="135.0" prefHeight="107.0" prefWidth="128.0" />
+            <ComboBox fx:id="combor" layoutX="24.0" layoutY="252.0" prefWidth="150.0" promptText="Range" />
+            <ComboBox fx:id="comboi" layoutX="24.0" layoutY="286.0" prefWidth="150.0" promptText="Image" />
          </children>
       </AnchorPane>
+      <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="70.0" layoutY="27.0" onMousePressed="#arrowFromMenu" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../ArrBtn.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="120.0" layoutY="27.0" onMousePressed="#compositionFromMenu" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../CmpBtn.png" />
+         </image>
+      </ImageView>
 
 </children>
         </AnchorPane>
