@@ -2,6 +2,8 @@ package app.GUI;
 
 import app.GUI.Bindings.*;
 import app.categories.Arrow;
+import app.events.ARROW_SELECTED;
+import app.events.OBJECT_SELECTED;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
@@ -166,4 +168,5 @@ public class ArrGUI extends Group {
     public Arrow getArrow() {
         return arrow;
     }
+
 }

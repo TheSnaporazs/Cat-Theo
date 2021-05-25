@@ -35,7 +35,7 @@ import javafx.scene.text.Text;
  * @see StackPane
  */
 public class ObjectGUI extends StackPane {
-    double xCord;
+    public double xCord;
     double yCord;
     Set<ArrGUI> guis;
     public Label txt;
@@ -58,6 +58,8 @@ public class ObjectGUI extends StackPane {
         this.parent = parent;
         this.object = object;
         object.guiRepr = this;
+        this.xCord = X;
+        this.yCord = Y;
 
         drawCircle(X, Y, object);                   //Graphical representation
         addHandlers(parent);     //Event Handling
@@ -203,4 +205,19 @@ public class ObjectGUI extends StackPane {
      * @return returns the Model representation of this graphical object
      */
     public Obj getObject() { return object; }
+
+    public String getxCord() {return String.valueOf(xCord); }
+
+    public String getyCord() {return String.valueOf(yCord); }
+
+    public void setxCord(String x) {
+        xCord = Double.parseDouble(x);
+        this.setLayoutX(xCord);
+    }
+
+    public void setyCord(String y) {
+        yCord = Double.parseDouble(y);
+        this.setLayoutY(yCord);
+    }
+
 }
