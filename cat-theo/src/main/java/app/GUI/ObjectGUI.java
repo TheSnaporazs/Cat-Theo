@@ -1,5 +1,7 @@
 package app.GUI;
 
+import java.util.Set;
+
 import app.categories.Obj;
 import app.controllers.WorkController;
 import app.events.ARROW_SPAWNED_SOURCE;
@@ -37,8 +39,9 @@ import javafx.scene.text.Text;
  * @see StackPane
  */
 public class ObjectGUI extends StackPane {
-    double xCord;
+    public double xCord;
     double yCord;
+    Set<ArrGUI> guis;
     public Label txt;
 
     private Pane parent;
@@ -59,6 +62,8 @@ public class ObjectGUI extends StackPane {
         this.parent = parent;
         this.object = object;
         object.guiRepr = this;
+        this.xCord = X;
+        this.yCord = Y;
 
         drawCircle(X, Y, object);                   //Graphical representation
         addHandlers(parent);     //Event Handling
@@ -129,15 +134,28 @@ public class ObjectGUI extends StackPane {
                     this.setCursor(Cursor.MOVE);
                     double offsetX = event.getSceneX() - xCord;
                     double offsetY = event.getSceneY() - yCord;
+                    double currX = this.getLayoutX();
+                    double currY = this.getLayoutY();
 
-                    //TODO: also bound to the max X and Y of the pane
                     // God, being a 2D videogame programmer has its benefits...
+                    double temp = currX + offsetX;
+                    if(temp < 0.0f)
+                        offsetX = -currX;
+                    else if(temp > parent.getWidth())
+                        offsetX = parent.getWidth() - currX;
 
-                    double temp = this.getLayoutX() + offsetX;
-                    this.setLayoutX(temp < 0.0f ? 0.0f : temp);
+                    temp = currY + offsetY;
+                    if(temp < 0.0f)
+                        offsetY = -currY;
+                    else if(temp > parent.getHeight())
+                        offsetY = parent.getHeight() - currY;
 
-                    temp = this.getLayoutY() + offsetY;
-                    this.setLayoutY(temp < 0.0f ? 0.0f : temp);
+                    this.setLayoutX(currX + offsetX);
+                    this.setLayoutY(currY + offsetY);
+
+                    for(ArrGUI arr: guis) {
+                        arr.processLine();
+                    }
 
                     xCord = event.getSceneX();
                     yCord = event.getSceneY();
@@ -147,7 +165,8 @@ public class ObjectGUI extends StackPane {
         this.addEventHandler(MouseEvent.MOUSE_PRESSED,
                 event -> {
                     xCord = event.getSceneX();
-                    yCord = event.getSceneY();});
+                    yCord = event.getSceneY();
+                    guis = object.getArrowGUIs();});
         this.addEventHandler(MouseEvent.MOUSE_RELEASED,
                 event -> {
                     this.setCursor(Cursor.HAND);
@@ -207,4 +226,18 @@ public class ObjectGUI extends StackPane {
     {
         return new Point2D(getLayoutX() + getRay(), getLayoutY() + getRay());
     }
+    public String getxCord() {return String.valueOf(xCord); }
+
+    public String getyCord() {return String.valueOf(yCord); }
+
+    public void setxCord(String x) {
+        xCord = Double.parseDouble(x);
+        this.setLayoutX(xCord);
+    }
+
+    public void setyCord(String y) {
+        yCord = Double.parseDouble(y);
+        this.setLayoutY(yCord);
+    }
+
 }

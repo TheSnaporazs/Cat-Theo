@@ -102,7 +102,7 @@ public class Arrow {
      */
     public boolean isMonic() {
         Iterator<Arrow> iter = src.incoming.iterator();
-        Space baseImage = Space.nullSpace;
+        Space baseImage = null;
         if (iter.hasNext())
             baseImage = iter.next().image;
 
@@ -119,7 +119,7 @@ public class Arrow {
      */
     public boolean isEpic() {
         Iterator<Arrow> iter = trg.outcoming.iterator();
-        Space baseRange = Space.nullSpace;
+        Space baseRange = null;
         if (iter.hasNext())
             baseRange = iter.next().range;
 
@@ -157,9 +157,32 @@ public class Arrow {
      */
     public boolean runCheck() {
         if(firstAncestor != null)
-            return secondAncestor.range.contains(firstAncestor.image);
+            return (secondAncestor.range == secondAncestor.src.domain || secondAncestor.range.equals(firstAncestor.image));
         return true;
     }
+
+    /**
+     * Checks if the two arrows are mathematically equal
+     * (hold same range, image, source and target)
+     * @param other
+     * @return
+     */
+    public boolean mathematicallyEqual(Arrow other) {
+        return src == other.src && trg == other.trg &&
+               image == other.image && range == other.range;
+    }
+
+    /**
+     * Returns the range of this arrow
+     * @return
+     */
+    public Space getRange() { return range; }
+    
+    /**
+     * Returns the image of this arrow
+     * @return
+     */
+    public Space getImage() { return image; }
 
     /**
      * Creates (if possible) a new {@link app.categories.Arrow Arrow} result of the
@@ -176,7 +199,7 @@ public class Arrow {
      */
     public static Arrow compose(Arrow g, Arrow f) throws ImpossibleArrowException {
 
-        if (f.trg().equals(g.src()) && g.range.contains(f.image)) {// Condition for a composition to be possible.
+        if (f.trg().equals(g.src()) && (g.range == g.src.domain || g.range.equals(f.image))) {// Condition for a composition to be possible.
             return new Arrow(String.format(COMPOSITION_SYMBOL, g.getName(), f.getName()), f.src(), g.trg(), f.range, g.image);
         }
         else throw new ImpossibleArrowException(String.format("Tried to compose %s(%s), conditions not met.", g.getName(), f.getName()));

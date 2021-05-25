@@ -1,19 +1,11 @@
 package app.GUI;
 
-import app.GUI.Bindings.*;
 import app.categories.Arrow;
-import javafx.beans.InvalidationListener;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
+import javafx.scene.shape.QuadCurve;
 
 
 /**
@@ -32,14 +24,14 @@ import javafx.scene.text.Font;
  */
 public class ArrGUI extends Group {
 
-    private ObjectGUI src;
-    private ObjectGUI trg;
+    ObjectGUI src;
+    ObjectGUI trg;
     private Arrow arrow;
     private Pane parent;
 
     //graphical components
-    private Line line;
-    public Label nameGUI;
+    private QuadCurve line;
+    public MovableLabel nameGUI;
     private Line rightPoint;
     private Line leftPoint;
 
@@ -63,59 +55,96 @@ public class ArrGUI extends Group {
         this.parent = parent;
 
         initGraphics();
-        bindEndpoints();
-
+        processLine();
     }
 
     private void initGraphics()
     {
-        nameGUI = new Label(arrow.getName());
-        nameGUI.setFont(new Font(15));
+        nameGUI = new MovableLabel(this, parent);
 
         rightPoint = new Line();
         leftPoint = new Line();
-        this.line = new Line();
+        line = new QuadCurve();
+        line.setFill(new Color(0, 0, 0, 0));
+        line.setStroke(Color.BLACK);
 
-        this.getChildren().addAll(line, nameGUI, rightPoint, leftPoint);
+        this.getChildren().addAll(line, rightPoint, leftPoint);
     }
 
 
     public void removeArrGui()
     {
-        this.parent.getChildren().remove(this);
+        this.parent.getChildren().removeAll(this, nameGUI);
     }
 
     /**
-     * Binds the arrow's start and end to the X and Y properties of the source and target object
-     *
-     * @see app.GUI.Bindings.TrigBounding
+     * Processes the new graphical position of the line, label included.
      */
-    private void bindEndpoints()
-    {
-        //Bind start to source
-        line.startXProperty().bind(new TrigBounding(src, trg, VEC.Ax));
-        line.startYProperty().bind(new TrigBounding(src, trg, VEC.Ay));
+    public void processLine()
+    {   
+        //Sorry for what I am doing Dario, it was my only choice.
+        double x1 = src.getLayoutX();
+        double y1 = src.getLayoutY();
+        double x2 = trg.getLayoutX();
+        double y2 = trg.getLayoutY();
+        double dist = Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1, 2));
+        double angle = GUIutil.computeAngle(src, trg);
+        nameGUI.setLayoutX(src.getLayoutX() + Math.cos(nameGUI.alpha + angle) * nameGUI.coeff * dist);
+        nameGUI.setLayoutY(src.getLayoutY() + Math.sin(nameGUI.alpha + angle) * nameGUI.coeff * dist);
 
-        //Bind end to target
-        line.endXProperty().bind(new TrigBounding(trg, src, VEC.Ax));
-        line.endYProperty().bind(new TrigBounding(trg, src, VEC.Ay));
-        line.visibleProperty().bind(new LineCollision(src, trg));
-
-        //Bind the label name to the middle of the arrow
-        nameGUI.layoutXProperty().bind(new LabelBinding(line, VEC.Ax));
-        nameGUI.layoutYProperty().bind(new LabelBinding(line, VEC.Ay));
-
-        //Bind the arrow tip's start to the arrow's end
-        leftPoint.startXProperty().bind(line.endXProperty());
-        leftPoint.startYProperty().bind(line.endYProperty());
-        rightPoint.startXProperty().bind(line.endXProperty());
-        rightPoint.startYProperty().bind(line.endYProperty());
-
-        leftPoint.endXProperty().bind(new TrigBoundingConst(trg, src, line, 12, 30, VEC.Ax));
-        leftPoint.endYProperty().bind(new TrigBoundingConst(trg, src, line, 12, 30, VEC.Ay));
-        rightPoint.endXProperty().bind(new TrigBoundingConst(trg, src, line, 12, -30, VEC.Ax));
-        rightPoint.endYProperty().bind(new TrigBoundingConst(trg, src, line, 12, -30, VEC.Ay));
+        processLineFromLabel();
     }
+
+    /**
+     * Processes the new graphical position of the line, label excluded.
+     */
+    public void processLineFromLabel()
+    {   
+        double angle = GUIutil.computeAngle(src, trg);
+
+        // Trigonometric hellspawn.
+        double x1 = src.getLayoutX();
+        double y1 = src.getLayoutY();
+        double x2 = trg.getLayoutX();
+        double y2 = trg.getLayoutY();
+        double dist = Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1, 2));
+        double c1 = Math.cos(nameGUI.alpha) * nameGUI.coeff * dist;
+        double c2 = Math.sin(nameGUI.alpha) * nameGUI.coeff * Math.pow(dist, 1.1f);
+
+        //Compute label
+        double t1 = c1 * Math.cos(angle) - c2 * Math.sin(angle) + src.getLayoutX();
+        double t2 = c1 * Math.sin(angle) + c2 * Math.cos(angle) + src.getLayoutY();
+        line.setControlX(t1);
+        line.setControlY(t2);
+
+        //Compute start
+        double angleSrcToTrg = Math.atan2(t2-y1,t1-x1);
+
+        line.setStartX(src.getLayoutX() + src.getRay() * (1 + Math.cos(angleSrcToTrg)));
+        line.setStartY(src.getLayoutY() + src.getRay() * (1 + Math.sin(angleSrcToTrg)));
+
+        //Compute end
+        double angleCtrlToTrg = Math.atan2(y2-t2,x2-t1);
+
+        double endX = trg.getLayoutX() + trg.getRay() * (1 + Math.cos(angleCtrlToTrg + Math.PI));
+        double endY = trg.getLayoutY() + trg.getRay() * (1 + Math.sin(angleCtrlToTrg + Math.PI));
+
+        line.setEndX(endX);
+        line.setEndY(endY);
+
+        //Compute left tip
+        leftPoint.setStartX(endX);
+        leftPoint.setStartY(endY);
+        leftPoint.setEndX(endX - 12 * Math.cos(angleCtrlToTrg + 0.5236f));
+        leftPoint.setEndY(endY - 12 * Math.sin(angleCtrlToTrg + 0.5236f));
+
+        //Compute right tip
+        rightPoint.setStartX(endX);
+        rightPoint.setStartY(endY);
+        rightPoint.setEndX(endX - 12 * Math.cos(angleCtrlToTrg - 0.5236f));
+        rightPoint.setEndY(endY - 12 * Math.sin(angleCtrlToTrg - 0.5236f));
+    }
+
 
     public ObjectGUI getSrc() {
         return src;
@@ -128,4 +157,5 @@ public class ArrGUI extends Group {
     public Arrow getArrow() {
         return arrow;
     }
+
 }
