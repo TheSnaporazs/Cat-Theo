@@ -1,12 +1,11 @@
 package app.controllers;
 
 
-import app.GUI.ArrGUI;
-import app.GUI.GUIutil;
-import app.GUI.ObjectGUI;
+import app.GUI.*;
 import app.GUI.ToolBar;
 import app.categories.Arrow;
 import app.categories.Category;
+import app.events.ARROW_SELECTED;
 import app.events.ARROW_SPAWNED_SOURCE;
 import app.events.ARROW_SPAWNED_TARGET;
 import app.events.COMPOSITION_SPAWNED;
@@ -21,8 +20,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -43,13 +40,28 @@ public class WorkController extends GenericController{
     public static ContextMenu CtxMenu = new ContextMenu();
     private static Category currCat = new Category("UniverseName");
     private static ObjectGUI currObj;
+    private static ArrGUI currArr;
 
     @FXML private AnchorPane scroll_wrap;
-    @FXML private ToggleGroup tog1;
-    @FXML private ToggleGroup tog2;
+    @FXML private RadioButton Mor;
+    @FXML private RadioButton Epi;
+    @FXML private RadioButton Mono;
+    @FXML private RadioButton Iso;
+
     @FXML private ScrollPane pannable;
     @FXML private AnchorPane root;
-    @FXML private TextField NameField;
+    @FXML private TextField NameFieldObj;
+    @FXML private TextField NameFieldArr;
+    @FXML private TextField SourceField;
+    @FXML private TextField TargetField;
+    @FXML private TextField XField;
+    @FXML private TextField YField;
+    @FXML private AnchorPane ObjInsp;
+    @FXML private AnchorPane ArrInsp;
+    @FXML private ComboBox<String> combor;
+    @FXML private ComboBox<String> comboi;
+    @FXML private ComboBox<String> combogg;
+
     private boolean isCreatingArrow = false;
 
     public WorkController()
@@ -59,30 +71,34 @@ public class WorkController extends GenericController{
 
     @FXML
     public void initialize() {
-
-
-        NameField.setEditable(false);
+        NameFieldObj.setEditable(false);
 
         // Mapping right click to a context menu
         scroll_wrap.addEventHandler(MouseEvent.MOUSE_CLICKED,
             event -> {
-                if (event.getButton() == MouseButton.SECONDARY) { //we catch all of them since switch is a O(1) hash table
-                    String[] items = {"Create Object"};
-                    EventHandler[] actions = {
-                        ((event1) -> {
-                            String name = GUIutil.spawnPrompt("Name: ", "Insert Object Name");
-                            scroll_wrap.fireEvent(new OBJECT_SPAWNED(event.getX(),
-                                    event.getY(), name));
-                        })
-                    };
-                    try {
-                        GUIutil.pingCreationMenu(event.getScreenX(), event.getScreenY(), scroll_wrap, items, actions);
-                    } catch (IllegalArgumentsException e) {
-                        System.out.println("Something went wrong in the contextMenu init! " +
-                                "(This shouldn't really happen!)");
-                        e.printStackTrace();
-                    }
-                    event.consume();
+                switch(event.getButton()) {
+                    case SECONDARY:
+                        String[] items = {"Create Object"};
+                        EventHandler[] actions = {
+                            ((event1) -> {
+                                String name = GUIutil.spawnPrompt("Name: ", "Insert Object Name");
+                                scroll_wrap.fireEvent(new OBJECT_SPAWNED(event.getX(),
+                                        event.getY(), name));
+                            })
+                        };
+                        try {
+                            GUIutil.pingCreationMenu(event.getScreenX(), event.getScreenY(), scroll_wrap, items, actions);
+                        } catch (IllegalArgumentsException e) {
+                            System.out.println("Something went wrong in the contextMenu init! " +
+                                    "(This shouldn't really happen!)");
+                            e.printStackTrace();
+                        }
+                        event.consume();
+                        break;
+                    default:
+                        CtxMenu.hide();
+                        event.consume();
+                        break;
                 }
 
             });
@@ -132,7 +148,7 @@ public class WorkController extends GenericController{
 
                 scroll_wrap.getChildren().add(
                         new ArrGUI(src, trg,
-                        currCat.addArrow(event.getName(),src.getObject(), trg.getObject()), scroll_wrap)
+                                currCat.addArrow(event.getName(),src.getObject(), trg.getObject()), scroll_wrap)
                 );
 
 
@@ -196,8 +212,28 @@ public class WorkController extends GenericController{
         });
 
         scroll_wrap.addEventHandler(OBJECT_SELECTED.OBJECT_SELECTED_TYPE, event -> {
+
             currObj = event.getObj();
-            ToolBar.updateToolBar(event.getObj(), NameField);
+            ObjInsp.setVisible(true);
+            ArrInsp.setVisible(false);
+            System.out.println(currObj.getObject().getSubspaces());
+            System.out.println(currObj.getObject().getDomain().getName());
+            combogg.getItems().clear();
+
+            ToolBar.updateToolBar(currObj, NameFieldObj, XField, YField, combogg);
+        });
+
+        scroll_wrap.addEventHandler(ARROW_SELECTED.ARROW_SELECTED_TYPE, event -> {
+
+            currArr = event.getArr();
+            ArrInsp.setVisible(true);
+            ObjInsp.setVisible(false);
+            combor.getItems().clear();
+            comboi.getItems().clear();
+            ToolBarArr.updateToolBArr(currArr, NameFieldArr, SourceField, TargetField,Mor,Epi,Mono, Iso, combor, comboi);
+            System.out.println("range: " + currArr.getArrow().getRange().getName());
+            System.out.println("image: " + currArr.getArrow().getImage().getName());
+
         });
     }
 
@@ -302,7 +338,7 @@ public class WorkController extends GenericController{
     }
 
     @FXML
-    private void loadCategory() {
+    public void loadCategory() {
         // Not the best looking thing, same as above pretty much
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
@@ -320,15 +356,38 @@ public class WorkController extends GenericController{
 
     public void getInp() {
         System.out.println(currObj.getObject().getName());
-        System.out.println(NameField.getText());
-        if (NameField.getText()!= currObj.getObject().getName()) {
+        System.out.println(NameFieldObj.getText());
+        if (NameFieldObj.getText()!= currObj.getObject().getName()) {
             try {
-                currCat.objectChangeName(currObj.getObject(),NameField.getText());
+                currCat.objectChangeName(currObj.getObject(), NameFieldObj.getText());
             } catch (BadObjectNameException e) {
                 e.printStackTrace();
             } catch (BadSpaceException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void getInp2() {
+        System.out.println(currObj.getObject().getName());
+        System.out.println(NameFieldObj.getText());
+        if (NameFieldObj.getText()!= currArr.getArrow().getName()) {
+            try {
+                currCat.arrowChangeName(currArr.getArrow(), NameFieldArr.getText());
+            } catch (BadObjectNameException e) {
+                e.printStackTrace();
+            } catch (BadSpaceException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void inpX() {
+        currObj.setxCord(XField.getText());
+    }
+
+    public void inpY() {
+        currObj.setyCord(YField.getText());
+
     }
 }
