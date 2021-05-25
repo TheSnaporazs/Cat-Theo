@@ -32,6 +32,7 @@ import java.util.Optional;
 import java.io.File;
 import java.io.IOException;
 
+
 /**
  * Java-FX controller for the work page
  *
@@ -52,7 +53,19 @@ public class WorkController extends GenericController{
 
     @FXML private ScrollPane pannable;
     @FXML private AnchorPane root;
-    @FXML private TextField NameField;
+
+    @FXML private TextField NameFieldObj;
+    @FXML private TextField NameFieldArr;
+    @FXML private TextField SourceField;
+    @FXML private TextField TargetField;
+    @FXML private TextField XField;
+    @FXML private TextField YField;
+    @FXML private AnchorPane ObjInsp;
+    @FXML private AnchorPane ArrInsp;
+    @FXML private ComboBox<String> combor;
+    @FXML private ComboBox<String> comboi;
+    @FXML private ComboBox<String> combogg;
+
 
     private static boolean isCreatingArrow = false;
     private static ARROW_SPAWNED_SOURCE currSource;
@@ -66,8 +79,6 @@ public class WorkController extends GenericController{
     @FXML
     public void initialize() {
 
-
-        NameField.setEditable(false);
         tempArrow.setMouseTransparent(true);
         NameFieldObj.setEditable(false);
 

@@ -11,6 +11,7 @@ app\categories\Category.class
 app\exceptions\BadSpaceException.class
 module-info.class
 app\controllers\MenuController.class
+app\controllers\WorkController$1.class
 app\GUI\Bindings\VEC.class
 app\events\ANY_CAT.class
 app\exceptions\IllegalArgumentsException.class
