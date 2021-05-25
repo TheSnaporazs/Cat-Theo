@@ -1,24 +1,11 @@
 package app.GUI;
 
-import app.GUI.Bindings.*;
 import app.categories.Arrow;
-import app.events.ARROW_SELECTED;
-import app.events.OBJECT_SELECTED;
-import javafx.beans.InvalidationListener;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.QuadCurve;
-import javafx.scene.text.Font;
 
 
 /**
@@ -73,8 +60,6 @@ public class ArrGUI extends Group {
 
     private void initGraphics()
     {
-        double angle = GUIutil.computeAngle(src, trg);
-        double len = Math.sqrt(Math.pow(trg.getLayoutX() - src.getLayoutX(), 2) + Math.pow(trg.getLayoutY() - src.getLayoutY(), 2));
         nameGUI = new MovableLabel(this, parent);
 
         rightPoint = new Line();
@@ -83,22 +68,17 @@ public class ArrGUI extends Group {
         line.setFill(new Color(0, 0, 0, 0));
         line.setStroke(Color.BLACK);
 
-        parent.getChildren().addAll(line, rightPoint, leftPoint);
-        rightPoint.toBack();
-        leftPoint.toBack();
-        line.toBack();
+        this.getChildren().addAll(line, rightPoint, leftPoint);
     }
 
 
     public void removeArrGui()
     {
-        this.parent.getChildren().removeAll(this, line, nameGUI, rightPoint, leftPoint);
+        this.parent.getChildren().removeAll(this, nameGUI);
     }
 
     /**
-     * Binds the arrow's start and end to the X and Y properties of the source and target object
-     *
-     * @see app.GUI.Bindings.TrigBounding
+     * Processes the new graphical position of the line, label included.
      */
     public void processLine()
     {   
@@ -115,16 +95,12 @@ public class ArrGUI extends Group {
         processLineFromLabel();
     }
 
-    
+    /**
+     * Processes the new graphical position of the line, label excluded.
+     */
     public void processLineFromLabel()
     {   
         double angle = GUIutil.computeAngle(src, trg);
-        double endX = trg.getLayoutX() + trg.getRay() * (1 + Math.cos(angle + Math.PI));
-        double endY = trg.getLayoutY() + trg.getRay() * (1 + Math.sin(angle + Math.PI));
-
-        //Compute start
-        line.setStartX(src.getLayoutX() + 30);
-        line.setStartY(src.getLayoutY() + 30);
 
         // Trigonometric hellspawn.
         double x1 = src.getLayoutX();
@@ -136,24 +112,37 @@ public class ArrGUI extends Group {
         double c2 = Math.sin(nameGUI.alpha) * nameGUI.coeff * Math.pow(dist, 1.1f);
 
         //Compute label
-        line.setControlX(c1 * Math.cos(angle) - c2 * Math.sin(angle) + src.getLayoutX());
-        line.setControlY(c1 * Math.sin(angle) + c2 * Math.cos(angle) + src.getLayoutY());
+        double t1 = c1 * Math.cos(angle) - c2 * Math.sin(angle) + src.getLayoutX();
+        double t2 = c1 * Math.sin(angle) + c2 * Math.cos(angle) + src.getLayoutY();
+        line.setControlX(t1);
+        line.setControlY(t2);
+
+        //Compute start
+        double angleSrcToTrg = Math.atan2(t2-y1,t1-x1);
+
+        line.setStartX(src.getLayoutX() + src.getRay() * (1 + Math.cos(angleSrcToTrg)));
+        line.setStartY(src.getLayoutY() + src.getRay() * (1 + Math.sin(angleSrcToTrg)));
 
         //Compute end
-        line.setEndX(trg.getLayoutX() + 30);
-        line.setEndY(trg.getLayoutY() + 30);
+        double angleCtrlToTrg = Math.atan2(y2-t2,x2-t1);
+
+        double endX = trg.getLayoutX() + trg.getRay() * (1 + Math.cos(angleCtrlToTrg + Math.PI));
+        double endY = trg.getLayoutY() + trg.getRay() * (1 + Math.sin(angleCtrlToTrg + Math.PI));
+
+        line.setEndX(endX);
+        line.setEndY(endY);
 
         //Compute left tip
         leftPoint.setStartX(endX);
         leftPoint.setStartY(endY);
-        leftPoint.setEndX(endX - 12 * Math.cos(angle + 0.5236f));
-        leftPoint.setEndY(endY - 12 * Math.sin(angle + 0.5236f));
+        leftPoint.setEndX(endX - 12 * Math.cos(angleCtrlToTrg + 0.5236f));
+        leftPoint.setEndY(endY - 12 * Math.sin(angleCtrlToTrg + 0.5236f));
 
         //Compute right tip
         rightPoint.setStartX(endX);
         rightPoint.setStartY(endY);
-        rightPoint.setEndX(endX - 12 * Math.cos(angle - 0.5236f));
-        rightPoint.setEndY(endY - 12 * Math.sin(angle - 0.5236f));
+        rightPoint.setEndX(endX - 12 * Math.cos(angleCtrlToTrg - 0.5236f));
+        rightPoint.setEndY(endY - 12 * Math.sin(angleCtrlToTrg - 0.5236f));
     }
 
 

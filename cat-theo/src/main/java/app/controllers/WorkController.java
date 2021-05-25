@@ -76,23 +76,29 @@ public class WorkController extends GenericController{
         // Mapping right click to a context menu
         scroll_wrap.addEventHandler(MouseEvent.MOUSE_CLICKED,
             event -> {
-                if (event.getButton() == MouseButton.SECONDARY) { //we catch all of them since switch is a O(1) hash table
-                    String[] items = {"Create Object"};
-                    EventHandler[] actions = {
-                        ((event1) -> {
-                            String name = GUIutil.spawnPrompt("Name: ", "Insert Object Name");
-                            scroll_wrap.fireEvent(new OBJECT_SPAWNED(event.getX(),
-                                    event.getY(), name));
-                        })
-                    };
-                    try {
-                        GUIutil.pingCreationMenu(event.getScreenX(), event.getScreenY(), scroll_wrap, items, actions);
-                    } catch (IllegalArgumentsException e) {
-                        System.out.println("Something went wrong in the contextMenu init! " +
-                                "(This shouldn't really happen!)");
-                        e.printStackTrace();
-                    }
-                    event.consume();
+                switch(event.getButton()) {
+                    case SECONDARY:
+                        String[] items = {"Create Object"};
+                        EventHandler[] actions = {
+                            ((event1) -> {
+                                String name = GUIutil.spawnPrompt("Name: ", "Insert Object Name");
+                                scroll_wrap.fireEvent(new OBJECT_SPAWNED(event.getX(),
+                                        event.getY(), name));
+                            })
+                        };
+                        try {
+                            GUIutil.pingCreationMenu(event.getScreenX(), event.getScreenY(), scroll_wrap, items, actions);
+                        } catch (IllegalArgumentsException e) {
+                            System.out.println("Something went wrong in the contextMenu init! " +
+                                    "(This shouldn't really happen!)");
+                            e.printStackTrace();
+                        }
+                        event.consume();
+                        break;
+                    default:
+                        CtxMenu.hide();
+                        event.consume();
+                        break;
                 }
 
             });
