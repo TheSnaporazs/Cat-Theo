@@ -114,7 +114,7 @@ public class ArrGUI extends Group {
         double y2 = trg.getLayoutY();
         if(arrow.isEndomorphism()) {
             x1 += src.getRay();
-            x2 -= src.getRay();
+            y1 += src.getRay();
         }
         double dist = Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1, 2));
         double c1 = Math.cos(nameGUI.alpha) * nameGUI.coeff * dist;
@@ -129,13 +129,19 @@ public class ArrGUI extends Group {
         //Compute start
         double angleSrcToTrg = Math.atan2(t2-y1,t1-x1);
 
-        line.setStartX(src.getLayoutX() + src.getRay() * (1 + Math.cos(angleSrcToTrg)));
+        if(arrow.isEndomorphism()) {
+            angleSrcToTrg -= 1;
+            line.setStartX(x1 + src.getRay() * (Math.cos(angleSrcToTrg)));
+        } else
+            line.setStartX(x1 + src.getRay() * (1 + Math.cos(angleSrcToTrg)));
         line.setStartY(src.getLayoutY() + src.getRay() * (1 + Math.sin(angleSrcToTrg)));
 
         //Compute end
         double angleCtrlToTrg = Math.atan2(y2-t2,x2-t1);
-
-        double endX = trg.getLayoutX() + trg.getRay() * (1 + Math.cos(angleCtrlToTrg + Math.PI));
+        if(arrow.isEndomorphism())
+            angleCtrlToTrg+= 1;
+        
+        double endX = x2 + trg.getRay() * (1 + Math.cos(angleCtrlToTrg + Math.PI));
         double endY = trg.getLayoutY() + trg.getRay() * (1 + Math.sin(angleCtrlToTrg + Math.PI));
 
         line.setEndX(endX);

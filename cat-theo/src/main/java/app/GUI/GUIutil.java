@@ -175,7 +175,7 @@ public class GUIutil {
     public static double computeAngle(Node A, Node B)
     {
         if(A == B)
-            return 3.1415f;
+            return 1f;
         return Math.atan2(
                         B.getLayoutY() - A.getLayoutY(),
                         B.getLayoutX() - A.getLayoutX());
@@ -304,7 +304,7 @@ public class GUIutil {
             }
         });
 
-        if(arr.getArrow().isComposition() || arr.getArrow().isIdentity()) {
+        if(arr.getArrow().isComposition() || arr.getArrow().isEndomorphism()) {
             comboi.setDisable(true);
             combor.setDisable(true);
         }
