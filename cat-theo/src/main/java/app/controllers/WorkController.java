@@ -6,6 +6,7 @@ import app.categories.Arrow;
 import app.categories.Category;
 import app.events.ARROW_OPTION;
 import app.events.ARROW_SELECTED;
+import app.events.ARROW_SPAWNED_IDENTITY;
 import app.events.ARROW_SPAWNED_SOURCE;
 import app.events.ARROW_SPAWNED_TARGET;
 import app.events.COMPOSITION_SPAWNED;
@@ -220,6 +221,34 @@ public class WorkController extends GenericController{
                 error.setTitle("Error");
                 error.setHeaderText("Space error");
                 error.setContentText("Some things related to spaces had an error while creating this arrow.");
+                error.showAndWait();
+            }
+            printCurrCat();
+        });
+
+        //Spawn a morphism
+        scroll_wrap.addEventHandler(ARROW_SPAWNED_IDENTITY.ARROW_SPAWNED_IDENTITY_TYPE, event -> {
+            scroll_wrap.getChildren().remove(tempArrow);
+            isCreatingArrow = false;
+
+            try {
+                ObjectGUI src = event.getSrc();
+
+                double[] src_coord = {src.getLayoutX(), src.getLayoutY()};
+
+
+                scroll_wrap.getChildren().add(
+                        new ArrGUI(src, src,
+                                currCat.addIdentity(src.getObject()), scroll_wrap)
+                );
+
+
+            } catch (ImpossibleArrowException e) {
+                e.printStackTrace();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("Duplicate Arrow Error");
+                error.setContentText("Cannot have two arrows with the same name in the same category!");
                 error.showAndWait();
             }
             printCurrCat();

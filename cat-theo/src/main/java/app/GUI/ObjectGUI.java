@@ -5,6 +5,7 @@ import java.util.Set;
 import app.categories.Obj;
 import app.categories.Space;
 import app.controllers.WorkController;
+import app.events.ARROW_SPAWNED_IDENTITY;
 import app.events.ARROW_SPAWNED_SOURCE;
 import app.events.ARROW_SPAWNED_TARGET;
 import app.events.OBJECT_DELETED;
@@ -186,11 +187,14 @@ public class ObjectGUI extends StackPane {
         /*
         Creation of the object contextMenu, wordy.
          */
-        String[] items = {"Spawn Morphism", "Remove Object"};
+        String[] items = {"Spawn Morphism", "Spawn Identity", "Remove Object"};
         EventHandler[] actions = {
                 (event -> {
                     String name = GUIutil.spawnPrompt("Name: ", "Insert Morphism Name");
                     parent.fireEvent(new ARROW_SPAWNED_SOURCE(this, name));
+                }),
+                (event -> {
+                    parent.fireEvent(new ARROW_SPAWNED_IDENTITY(this));
                 }),
                 /*
                         We bubble the event to parent level in order to have access to the currCat object

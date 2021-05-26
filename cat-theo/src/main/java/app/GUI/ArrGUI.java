@@ -88,6 +88,10 @@ public class ArrGUI extends Group {
         double y1 = src.getLayoutY();
         double x2 = trg.getLayoutX();
         double y2 = trg.getLayoutY();
+        if(arrow.isEndomorphism()) {
+            x1 += src.getRay();
+            x2 -= src.getRay();
+        }
         double dist = Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1, 2));
         double angle = GUIutil.computeAngle(src, trg);
         nameGUI.setLayoutX(src.getLayoutX() + Math.cos(nameGUI.alpha + angle) * nameGUI.coeff * dist);
@@ -108,6 +112,10 @@ public class ArrGUI extends Group {
         double y1 = src.getLayoutY();
         double x2 = trg.getLayoutX();
         double y2 = trg.getLayoutY();
+        if(arrow.isEndomorphism()) {
+            x1 += src.getRay();
+            x2 -= src.getRay();
+        }
         double dist = Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1, 2));
         double c1 = Math.cos(nameGUI.alpha) * nameGUI.coeff * dist;
         double c2 = Math.sin(nameGUI.alpha) * nameGUI.coeff * Math.pow(dist, 1.1f);

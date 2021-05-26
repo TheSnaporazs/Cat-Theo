@@ -101,6 +101,10 @@ public class MovableLabel extends StackPane {
                     double y1 = arrow.src.getLayoutY();
                     double x2 = arrow.trg.getLayoutX();
                     double y2 = arrow.trg.getLayoutY();
+                    if(arrow.getArrow().isEndomorphism()) {
+                        x1 += arrow.src.getRay();
+                        x2 -= arrow.src.getRay();
+                    }
                     double t1 = currX + offsetX;
                     double t2 = currY + offsetY;
                     coeff = Math.sqrt((Math.pow(t1-x1,2) + Math.pow(t2-y1, 2)) / (Math.pow(x2-x1,2) + Math.pow(y2-y1, 2)));

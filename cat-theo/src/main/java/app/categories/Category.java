@@ -206,6 +206,10 @@ public class Category {
 
         if(temp.hasNoRefers())
             removeSpace(temp);
+
+        for(Arrow dep: arr.dependencies)
+            if(dep.range == temp)
+                arrowChangeRange(dep, range);
     }
 
     /**
@@ -270,6 +274,10 @@ public class Category {
         //  Optionally remove this space
         if(temp.hasNoRefers())
             removeSpace(temp);
+
+        for(Arrow dep: arr.dependencies)
+            if(dep.image == temp)
+                arrowChangeImage(dep, image);
     }
 
     /**

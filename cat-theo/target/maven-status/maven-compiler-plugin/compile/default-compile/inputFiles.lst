@@ -28,4 +28,5 @@ d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\GUI\Bindings\LineC
 d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\controllers\MenuController.java
 d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\events\ARROW_OPTION.java
 d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\events\OBJECT_SPAWNED.java
+d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\events\ARROW_SPAWNED_IDENTITY.java
 d:\Files\Documents\GitHub\Cat-Theo\cat-theo\src\main\java\app\GUI\Bindings\LabelBinding.java
