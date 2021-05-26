@@ -15,87 +15,95 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.WorkController">
-    <children>
-
-        <ScrollPane fx:id="pannable" layoutX="-1.0" layoutY="60.0" pannable="true" prefHeight="340.0" prefWidth="364.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="236.0" AnchorPane.topAnchor="60.0">
-            <content>
-                <AnchorPane fx:id="scroll_wrap" minHeight="0.0" minWidth="0.0" prefHeight="3300.0" prefWidth="4000.0" />
-            </content>
-        </ScrollPane>
-
-        <MenuBar layoutX="-7.0" prefHeight="19.0" prefWidth="607.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <MenuItem mnemonicParsing="false" onAction="#saveCategory" text="Save" />
-                    <MenuItem mnemonicParsing="false" onAction="#loadCategory" text="Load" />
-                    <MenuItem mnemonicParsing="false" onAction="#switchPage" text="Exit" />
-                </Menu>
-
-                <Menu mnemonicParsing="false" text="Actions">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#switchPage" text="Back to main" userData="mainmenu" />
-                        <MenuItem mnemonicParsing="false" onAction="#objectFromMenu" text="Create Object" />
-                        <MenuItem mnemonicParsing="false" onAction="#arrowFromMenu" text="Create Arrow" />
-                        <MenuItem mnemonicParsing="false" onAction="#compositionFromMenu" text="Make composition" />
-                        <MenuItem mnemonicParsing="false" onAction="#checkCommutativity" text="Check commutativity" />
-                    </items>
-                </Menu>
-        </menus>
-    </MenuBar>
-
-    <Label layoutX="426.0" layoutY="16.0" prefHeight="44.0" prefWidth="83.0" text="TOOLBAR">
-        <font>
-            <Font size="18.0" />
-        </font>
-    </Label>
-      <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="20.0" layoutY="27.0" onMousePressed="#objectFromMenu" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../ObjBtn.png" />
-         </image>
-      </ImageView>
-      <AnchorPane fx:id="ObjInsp" layoutX="362.0" layoutY="60.0" prefHeight="340.0" prefWidth="238.0" visible="false">
-         <children>
-            <TextField fx:id="NameFieldObj" layoutX="70.0" layoutY="27.0" onAction="#getInp" />
-            <Label layoutX="18.0" layoutY="32.0" text="Name:" />
-            <TextField fx:id="XField" layoutX="70.0" layoutY="67.0" onAction="#inpX" prefHeight="26.0" prefWidth="55.0" />
-            <Label layoutX="21.0" layoutY="72.0" text="X:" />
-            <Label layoutX="150.0" layoutY="72.0" text="Y:" />
-            <TextField fx:id="YField" layoutX="175.0" layoutY="67.0" onAction="#inpY" prefHeight="26.0" prefWidth="54.0" />
-            <ComboBox fx:id="combogg" layoutX="70.0" layoutY="118.0" prefWidth="150.0" promptText="Spaces" />
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="ArrInsp" layoutX="362.0" layoutY="60.0" prefHeight="340.0" prefWidth="238.0" visible="false">
-         <children>
-            <RadioButton fx:id="Mor" layoutX="24.0" layoutY="142.0" mnemonicParsing="false" text="Morphism">
-               <toggleGroup>
-                  <ToggleGroup fx:id="Morphisms" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton fx:id="Epi" layoutX="24.0" layoutY="167.0" mnemonicParsing="false" text="Epimorphism" toggleGroup="$Morphisms" />
-            <RadioButton fx:id="Iso" layoutX="24.0" layoutY="217.0" mnemonicParsing="false" text="Isomorphism" toggleGroup="$Morphisms" />
-            <RadioButton fx:id="Mono" layoutX="24.0" layoutY="192.0" mnemonicParsing="false" text="Monomorphism" toggleGroup="$Morphisms" />
-            <TextField fx:id="NameFieldArr" layoutX="70.0" layoutY="27.0" onAction="#getInp2" />
-            <Label layoutX="18.0" layoutY="32.0" text="Name:" />
-            <TextField fx:id="SourceField" editable="false" layoutX="70.0" layoutY="63.0" onAction="#getInp2" />
-            <TextField fx:id="TargetField" editable="false" layoutX="70.0" layoutY="99.0" onAction="#getInp2" />
-            <Label layoutX="18.0" layoutY="68.0" text="Source:" />
-            <Label layoutX="18.0" layoutY="104.0" text="Target:" />
-            <StackPane layoutX="11.0" layoutY="135.0" prefHeight="107.0" prefWidth="128.0" />
-            <ComboBox fx:id="combor" layoutX="24.0" layoutY="252.0" prefWidth="150.0" promptText="Range" />
-            <ComboBox fx:id="comboi" layoutX="24.0" layoutY="286.0" prefWidth="150.0" promptText="Image" />
-         </children>
-      </AnchorPane>
-      <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="70.0" layoutY="27.0" onMousePressed="#arrowFromMenu" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../ArrBtn.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="120.0" layoutY="27.0" onMousePressed="#compositionFromMenu" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../CmpBtn.png" />
-         </image>
-      </ImageView>
-
-</children>
-        </AnchorPane>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.WorkController">
+       <children>
+   
+                                                  <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <menus>
+                   <Menu mnemonicParsing="false" text="File">
+                       <MenuItem mnemonicParsing="false" onAction="#saveCategory" text="Save" />
+                       <MenuItem mnemonicParsing="false" onAction="#loadCategory" text="Load" />
+                       <MenuItem mnemonicParsing="false" onAction="#switchPage" text="Exit" />
+                   </Menu>
+   
+                                                          <Menu mnemonicParsing="false" text="Actions">
+                       <items>
+                           <MenuItem mnemonicParsing="false" onAction="#switchPage" text="Back to main" userData="mainmenu" />
+                           <MenuItem mnemonicParsing="false" onAction="#objectFromMenu" text="Create Object" />
+                           <MenuItem mnemonicParsing="false" onAction="#arrowFromMenu" text="Create Arrow" />
+                           <MenuItem mnemonicParsing="false" onAction="#compositionFromMenu" text="Make composition" />
+                           <MenuItem mnemonicParsing="false" onAction="#checkCommutativity" text="Check commutativity" />
+                       </items>
+                   </Menu>
+           </menus>
+       </MenuBar>
+         <AnchorPane layoutX="3.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <children>
+               <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="14.0" layoutY="6.0" onMousePressed="#objectFromMenu" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../ObjBtn.png" />
+                  </image>
+               </ImageView>
+               <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="80.0" layoutY="6.0" onMousePressed="#arrowFromMenu" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../ArrBtn.png" />
+                  </image>
+               </ImageView>
+               <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="140.0" layoutY="6.0" onMousePressed="#compositionFromMenu" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../CmpBtn.png" />
+                  </image>
+               </ImageView>
+            </children>
+         </AnchorPane>
+   
+                                            <ScrollPane fx:id="pannable" layoutY="77.0" pannable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="70.0">
+               <content>
+                   <AnchorPane fx:id="scroll_wrap" minHeight="0.0" minWidth="0.0" prefHeight="3300.0" prefWidth="4000.0" />
+               </content>
+           </ScrollPane>
+         <AnchorPane layoutX="340.0" layoutY="40.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+            <children>
+               <AnchorPane fx:id="ObjInsp" prefHeight="589.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+                  <children>
+                     <TextField fx:id="NameFieldObj" layoutX="61.0" layoutY="27.0" onAction="#getInp" prefHeight="25.0" prefWidth="114.0" />
+                     <Label layoutX="18.0" layoutY="32.0" text="Name:" />
+                     <TextField fx:id="XField" layoutX="36.0" layoutY="67.0" onAction="#inpX" prefHeight="26.0" prefWidth="55.0" />
+                     <Label layoutX="21.0" layoutY="72.0" text="X:" />
+                     <Label layoutX="110.0" layoutY="72.0" text="Y:" />
+                     <TextField fx:id="YField" layoutX="120.0" layoutY="67.0" onAction="#inpY" prefHeight="26.0" prefWidth="54.0" />
+                     <ComboBox fx:id="combogg" layoutX="25.0" layoutY="107.0" prefWidth="150.0" promptText="Spaces" />
+                  </children>
+               </AnchorPane>
+               <AnchorPane fx:id="ArrInsp" layoutX="-1.0" layoutY="42.0" prefHeight="298.0" prefWidth="297.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+                  <children>
+                     <RadioButton fx:id="Mor" layoutX="24.0" layoutY="142.0" mnemonicParsing="false" text="Morphism">
+                        <toggleGroup>
+                           <ToggleGroup fx:id="Morphisms" />
+                        </toggleGroup>
+                     </RadioButton>
+                     <RadioButton fx:id="Epi" layoutX="24.0" layoutY="167.0" mnemonicParsing="false" text="Epimorphism" toggleGroup="$Morphisms" />
+                     <RadioButton fx:id="Iso" layoutX="24.0" layoutY="217.0" mnemonicParsing="false" text="Isomorphism" toggleGroup="$Morphisms" />
+                     <RadioButton fx:id="Mono" layoutX="24.0" layoutY="192.0" mnemonicParsing="false" text="Monomorphism" toggleGroup="$Morphisms" />
+                     <TextField fx:id="NameFieldArr" layoutX="48.0" layoutY="27.0" onAction="#getInp2" prefHeight="25.0" prefWidth="136.0" />
+                     <Label layoutX="7.0" layoutY="31.0" text="Name:" />
+                     <TextField fx:id="SourceField" editable="false" layoutX="48.0" layoutY="63.0" onAction="#getInp2" prefHeight="25.0" prefWidth="137.0" />
+                     <TextField fx:id="TargetField" editable="false" layoutX="48.0" layoutY="99.0" onAction="#getInp2" prefHeight="25.0" prefWidth="137.0" />
+                     <Label layoutX="5.0" layoutY="67.0" text="Source:" />
+                     <Label layoutX="6.0" layoutY="103.0" text="Target:" />
+                     <StackPane layoutX="11.0" layoutY="135.0" prefHeight="107.0" prefWidth="128.0" />
+                     <ComboBox fx:id="combor" layoutX="24.0" layoutY="252.0" prefWidth="150.0" promptText="Range" />
+                     <ComboBox fx:id="comboi" layoutX="24.0" layoutY="286.0" prefWidth="150.0" promptText="Image" />
+                  </children>
+               </AnchorPane>
+         
+                                                                                                          <Label alignment="CENTER" contentDisplay="CENTER" layoutX="59.0" prefHeight="50.0" text="Inspector" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                 <font>
+                     <Font size="18.0" />
+                 </font>
+             </Label>
+            </children>
+         </AnchorPane>
+   
+                  </children>
+</AnchorPane>

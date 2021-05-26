@@ -3,10 +3,14 @@ package app.GUI;
 import java.util.Set;
 
 import app.categories.Obj;
+import app.controllers.WorkController;
+import app.events.ARROW_SPAWNED_SOURCE;
+import app.events.ARROW_SPAWNED_TARGET;
 import app.events.OBJECT_DELETED;
 import app.events.OBJECT_SELECTED;
 import app.exceptions.IllegalArgumentsException;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
@@ -114,6 +118,13 @@ public class ObjectGUI extends StackPane {
                     }
                     if(event.getButton().equals(MouseButton.PRIMARY)) {
                         parent.fireEvent(new OBJECT_SELECTED(this));
+
+                        if(WorkController.isCreatingArrow())    //ouch
+                        {
+                            ARROW_SPAWNED_SOURCE lastEvent = WorkController.getCurrSource();
+                            parent.fireEvent(new ARROW_SPAWNED_TARGET(
+                                    lastEvent.getSrc(), this, lastEvent.getName()));
+                        }
                         event.consume();
                     }
                     });
@@ -179,6 +190,7 @@ public class ObjectGUI extends StackPane {
         EventHandler[] actions = {
                 (event -> {
                     String name = GUIutil.spawnPrompt("Name: ", "Insert Morphism Name");
+                    parent.fireEvent(new ARROW_SPAWNED_SOURCE(this, name));
                 }),
                 /*
                         We bubble the event to parent level in order to have access to the currCat object
@@ -206,6 +218,14 @@ public class ObjectGUI extends StackPane {
      */
     public Obj getObject() { return object; }
 
+    /**
+     *
+     * @return a Point2D representing the center of the object
+     */
+    public Point2D getCenter()
+    {
+        return new Point2D(getLayoutX() + getRay(), getLayoutY() + getRay());
+    }
     public String getxCord() {return String.valueOf(xCord); }
 
     public String getyCord() {return String.valueOf(yCord); }
