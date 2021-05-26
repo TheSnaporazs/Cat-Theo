@@ -21,6 +21,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -41,7 +43,7 @@ import java.io.IOException;
  */
 public class WorkController extends GenericController{
     public static ContextMenu CtxMenu = new ContextMenu();
-    private static Category currCat = new Category("UniverseName");
+    private static Category currCat;
     private static ObjectGUI currObj;
     private static ArrGUI currArr;
 
@@ -66,6 +68,8 @@ public class WorkController extends GenericController{
     @FXML private ComboBox<String> comboi;
     @FXML private ComboBox<String> combogg;
 
+    @FXML private Button addSpace;
+    @FXML private TextField spaceField;
 
     private static boolean isCreatingArrow = false;
     private static ARROW_SPAWNED_SOURCE currSource;
@@ -73,7 +77,7 @@ public class WorkController extends GenericController{
 
     public WorkController()
     {
-
+        currCat = new Category("UniverseName");
     }
 
     @FXML
@@ -139,6 +143,9 @@ public class WorkController extends GenericController{
             }
         });
 
+        /*
+        Add a line that chases the mouse when creating an arrow
+         */
         scroll_wrap.addEventHandler(MouseEvent.MOUSE_MOVED, (event) ->
         {
             if(isCreatingArrow)
@@ -151,6 +158,9 @@ public class WorkController extends GenericController{
             }
         });
 
+        /*
+        Start a morphism creation from a source object (waits for user to click on the target object
+         */
         scroll_wrap.addEventHandler(ARROW_SPAWNED_SOURCE.ARROW_SPAWNED_SOURCE_TYPE, event -> {
             System.out.println("This happened!");
 
@@ -170,6 +180,7 @@ public class WorkController extends GenericController{
 
         });
 
+        //Spawn a morphism
         scroll_wrap.addEventHandler(ARROW_SPAWNED_TARGET.ARROW_SPAWNED_TARGET_TYPE, event -> {
             scroll_wrap.getChildren().remove(tempArrow);
             isCreatingArrow = false;
@@ -206,6 +217,7 @@ public class WorkController extends GenericController{
             printCurrCat();
         });
 
+        //Spawn a composition
         scroll_wrap.addEventHandler(COMPOSITION_SPAWNED.COMPOSITION_SPAWNED_TYPE, event -> {
             try {
                 Arrow g = event.getG();
@@ -241,11 +253,13 @@ public class WorkController extends GenericController{
             printCurrCat();
         });
 
+        //Remove object
         scroll_wrap.addEventHandler(OBJECT_DELETED.OBJECT_DELETED_TYPE, event -> {
                 currCat.removeObject(event.getObject());
 
         });
 
+        //Load object to inspector
         scroll_wrap.addEventHandler(OBJECT_SELECTED.OBJECT_SELECTED_TYPE, event -> {
 
             currObj = event.getObj();
@@ -253,11 +267,12 @@ public class WorkController extends GenericController{
             ArrInsp.setVisible(false);
             System.out.println(currObj.getObject().getSubspaces());
             System.out.println(currObj.getObject().getDomain().getName());
-            combogg.getItems().clear();
+
 
             ToolBar.updateToolBar(currObj, NameFieldObj, XField, YField, combogg);
         });
 
+        //Load arrow to inspector
         scroll_wrap.addEventHandler(ARROW_SELECTED.ARROW_SELECTED_TYPE, event -> {
 
             currArr = event.getArr();
@@ -269,6 +284,17 @@ public class WorkController extends GenericController{
             System.out.println("range: " + currArr.getArrow().getRange().getName());
             System.out.println("image: " + currArr.getArrow().getImage().getName());
 
+        });
+
+        //add Space to object and refresh toolbar
+        addSpace.setOnAction(actionEvent ->
+        {
+            try {
+                currCat.addSpace(spaceField.getText(), currObj.getObject());
+                ToolBar.updateToolBar(currObj, NameFieldObj, XField, YField, combogg);
+            } catch (BadSpaceException e) {
+                e.printStackTrace();
+            }
         });
     }
 

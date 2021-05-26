@@ -5,30 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a32b215-2bf7-41e4-bf38-f0540b652510" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_mac_16.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_win_16.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_mac_16.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_win_16.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_mac_16.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_win_16.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_mac_16.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_win_16.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/GUI/ToolBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/GUI/ToolBar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/controllers/WorkController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/app/mainmenu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/mainmenu.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/app/workpage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/workpage.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/ArrGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/ArrGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/Bindings/TrigBounding.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/Bindings/TrigBounding.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/MovableLabel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/MovableLabel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/ObjectGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/ObjectGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/GUI/ToolBarArr.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/GUI/ToolBarArr.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Arrow.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Arrow.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Category$PairSetup.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Category$PairSetup.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Category.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/categories/Obj.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/categories/Obj.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/controllers/WorkController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/events/ARROW_SELECTED.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/events/ARROW_SELECTED.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/mainmenu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/mainmenu.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/workpage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/workpage.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
