@@ -26,7 +26,7 @@
                    <Menu mnemonicParsing="false" text="File">
                        <MenuItem mnemonicParsing="false" onAction="#saveCategory" text="Save" />
                        <MenuItem mnemonicParsing="false" onAction="#loadCategory" text="Load" />
-                       <MenuItem mnemonicParsing="false" onAction="#switchPage" userData="mainmenu" text="Exit" />
+                       <MenuItem mnemonicParsing="false" onAction="#switchPage" text="Exit" userData="mainmenu" />
                    </Menu>
    
                                                           <Menu mnemonicParsing="false" text="Actions">
@@ -71,7 +71,7 @@
            </ScrollPane>
          <AnchorPane layoutX="340.0" layoutY="40.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
             <children>
-               <AnchorPane fx:id="ObjInsp" prefHeight="589.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+               <AnchorPane fx:id="ObjInsp" prefHeight="589.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                   <children>
                   <VBox layoutY="28.0" prefHeight="164.0" prefWidth="185.0" spacing="20.0">
                      <children>
@@ -109,7 +109,7 @@
                         <HBox prefHeight="26.0" prefWidth="150.0">
                            <children>
                                  <TextField fx:id="spaceField" prefHeight="25.0" prefWidth="150.0" promptText="Add a Space" />
-                              <Button fx:id="addSpace"  mnemonicParsing="false" prefHeight="25.0" prefWidth="49.0" text="Add" />
+                              <Button fx:id="addSpace" mnemonicParsing="false" prefHeight="25.0" prefWidth="49.0" text="Add" />
                            </children>
                         </HBox>
                      </children>
