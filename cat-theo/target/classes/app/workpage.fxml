@@ -10,7 +10,6 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -156,14 +155,11 @@
                         </VBox>
                         <VBox spacing="10.0">
                            <children>
-                                 <RadioButton fx:id="Mor" mnemonicParsing="false" text="Morphism">
-                                    <toggleGroup>
-                                       <ToggleGroup fx:id="Morphisms" />
-                                    </toggleGroup>
-                                 </RadioButton>
-                                 <RadioButton fx:id="Epi" mnemonicParsing="false" text="Epimorphism" toggleGroup="$Morphisms" />
-                                 <RadioButton fx:id="Mono" mnemonicParsing="false" text="Monomorphism" toggleGroup="$Morphisms" />
-                                 <RadioButton fx:id="Iso" mnemonicParsing="false" text="Isomorphism" toggleGroup="$Morphisms" />
+                                 <RadioButton fx:id="Endo" mnemonicParsing="false" mouseTransparent="true" text="Endomorphism" />
+                                 <RadioButton fx:id="Epi" mnemonicParsing="false" mouseTransparent="true" text="Epimorphism" />
+                                 <RadioButton fx:id="Mono" mnemonicParsing="false" mouseTransparent="true" text="Monomorphism" />
+                                 <RadioButton fx:id="Iso" mnemonicParsing="false" mouseTransparent="true" text="Isomorphism" />
+                                 <RadioButton fx:id="Auto" mnemonicParsing="false" mouseTransparent="true" text="Automorphism" />
                            </children>
                         </VBox>
                         <VBox spacing="10.0">

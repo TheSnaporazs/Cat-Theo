@@ -519,7 +519,7 @@ public class Category {
      * @throws BadSpaceException
      */
     public Space addSpace(String spaceName, Obj superSpace) throws BadSpaceException {
-        if(objects.containsKey(spaceName))
+        if(spaces.containsKey(spaceName))
             throw new BadSpaceException("A space with the same name already exists!");
         Space space = new Space(spaceName, superSpace, false);
         spaces.put(spaceName, space);

@@ -4,6 +4,7 @@ package app.controllers;
 import app.GUI.*;
 import app.categories.Arrow;
 import app.categories.Category;
+import app.events.ARROW_OPTION;
 import app.events.ARROW_SELECTED;
 import app.events.ARROW_SPAWNED_SOURCE;
 import app.events.ARROW_SPAWNED_TARGET;
@@ -45,10 +46,11 @@ public class WorkController extends GenericController{
     private static ArrGUI currArr;
 
     @FXML private AnchorPane scroll_wrap;
-    @FXML private RadioButton Mor;
+    @FXML private RadioButton Endo;
     @FXML private RadioButton Epi;
     @FXML private RadioButton Mono;
     @FXML private RadioButton Iso;
+    @FXML private RadioButton Auto;
 
     @FXML private ScrollPane pannable;
     @FXML private AnchorPane root;
@@ -94,6 +96,7 @@ public class WorkController extends GenericController{
 
                         currObj = null;
                         currArr = null;
+                        CtxMenu.hide(); 
                         break;
                     case SECONDARY:
                         String[] items = {"Create Object"};
@@ -280,7 +283,7 @@ public class WorkController extends GenericController{
             System.out.println(currObj.getObject().getSubspaces());
             System.out.println(currObj.getObject().getDomain().getName());
 
-            GUIutil.updateInspectObj(currObj, NameFieldObj, XField, YField, combogg);
+            GUIutil.updateInspectObj(currObj, NameFieldObj, XField, YField, combogg, spaceField);
         });
 
         //Load arrow to inspector
@@ -291,22 +294,51 @@ public class WorkController extends GenericController{
 
             ArrInsp.setVisible(true);
             ObjInsp.setVisible(false);
+            combor.setOnAction(null);
+            comboi.setOnAction(null);
             combor.getItems().clear();
             comboi.getItems().clear();
-            GUIutil.updateInspectArr(currArr, NameFieldArr, SourceField, TargetField,Mor,Epi,Mono, Iso, combor, comboi);
+            GUIutil.updateInspectArr(currArr, NameFieldArr, SourceField, TargetField,Endo,Epi,Mono,Iso,Auto, combor, comboi, currCat);
             System.out.println("range: " + currArr.getArrow().getRange().getName());
             System.out.println("image: " + currArr.getArrow().getImage().getName());
+
+        });
+
+        scroll_wrap.addEventHandler(ARROW_OPTION.ARROW_OPTION_TYPE, event -> {
+
+            ArrGUI arr = event.getArr();
+            if(arr == currArr) {
+                ArrInsp.setVisible(false);
+                currArr = null;
+            }
+
+            String[] items = {"Remove Arrow"};
+            EventHandler[] actions = {
+                ((event1) -> {
+                    currCat.removeArrow(arr.getArrow());
+                })
+            };
+            try {
+                GUIutil.pingCreationMenu(event.getX(), event.getY(), scroll_wrap, items, actions);
+            } catch (IllegalArgumentsException e) {
+                System.out.println("Something went wrong in the contextMenu init! " +
+                        "(This shouldn't really happen!)");
+                e.printStackTrace();
+            }
+            event.consume();
 
         });
 
         //add Space to object and refresh toolbar
         addSpace.setOnAction(actionEvent ->
         {
-            try {
-                currCat.addSpace(spaceField.getText(), currObj.getObject());
-                GUIutil.updateInspectObj(currObj, NameFieldObj, XField, YField, combogg);
-            } catch (BadSpaceException e) {
-                e.printStackTrace();
+            if(spaceField.getText() != null && spaceField.getText() != "") {
+                try {
+                    currCat.addSpace(spaceField.getText(), currObj.getObject());
+                    GUIutil.updateInspectObj(currObj, NameFieldObj, XField, YField, combogg, spaceField);
+                } catch (BadSpaceException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -369,10 +401,17 @@ public class WorkController extends GenericController{
 
     @FXML
     private void checkCommutativity() {
-        if(currCat.commutes())
-            System.out.println("Commutes");
-        else
-            System.out.println("Does not commute");
+        if(currCat.commutes()) {
+            Alert msg = new Alert(Alert.AlertType.INFORMATION);
+            msg.setTitle("Commutativity");
+            msg.setContentText("The category commutes.");
+            msg.showAndWait();
+        } else {
+            Alert msg = new Alert(Alert.AlertType.INFORMATION);
+            msg.setTitle("Commutativity");
+            msg.setContentText("The category DOES NOT commute.");
+            msg.showAndWait();
+        }
     }
 
     @FXML

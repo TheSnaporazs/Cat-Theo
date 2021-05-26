@@ -1,0 +1,99 @@
+{
+    "universe": {"name": "UniverseName"},
+    "objects": [
+        {
+            "name": "A",
+            "x": 436,
+            "spaces": [],
+            "y": 348
+        },
+        {
+            "name": "S",
+            "x": 616,
+            "spaces": [],
+            "y": 625
+        },
+        {
+            "name": "U",
+            "x": 421,
+            "spaces": [],
+            "y": 586
+        },
+        {
+            "name": "G",
+            "x": 605,
+            "spaces": [],
+            "y": 339
+        },
+        {
+            "name": "M",
+            "x": 739,
+            "spaces": [],
+            "y": 186
+        },
+        {
+            "name": "O",
+            "x": 787,
+            "spaces": [],
+            "y": 443
+        }
+    ],
+    "arrows": [
+        {
+            "identity": false,
+            "name": "",
+            "source": "A",
+            "target": "U",
+            "dependencies": []
+        },
+        {
+            "identity": false,
+            "name": "t",
+            "source": "M",
+            "target": "O",
+            "dependencies": []
+        },
+        {
+            "identity": false,
+            "name": "f",
+            "source": "U",
+            "target": "A",
+            "dependencies": []
+        },
+        {
+            "identity": false,
+            "name": "g",
+            "source": "U",
+            "target": "S",
+            "dependencies": []
+        },
+        {
+            "identity": false,
+            "name": "h",
+            "source": "S",
+            "target": "O",
+            "dependencies": []
+        },
+        {
+            "identity": false,
+            "name": "j",
+            "source": "A",
+            "target": "M",
+            "dependencies": []
+        },
+        {
+            "identity": false,
+            "name": "k",
+            "source": "G",
+            "target": "M",
+            "dependencies": []
+        },
+        {
+            "identity": false,
+            "name": "l",
+            "source": "G",
+            "target": "O",
+            "dependencies": []
+        }
+    ]
+}

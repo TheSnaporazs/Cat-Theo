@@ -1,7 +1,9 @@
 package app.GUI;
 
+import app.categories.Category;
 import app.categories.Space;
 import app.controllers.WorkController;
+import app.exceptions.BadSpaceException;
 import app.exceptions.IllegalArgumentsException;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -11,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GUIutil.java
@@ -190,7 +193,7 @@ public class GUIutil {
      * @see app.categories.Obj
      */
     public static void updateInspectObj(ObjectGUI obj, TextField NameField, TextField XField,
-                                        TextField YField, ComboBox<String> combogg) {
+                                        TextField YField, ComboBox<String> combogg, TextField spaceText) {
         combogg.getItems().clear();
         combogg.getItems().removeAll();
         NameField.setEditable(true);
@@ -204,7 +207,7 @@ public class GUIutil {
             combogg.getItems().add(space.getName());
         }
 
-
+        spaceText.setText("");
     }
 
     /**
@@ -224,28 +227,84 @@ public class GUIutil {
      * @see ArrGUI
      * @see app.categories.Arrow
      */
-    public static void updateInspectArr(ArrGUI arr, TextField NameField, TextField SourceField, TextField TargetField, RadioButton Mor, RadioButton Epi, RadioButton Iso, RadioButton Mono, ComboBox<String> combor, ComboBox<String> comboi) {
+    public static void updateInspectArr(ArrGUI arr, TextField NameField, TextField SourceField, TextField TargetField, RadioButton Endo, RadioButton Epi, RadioButton Mono, RadioButton Iso, RadioButton Auto, ComboBox<String> combor, ComboBox<String> comboi, Category category) {
+        comboi.setDisable(false);
+        combor.setDisable(false);
         NameField.setEditable(true);
         NameField.setText(arr.getArrow().getName());
         SourceField.setText(arr.getSrc().getObject().getName());
         TargetField.setText(arr.getTrg().getObject().getName());
 
-
-        if (arr.getArrow().isIsomorphism()) {
-            Iso.fire();
-        }
-        if (arr.getArrow().isEpic() ^ arr.getArrow().isMonic()) {
+        if (arr.getArrow().isEndomorphism() ^ Endo.isSelected())
+            Endo.fire();
+        if (arr.getArrow().isEpic() ^ Epi.isSelected())
             Epi.fire();
+        if (arr.getArrow().isMonic() ^ Mono.isSelected())
+            Mono.fire();
+        if (arr.getArrow().isIsomorphism() ^ Iso.isSelected())
+            Iso.fire();
+        if (arr.getArrow().isAutomorphism() ^ Auto.isSelected())
+            Auto.fire();
+
+        List<String> ranges = new ArrayList<String>();
+        ranges.add(arr.getArrow().src().getDomain().getName());
+        for(Space spce: arr.getArrow().src().getSubspaces())
+            ranges.add(spce.getName());
+        combor.getItems().addAll(ranges);
+        combor.getSelectionModel().select(arr.getArrow().getRange().getName());
+
+        combor.setOnAction(actionEvent ->
+        {
+            String newSpace = combor.getSelectionModel().getSelectedItem();
+            try {
+                if(!newSpace.equals(arr.getArrow().getRange().getName())) {
+                    if(newSpace.equals(arr.getArrow().src().getDomain().getName()))
+                        category.arrowChangeRange(arr.getArrow(), arr.getArrow().src().getDomain());
+                    else
+                        category.arrowChangeRange(arr.getArrow(), newSpace);
+                    combor.setOnAction(null);
+                    comboi.setOnAction(null);
+                    combor.getItems().clear();
+                    comboi.getItems().clear();
+                    updateInspectArr(arr, NameField, SourceField, TargetField, Endo, Epi, Mono, Iso, Auto, combor, comboi, category);
+                }
+            } catch (BadSpaceException e){
+                e.printStackTrace();
+                System.err.println("Impossible...");
+            }
+        });
+
+        List<String> images = new ArrayList<String>();
+        images.add(arr.getArrow().trg().getDomain().getName());
+        for(Space spce: arr.getArrow().trg().getSubspaces())
+            images.add(spce.getName());
+        comboi.getItems().addAll(images);
+        comboi.getSelectionModel().select(arr.getArrow().getImage().getName());
+
+        comboi.setOnAction(actionEvent ->
+        {
+            String newSpace = comboi.getSelectionModel().getSelectedItem();
+            try {
+                if(!newSpace.equals(arr.getArrow().getImage().getName())) {
+                    if(newSpace.equals(arr.getArrow().trg().getDomain().getName()))
+                        category.arrowChangeImage(arr.getArrow(), arr.getArrow().trg().getDomain());
+                    else
+                        category.arrowChangeImage(arr.getArrow(), newSpace);
+                    combor.setOnAction(null);
+                    comboi.setOnAction(null);
+                    combor.getItems().clear();
+                    comboi.getItems().clear();
+                    updateInspectArr(arr, NameField, SourceField, TargetField, Endo, Epi, Mono, Iso, Auto, combor, comboi, category);
+                }
+            } catch (BadSpaceException e){
+                e.printStackTrace();
+                System.err.println("Impossible...");
+            }
+        });
+
+        if(arr.getArrow().isComposition()) {
+            comboi.setDisable(true);
+            combor.setDisable(true);
         }
-        else {
-            Mor.fire();
-        }
-
-        String range = arr.getArrow().getRange().getName();
-        combor.getItems().add(range);
-
-        String img = arr.getArrow().getImage().getName();
-        comboi.getItems().add(img);
-
     }
 }

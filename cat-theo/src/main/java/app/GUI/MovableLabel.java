@@ -1,6 +1,8 @@
 package app.GUI;
 
+import app.events.ARROW_OPTION;
 import app.events.ARROW_SELECTED;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -10,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Window;
 import javafx.scene.layout.StackPane;
 
 public class MovableLabel extends StackPane {
@@ -64,6 +67,10 @@ public class MovableLabel extends StackPane {
                 event -> {
                     if(event.getButton().equals(MouseButton.PRIMARY)) {
                         parent.fireEvent(new ARROW_SELECTED(arrow));
+                        event.consume();
+                    } else if(event.getButton().equals(MouseButton.SECONDARY)) {
+                        Point2D position = this.localToScreen(new Point2D(0, 0));
+                        parent.fireEvent(new ARROW_OPTION(position.getX(), position.getY(), arrow));
                         event.consume();
                     }
                     });

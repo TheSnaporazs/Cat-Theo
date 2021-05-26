@@ -97,17 +97,21 @@ public class Arrow {
     public boolean isIdentity() { return identity; }
 
     /**
+     * Checks if the arrow is a composition
+     * @return
+     */
+    public boolean isComposition() { return firstAncestor != null; }
+
+    /**
      * Checks if the arrow is a monomorphism
      * @return
      */
     public boolean isMonic() {
-        Iterator<Arrow> iter = src.incoming.iterator();
-        Space baseImage = null;
-        if (iter.hasNext())
-            baseImage = iter.next().image;
+        if(range == src.getDomain())
+            return true;
 
-        for(Space img = baseImage; iter.hasNext(); img = iter.next().image)
-            if(!img.equals(baseImage))
+        for(Arrow arr: src.incoming)
+            if(arr.image != range)
                 return false;
 
         return true;
@@ -118,13 +122,11 @@ public class Arrow {
      * @return
      */
     public boolean isEpic() {
-        Iterator<Arrow> iter = trg.outcoming.iterator();
-        Space baseRange = null;
-        if (iter.hasNext())
-            baseRange = iter.next().range;
+        if(image == trg.getDomain())
+            return true;
 
-        for(Space rng = baseRange; iter.hasNext(); rng = iter.next().range)
-            if(!rng.equals(baseRange))
+        for(Arrow arr: trg.outcoming)
+            if(arr.range != image)
                 return false;
 
         return true;
