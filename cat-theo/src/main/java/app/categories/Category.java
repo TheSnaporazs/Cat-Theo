@@ -118,6 +118,8 @@ public class Category {
      * @see app.categories.Arrow#Arrow(String, Obj) Arrow(name, obj)
      */
     public Arrow addIdentity(String name, Obj obj) throws ImpossibleArrowException {
+        if(arrows.containsKey(name))
+            throw new ImpossibleArrowException("Identity already exists in the category.");
         Arrow arr = new Arrow(name, obj, obj, obj.getDomain(), obj.getDomain(), true);
 
         obj.getDomain().toArrows.add(arr);

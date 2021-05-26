@@ -47,6 +47,7 @@ public class Arrow {
         this.trg = trg;
         this.range = range;
         this.image = image;
+        this.identity = identity;
     }
 
     /**

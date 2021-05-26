@@ -259,19 +259,24 @@ public class WorkController extends GenericController{
             try {
                 Arrow g = event.getG();
                 Arrow f = event.getF();
-                ObjectGUI src = f.src().getRepr();
-                ObjectGUI trg = g.trg().getRepr();
+                if(g.isIdentity() || f.isIdentity()) {
+                    Alert error = new Alert(Alert.AlertType.INFORMATION);
+                    error.setTitle("Strange composition");
+                    error.setHeaderText("Composed with identity!");
+                    error.setContentText("Thus no arrow was produced.");
+                    error.showAndWait();
+                } else {
+                    ObjectGUI src = f.src().getRepr();
+                    ObjectGUI trg = g.trg().getRepr();
 
-                double[] src_coord = {src.getLayoutX(), src.getLayoutY()};
-                double[] trg_coord = {trg.getLayoutX(), trg.getLayoutY()};
+                    double[] src_coord = {src.getLayoutX(), src.getLayoutY()};
+                    double[] trg_coord = {trg.getLayoutX(), trg.getLayoutY()};
 
-
-                scroll_wrap.getChildren().add(
-                        new ArrGUI(src, trg,
-                        currCat.addComposition(g, f), scroll_wrap)
-                );
-
-
+                    scroll_wrap.getChildren().add(
+                            new ArrGUI(src, trg,
+                            currCat.addComposition(g, f), scroll_wrap)
+                    );
+                }
             } catch (ImpossibleArrowException e) {
                 e.printStackTrace();
                 Alert error = new Alert(Alert.AlertType.ERROR);
