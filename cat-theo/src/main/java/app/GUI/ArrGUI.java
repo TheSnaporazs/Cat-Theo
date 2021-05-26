@@ -133,17 +133,18 @@ public class ArrGUI extends Group {
         line.setEndX(endX);
         line.setEndY(endY);
 
+        double angleCtrlToTip = Math.atan2(endY-t2,endX-t1);
         //Compute left tip
         leftPoint.setStartX(endX);
         leftPoint.setStartY(endY);
-        leftPoint.setEndX(endX - 12 * Math.cos(angleCtrlToTrg + 0.5236f));
-        leftPoint.setEndY(endY - 12 * Math.sin(angleCtrlToTrg + 0.5236f));
+        leftPoint.setEndX(endX - 12 * Math.cos(angleCtrlToTip + 0.5236f));
+        leftPoint.setEndY(endY - 12 * Math.sin(angleCtrlToTip + 0.5236f));
 
         //Compute right tip
         rightPoint.setStartX(endX);
         rightPoint.setStartY(endY);
-        rightPoint.setEndX(endX - 12 * Math.cos(angleCtrlToTrg - 0.5236f));
-        rightPoint.setEndY(endY - 12 * Math.sin(angleCtrlToTrg - 0.5236f));
+        rightPoint.setEndX(endX - 12 * Math.cos(angleCtrlToTip - 0.5236f));
+        rightPoint.setEndY(endY - 12 * Math.sin(angleCtrlToTip - 0.5236f));
     }
 
 
