@@ -22,6 +22,7 @@ public class App extends Application {
         scene = new Scene(loadFXML("mainmenu"),600,400);
         stage.setScene(scene);
         stage.show();
+        stage.setTitle("Cat. Theo.");
     }
 
     public static void setRoot(String fxml) throws IOException {
@@ -36,6 +37,4 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
-
-
 }

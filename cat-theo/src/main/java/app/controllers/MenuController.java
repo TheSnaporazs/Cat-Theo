@@ -5,8 +5,6 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 
 /**
  * Java-FX controller for the main menu page
@@ -26,8 +24,6 @@ public class MenuController extends GenericController {
 
     @FXML
     public void initialize() {
-        CatView.fitWidthProperty().bind(root.maxWidthProperty());
-        CatView.fitHeightProperty().bind(root.prefHeightProperty());
 
         NewCat.hoverProperty().addListener((event) -> {
             Image image = new Image("/Theo-up.png");

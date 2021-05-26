@@ -69,6 +69,7 @@ public class ArrGUI extends Group {
         line.setStroke(Color.BLACK);
 
         this.getChildren().addAll(line, rightPoint, leftPoint);
+        this.toBack();
     }
 
 
