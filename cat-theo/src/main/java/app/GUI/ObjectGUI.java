@@ -3,6 +3,7 @@ package app.GUI;
 import java.util.Set;
 
 import app.categories.Obj;
+import app.categories.Space;
 import app.controllers.WorkController;
 import app.events.ARROW_SPAWNED_SOURCE;
 import app.events.ARROW_SPAWNED_TARGET;
@@ -13,8 +14,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -233,11 +233,19 @@ public class ObjectGUI extends StackPane {
     public void setxCord(String x) {
         xCord = Double.parseDouble(x);
         this.setLayoutX(xCord);
+        for(ArrGUI arr: guis) {
+            arr.processLine();
+        }
     }
 
     public void setyCord(String y) {
         yCord = Double.parseDouble(y);
         this.setLayoutY(yCord);
+        for(ArrGUI arr: guis) {
+            arr.processLine();
+        }
     }
+
+
 
 }

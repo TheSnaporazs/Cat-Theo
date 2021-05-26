@@ -2,7 +2,6 @@ package app.controllers;
 
 
 import app.GUI.*;
-import app.GUI.ToolBar;
 import app.categories.Arrow;
 import app.categories.Category;
 import app.events.ARROW_SELECTED;
@@ -21,8 +20,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -283,8 +280,7 @@ public class WorkController extends GenericController{
             System.out.println(currObj.getObject().getSubspaces());
             System.out.println(currObj.getObject().getDomain().getName());
 
-
-            ToolBar.updateToolBar(currObj, NameFieldObj, XField, YField, combogg);
+            GUIutil.updateInspectObj(currObj, NameFieldObj, XField, YField, combogg);
         });
 
         //Load arrow to inspector
@@ -297,7 +293,7 @@ public class WorkController extends GenericController{
             ObjInsp.setVisible(false);
             combor.getItems().clear();
             comboi.getItems().clear();
-            ToolBarArr.updateToolBArr(currArr, NameFieldArr, SourceField, TargetField,Mor,Epi,Mono, Iso, combor, comboi);
+            GUIutil.updateInspectArr(currArr, NameFieldArr, SourceField, TargetField,Mor,Epi,Mono, Iso, combor, comboi);
             System.out.println("range: " + currArr.getArrow().getRange().getName());
             System.out.println("image: " + currArr.getArrow().getImage().getName());
 
@@ -308,7 +304,7 @@ public class WorkController extends GenericController{
         {
             try {
                 currCat.addSpace(spaceField.getText(), currObj.getObject());
-                ToolBar.updateToolBar(currObj, NameFieldObj, XField, YField, combogg);
+                GUIutil.updateInspectObj(currObj, NameFieldObj, XField, YField, combogg);
             } catch (BadSpaceException e) {
                 e.printStackTrace();
             }

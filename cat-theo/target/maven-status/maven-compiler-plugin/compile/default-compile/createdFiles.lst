@@ -16,7 +16,6 @@ app\GUI\Bindings\VEC.class
 app\events\ANY_CAT.class
 app\exceptions\IllegalArgumentsException.class
 app\GUI\Bindings\LabelBinding.class
-app\GUI\ToolBar.class
 app\exceptions\BadObjectNameException.class
 app\events\ARROW_SPAWNED_TARGET.class
 app\categories\Obj.class

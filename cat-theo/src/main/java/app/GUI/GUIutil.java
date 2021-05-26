@@ -1,5 +1,6 @@
 package app.GUI;
 
+import app.categories.Space;
 import app.controllers.WorkController;
 import app.exceptions.IllegalArgumentsException;
 import javafx.event.EventHandler;
@@ -118,6 +119,13 @@ public class GUIutil {
         return prova.getEditor().getText();
     }
 
+    /**
+     * Spawns a prompt for multiple user inputs
+     *
+     * @param msgs      Array of strings, each of which will generate an input textfield to prompt the user for input
+     * @param Title     String, Title of the dialog
+     * @return
+     */
     public static Dialog<ArrayList<String>> spawnMultiPrompt(String[] msgs, String Title) {
 
         Dialog<ArrayList<String>> prompt = new Dialog<>();
@@ -166,5 +174,78 @@ public class GUIutil {
         return Math.atan2(
                         B.getLayoutY() - A.getLayoutY(),
                         B.getLayoutX() - A.getLayoutX());
+    }
+
+    /**
+     * Updates the inspector to show an ObjGUI object, loading all it's parameters
+     * in the corresponding graphical components
+     *
+     * @param obj           the ObjGUI to load
+     * @param NameField     TextField containing the name of the Object
+     * @param XField        The X position of the object in the graphical pane
+     * @param YField        The Y position of the object in the graphical pane
+     * @param combogg       ComboBox containing all the spaces and subspaces of the object
+     *
+     * @see ObjectGUI
+     * @see app.categories.Obj
+     */
+    public static void updateInspectObj(ObjectGUI obj, TextField NameField, TextField XField,
+                                        TextField YField, ComboBox<String> combogg) {
+        combogg.getItems().clear();
+        combogg.getItems().removeAll();
+        NameField.setEditable(true);
+        NameField.setText(obj.getObject().getName());
+        XField.setText(Double.toString(obj.getLayoutX()));
+        YField.setText(Double.toString(obj.getLayoutY()));
+
+        combogg.getItems().add(obj.getObject().getDomain().getName());
+
+        for (Space space: obj.getObject().getSubspaces()) {
+            combogg.getItems().add(space.getName());
+        }
+
+
+    }
+
+    /**
+     * Updates the inspector to show an arrow object, loading all it's parameters
+     * in the corresponding graphical components
+     *
+     * @param arr               The arrow to load
+     * @param NameField         TextField containing the name of the arrow
+     * @param SourceField       TextField containing the source object of the arrow
+     * @param TargetField       TextField containing the target object of the arrow
+     * @param Mor               RadioButton, true if the arrow is a generic morphism
+     * @param Epi               RadioButton, true if the arrow is an epimorphism
+     * @param Iso               RadioButton, true if the arrow is an isomorphism
+     * @param Mono              RadioButton, true if the arrow is a monomorphism
+     * @param combor            ComboBox, contains all the range subspaces of the arrow
+     * @param comboi            ComboBox, contains all the images of the arrow
+     * @see ArrGUI
+     * @see app.categories.Arrow
+     */
+    public static void updateInspectArr(ArrGUI arr, TextField NameField, TextField SourceField, TextField TargetField, RadioButton Mor, RadioButton Epi, RadioButton Iso, RadioButton Mono, ComboBox<String> combor, ComboBox<String> comboi) {
+        NameField.setEditable(true);
+        NameField.setText(arr.getArrow().getName());
+        SourceField.setText(arr.getSrc().getObject().getName());
+        TargetField.setText(arr.getTrg().getObject().getName());
+
+
+        if (arr.getArrow().isIsomorphism()) {
+            Iso.fire();
+        }
+        if (arr.getArrow().isEpic() ^ arr.getArrow().isMonic()) {
+            Epi.fire();
+        }
+        else {
+            Mor.fire();
+        }
+
+        String range = arr.getArrow().getRange().getName();
+        combor.getItems().add(range);
+
+        String img = arr.getArrow().getImage().getName();
+        comboi.getItems().add(img);
+
     }
 }
