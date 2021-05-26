@@ -1,9 +1,11 @@
 package app.GUI;
 
+import app.events.ARROW_SELECTED;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.Cursor;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
@@ -58,6 +60,13 @@ public class MovableLabel extends StackPane {
     }
 
     private void addHandlers() {
+        this.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                event -> {
+                    if(event.getButton().equals(MouseButton.PRIMARY)) {
+                        parent.fireEvent(new ARROW_SELECTED(arrow));
+                        event.consume();
+                    }
+                    });
         this.addEventHandler(MouseEvent.MOUSE_DRAGGED,
                 event -> {
                     this.setCursor(Cursor.MOVE);

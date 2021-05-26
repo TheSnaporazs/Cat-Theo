@@ -369,7 +369,7 @@ public class WorkController extends GenericController{
     }
 
     public void getInp2() {
-        System.out.println(currObj.getObject().getName());
+        System.out.println(currArr.getArrow().getName());
         System.out.println(NameFieldObj.getText());
         if (NameFieldObj.getText()!= currArr.getArrow().getName()) {
             try {
