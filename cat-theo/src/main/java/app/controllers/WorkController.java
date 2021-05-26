@@ -90,6 +90,14 @@ public class WorkController extends GenericController{
         scroll_wrap.addEventHandler(MouseEvent.MOUSE_CLICKED,
             event -> {
                 switch(event.getButton()) {
+                    case PRIMARY:
+                        // Hide inspector on clicking ground
+                        ObjInsp.setVisible(false);
+                        ArrInsp.setVisible(false);
+
+                        currObj = null;
+                        currArr = null;
+                        break;
                     case SECONDARY:
                         String[] items = {"Create Object"};
                         EventHandler[] actions = {
@@ -256,6 +264,11 @@ public class WorkController extends GenericController{
         //Remove object
         scroll_wrap.addEventHandler(OBJECT_DELETED.OBJECT_DELETED_TYPE, event -> {
                 currCat.removeObject(event.getObject());
+                if(event.getObject().getRepr().equals(currObj))
+                {
+                    currObj = null;
+                    ObjInsp.setVisible(false);
+                }
 
         });
 
@@ -263,6 +276,8 @@ public class WorkController extends GenericController{
         scroll_wrap.addEventHandler(OBJECT_SELECTED.OBJECT_SELECTED_TYPE, event -> {
 
             currObj = event.getObj();
+            currArr = null;
+
             ObjInsp.setVisible(true);
             ArrInsp.setVisible(false);
             System.out.println(currObj.getObject().getSubspaces());
@@ -276,6 +291,8 @@ public class WorkController extends GenericController{
         scroll_wrap.addEventHandler(ARROW_SELECTED.ARROW_SELECTED_TYPE, event -> {
 
             currArr = event.getArr();
+            currObj = null;
+
             ArrInsp.setVisible(true);
             ObjInsp.setVisible(false);
             combor.getItems().clear();
