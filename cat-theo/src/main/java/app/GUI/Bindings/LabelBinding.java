@@ -3,6 +3,7 @@ package app.GUI.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.scene.shape.Line;
 
+@Deprecated
 public class LabelBinding extends DoubleBinding {
 
     private final Line line;

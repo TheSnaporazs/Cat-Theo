@@ -38,8 +38,11 @@ public abstract class GenericController {
             destination = (String) ((MenuItem) event.getSource()).getUserData();
         }
 
-        App.setRoot(destination);
+        switchPage(destination);
+    }
 
+    void switchPage(String destination)throws IOException {
+        App.setRoot(destination);
     }
 
 

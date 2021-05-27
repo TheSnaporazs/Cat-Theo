@@ -3,9 +3,10 @@ package app.GUI.Bindings;
 import app.GUI.GUIutil;
 import app.GUI.ObjectGUI;
 import javafx.beans.binding.DoubleBinding;
-import javafx.scene.Node;
+
 import javafx.scene.shape.Line;
 
+@Deprecated
 public class TrigBoundingConst extends DoubleBinding {
 
     double magnitude;

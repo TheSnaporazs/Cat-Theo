@@ -7,7 +7,6 @@ import app.exceptions.BadSpaceException;
 import app.exceptions.IllegalArgumentsException;
 import app.exceptions.ImpossibleArrowException;
 import javafx.scene.layout.Pane;
-import javafx.util.Pair;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,15 +16,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 
 /**
  * Represents a category from the Category Theory branch of mathematics.
@@ -1043,7 +1037,7 @@ public class Category {
         public boolean equals(Object obj) {
             if(!(obj instanceof PairSetup))
                 return false;
-            PairSetup other = (PairSetup) obj;
+            PairSetup<A,B> other = (PairSetup<A,B>) obj;
             return other.a.equals(a) && other.b.equals(b);
         }
     }

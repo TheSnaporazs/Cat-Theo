@@ -3,7 +3,6 @@ package app.categories;
 import app.exceptions.ImpossibleArrowException;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import app.GUI.ArrGUI;
 
 /**

@@ -57,7 +57,7 @@ public class ArrGUI extends Group {
         initGraphics();
         processLine();
     }
-
+    
     private void initGraphics()
     {
         nameGUI = new MovableLabel(this, parent);
@@ -72,7 +72,9 @@ public class ArrGUI extends Group {
         this.toBack();
     }
 
-
+    /**
+     * Removes this arrowGUI and its components.
+     */
     public void removeArrGui()
     {
         this.parent.getChildren().removeAll(this, nameGUI);
@@ -162,14 +164,26 @@ public class ArrGUI extends Group {
     }
 
 
+    /**
+     * Returns the ObjectGUI representing this arrow's source.
+     * @return
+     */
     public ObjectGUI getSrc() {
         return src;
     }
 
+    /**
+     * Returns the ObjectGUI representing this arrow's target.
+     * @return
+     */
     public ObjectGUI getTrg() {
         return trg;
     }
 
+    /**
+     * Returns the Arrow represented by this GUI component.
+     * @return
+     */
     public Arrow getArrow() {
         return arrow;
     }

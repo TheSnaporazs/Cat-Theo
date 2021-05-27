@@ -3,7 +3,6 @@ package app.GUI;
 import java.util.Set;
 
 import app.categories.Obj;
-import app.categories.Space;
 import app.controllers.WorkController;
 import app.events.ARROW_SPAWNED_IDENTITY;
 import app.events.ARROW_SPAWNED_SOURCE;
@@ -23,7 +22,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 /**
  * ObjectGUI.java
@@ -79,6 +77,12 @@ public class ObjectGUI extends StackPane {
         return RAY;
     }
 
+    /**
+     * Draws this object's circle representing it on the GUI
+     * @param X
+     * @param Y
+     * @param object
+     */
     private void drawCircle(double X, double Y, Obj object)
     {
         Circle circle = new Circle(60,60,30, Color.WHITE);
@@ -230,10 +234,23 @@ public class ObjectGUI extends StackPane {
     {
         return new Point2D(getLayoutX() + getRay(), getLayoutY() + getRay());
     }
+
+    /**
+     * Returns the X coordinates of this object
+     * @return
+     */
     public String getxCord() {return String.valueOf(xCord); }
 
+    /**
+     * Returns the Y coordinates of this object
+     * @return
+     */
     public String getyCord() {return String.valueOf(yCord); }
 
+    /**
+     * Sets the X coordinates of this object
+     * @param x
+     */
     public void setxCord(String x) {
         xCord = Double.parseDouble(x);
         this.setLayoutX(xCord);
@@ -242,6 +259,10 @@ public class ObjectGUI extends StackPane {
         }
     }
 
+    /**
+     * Sets the Y coordinates of this object
+     * @param y
+     */
     public void setyCord(String y) {
         yCord = Double.parseDouble(y);
         this.setLayoutY(yCord);
@@ -249,7 +270,4 @@ public class ObjectGUI extends StackPane {
             arr.processLine();
         }
     }
-
-
-
 }

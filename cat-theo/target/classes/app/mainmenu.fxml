@@ -32,7 +32,7 @@
                      </viewport>
                     </ImageView>
                     <Button fx:id="NewCat" layoutX="73.0" layoutY="-100.0" mnemonicParsing="false" onAction="#switchPage" prefHeight="25.0" prefWidth="100.0" text="New Category" userData="workpage" />
-                    <Button fx:id="LoadCat" layoutX="73.0" layoutY="-50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Load Category" />
+                    <Button fx:id="LoadCat" layoutX="73.0" layoutY="-50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Load Category" onAction="#startWithLoad" />
                </children>
             </Group>
          </children>

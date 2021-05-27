@@ -3,44 +3,42 @@
     "objects": [
         {
             "name": "A",
-            "x": 430,
-            "y": 533
+            "x": 558,
+            "spaces": [],
+            "y": 361
         },
         {
             "name": "B",
-            "x": 777,
-            "y": 370
+            "x": 746,
+            "spaces": [],
+            "y": 553
         },
         {
             "name": "C",
-            "x": 418,
-            "y": 141
-        }
-    ],
-    "spaces": [
-        {
-            "subspaces": [],
-            "name": "img(f)"
-        },
-        {
-            "subspaces": [],
-            "name": "rng(f)"
+            "x": 957,
+            "spaces": [],
+            "y": 337
         }
     ],
     "arrows": [
         {
-            "image": "img(f)",
             "identity": false,
             "name": "f",
-            "range": "rng(f)",
             "source": "A",
             "target": "B",
-            "dependencies": []
+            "dependencies": ["g \u2022 f"]
         },
         {
             "identity": false,
-            "name": "h",
+            "name": "g",
             "source": "B",
+            "target": "C",
+            "dependencies": ["g \u2022 f"]
+        },
+        {
+            "identity": false,
+            "name": "g \u2022 f",
+            "source": "A",
             "target": "C",
             "dependencies": []
         }

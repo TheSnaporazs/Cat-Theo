@@ -12,7 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Window;
 import javafx.scene.layout.StackPane;
 
 public class MovableLabel extends StackPane {
@@ -42,10 +41,20 @@ public class MovableLabel extends StackPane {
         this.setCursor(Cursor.HAND);//Cursor Icon, I think it's neat!
     }
 
+    /**
+     * Sets the text of this label, the name of the represented arrow
+     * @param text
+     */
     public void setText(String text) {
         txt.setText(text);
     }
 
+    /**
+     * Creates the circle for this label, in this case it will be transparent
+     * since the circle is needed just for input from the user.
+     * @param X
+     * @param Y
+     */
     private void drawCircle(double X, double Y)
     {
         Circle circle = new Circle(RAY, Color.TRANSPARENT);
@@ -61,7 +70,7 @@ public class MovableLabel extends StackPane {
         this.relocate(X, Y);
         parent.getChildren().add(this);
     }
-
+    
     private void addHandlers() {
         this.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 event -> {

@@ -3,7 +3,7 @@ package app.GUI.Bindings;
 import app.GUI.ObjectGUI;
 import javafx.beans.binding.BooleanBinding;
 import javafx.scene.shape.Line;
-
+@Deprecated
 public class LineCollision extends BooleanBinding {
 
     Line line;

@@ -1,6 +1,7 @@
 package app.controllers;
 
 
+import app.App;
 import app.GUI.*;
 import app.categories.Arrow;
 import app.categories.Category;
@@ -198,10 +199,6 @@ public class WorkController extends GenericController{
                 ObjectGUI src = event.getSrc();
                 ObjectGUI trg = event.getTrg();
 
-                double[] src_coord = {src.getLayoutX(), src.getLayoutY()};
-                double[] trg_coord = {trg.getLayoutX(), trg.getLayoutY()};
-
-
                 scroll_wrap.getChildren().add(
                         new ArrGUI(src, trg,
                                 currCat.addArrow(event.getName(),src.getObject(), trg.getObject()), scroll_wrap)
@@ -234,9 +231,6 @@ public class WorkController extends GenericController{
             try {
                 ObjectGUI src = event.getSrc();
 
-                double[] src_coord = {src.getLayoutX(), src.getLayoutY()};
-
-
                 scroll_wrap.getChildren().add(
                         new ArrGUI(src, src,
                                 currCat.addIdentity(src.getObject()), scroll_wrap)
@@ -268,9 +262,6 @@ public class WorkController extends GenericController{
                 } else {
                     ObjectGUI src = f.src().getRepr();
                     ObjectGUI trg = g.trg().getRepr();
-
-                    double[] src_coord = {src.getLayoutX(), src.getLayoutY()};
-                    double[] trg_coord = {trg.getLayoutX(), trg.getLayoutY()};
 
                     scroll_wrap.getChildren().add(
                             new ArrGUI(src, trg,
@@ -375,6 +366,12 @@ public class WorkController extends GenericController{
                 }
             }
         });
+
+
+        if(App.fileToLoad != null) {
+            loadCategory(App.fileToLoad);
+            App.fileToLoad = null;
+        }
     }
 
     /**
@@ -471,6 +468,11 @@ public class WorkController extends GenericController{
         }
     }
 
+    /**
+     * Handles the loading of a category, just a wrapper for the actual loading
+     * done inside the category, needed to interface with the user of course.
+     * @param file
+     */
     private void loadCategory(File file) {
         try {
             currCat = Category.loadForGUI(file, scroll_wrap);
@@ -497,15 +499,28 @@ public class WorkController extends GenericController{
         loadCategory(fileChooser.showOpenDialog(root.getScene().getWindow()));
     }
 
+    /**
+     * Checks if we are currently creating an arrow.
+     * Needed for mouse controls
+     * @return
+     */
     public static boolean isCreatingArrow() {
         return isCreatingArrow;
     }
 
+    /**
+     * Gets the source of the arrow which is currently being
+     * created.
+     * @return
+     */
     public static ARROW_SPAWNED_SOURCE getCurrSource()
     {
         return currSource;
     }
 
+    /**
+     * Needed to interface the object with the inspector.
+     */
     public void getInp() {
         System.out.println(currObj.getObject().getName());
         System.out.println(NameFieldObj.getText());
@@ -520,6 +535,9 @@ public class WorkController extends GenericController{
         }
     }
 
+    /**
+     * Needed to interface the arrow with the inspector.
+     */
     public void getInp2() {
         System.out.println(currArr.getArrow().getName());
         System.out.println(NameFieldObj.getText());
@@ -534,10 +552,18 @@ public class WorkController extends GenericController{
         }
     }
 
+    /**
+     * Sets the x coordinates of the current object to the
+     * specified value.
+     */
     public void inpX() {
         currObj.setxCord(XField.getText());
     }
 
+    /**
+     * Sets the y coordinates of the current object to the 
+     * specified value.
+     */
     public void inpY() {
         currObj.setyCord(YField.getText());
 

@@ -19,6 +19,7 @@ import javafx.beans.binding.DoubleBinding;
  * @see app.GUI.ArrGUI
  * @see DoubleBinding
  */
+@Deprecated
 public class TrigBounding extends DoubleBinding {
 
     ObjectGUI A;
