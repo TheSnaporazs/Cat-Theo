@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -23,7 +24,7 @@ public class App extends Application {
         scene = new Scene(loadFXML("mainmenu"),600,400);
         stage.setScene(scene);
         stage.show();
-        stage.setTitle("Cat. Theo.");
+        stage.getIcons().add(new Image("Theo-ico.png"));
     }
 
     public static void setRoot(String fxml) throws IOException {
