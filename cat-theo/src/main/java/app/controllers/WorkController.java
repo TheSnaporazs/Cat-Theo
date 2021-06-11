@@ -438,7 +438,7 @@ public class WorkController extends GenericController{
             msg.setContentText("The category commutes.");
             msg.showAndWait();
         } else {
-            Alert msg = new Alert(Alert.AlertType.INFORMATION);
+            Alert msg = new Alert(Alert.AlertType.ERROR);
             msg.setTitle("Commutativity");
             msg.setContentText("The category DOES NOT commute.");
             msg.showAndWait();

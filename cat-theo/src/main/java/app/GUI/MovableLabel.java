@@ -20,7 +20,7 @@ public class MovableLabel extends StackPane {
     double coeff = .5f;
     double alpha = 0.1745f;
     private ArrGUI arrow;
-    private double RAY = 20;
+    private double RAY = 40;
     private Label txt;
     private Pane parent;
 

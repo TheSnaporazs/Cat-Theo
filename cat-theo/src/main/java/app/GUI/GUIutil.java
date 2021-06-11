@@ -220,7 +220,6 @@ public class GUIutil {
      * @param NameField         TextField containing the name of the arrow
      * @param SourceField       TextField containing the source object of the arrow
      * @param TargetField       TextField containing the target object of the arrow
-     * @param Mor               RadioButton, true if the arrow is a generic morphism
      * @param Epi               RadioButton, true if the arrow is an epimorphism
      * @param Iso               RadioButton, true if the arrow is an isomorphism
      * @param Mono              RadioButton, true if the arrow is a monomorphism
@@ -304,7 +303,7 @@ public class GUIutil {
             }
         });
 
-        if(arr.getArrow().isComposition() || arr.getArrow().isEndomorphism()) {
+        if(arr.getArrow().isComposition() || arr.getArrow().isIdentity()) {
             comboi.setDisable(true);
             combor.setDisable(true);
         }
