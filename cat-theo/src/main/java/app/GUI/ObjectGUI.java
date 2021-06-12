@@ -226,7 +226,6 @@ public class ObjectGUI extends StackPane {
     }
 
     /**
-     *
      * @return returns the Model representation of this graphical object
      */
     public Obj getObject() { return object; }
@@ -242,13 +241,13 @@ public class ObjectGUI extends StackPane {
 
     /**
      * Returns the X coordinates of this object
-     * @return
+     * @return Double, x
      */
     public String getxCord() {return String.valueOf(xCord); }
 
     /**
      * Returns the Y coordinates of this object
-     * @return
+     * @return Double, y
      */
     public String getyCord() {return String.valueOf(yCord); }
 

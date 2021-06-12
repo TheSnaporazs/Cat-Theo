@@ -2,4 +2,7 @@ module:app
 app
 app.categories
 app.controllers
+app.events
 app.exceptions
+app.GUI
+app.GUI.Bindings
