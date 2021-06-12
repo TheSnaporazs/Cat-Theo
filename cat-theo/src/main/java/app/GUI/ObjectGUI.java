@@ -1,5 +1,6 @@
 package app.GUI;
 
+import java.util.Optional;
 import java.util.Set;
 
 import app.categories.Obj;
@@ -194,8 +195,12 @@ public class ObjectGUI extends StackPane {
         String[] items = {"Spawn Morphism", "Spawn Identity", "Remove Object"};
         EventHandler[] actions = {
                 (event -> {
-                    String name = GUIutil.spawnPrompt("Name: ", "Insert Morphism Name");
-                    parent.fireEvent(new ARROW_SPAWNED_SOURCE(this, name));
+
+                    Optional<String> name = GUIutil.spawnPrompt("Name: ",
+                            "Insert Morphism Name").showAndWait();
+
+                    name.ifPresent(s -> parent.fireEvent(new ARROW_SPAWNED_SOURCE(this, s)));
+
                 }),
                 (event -> {
                     parent.fireEvent(new ARROW_SPAWNED_IDENTITY(this));

@@ -1,3 +1,4 @@
+app\GUI\GUIutil$1.class
 app\controllers\WorkController.class
 app\GUI\Bindings\LabelBinding$1.class
 app\events\OBJECT_SPAWNED.class
@@ -10,6 +11,7 @@ app\GUI\Bindings\VEC.class
 app\events\ANY_CAT.class
 app\exceptions\BadObjectNameException.class
 app\GUI\GUIutil.class
+app\GUI\Bindings\FieldsBounding.class
 app\categories\Space.class
 app\exceptions\ImpossibleArrowException.class
 app\events\OBJECT_DELETED.class

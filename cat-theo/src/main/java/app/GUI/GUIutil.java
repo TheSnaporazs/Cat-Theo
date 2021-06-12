@@ -1,16 +1,21 @@
 package app.GUI;
 
+import app.GUI.Bindings.FieldsBounding;
+import app.GUI.Bindings.VEC;
 import app.categories.Category;
 import app.categories.Space;
 import app.controllers.WorkController;
 import app.exceptions.BadSpaceException;
 import app.exceptions.IllegalArgumentsException;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,16 +115,32 @@ public class GUIutil {
      * @param Title a String to be used as the prompt window's title
      * @return      the String inserted by the user
      */
-    public static String spawnPrompt(String msg, String Title) {
+    public static TextInputDialog spawnPrompt(String msg, String Title) {
 
         TextInputDialog prova = new TextInputDialog();
+
+        BooleanBinding txtFilled = Bindings.createBooleanBinding(() ->
+                prova.getEditor().getText() == "", prova.getEditor().textProperty());
+
+        prova.getDialogPane().lookupButton(ButtonType.OK).disableProperty().bind(txtFilled);
+
         prova.setTitle(Title);
         prova.setGraphic(null);
         prova.setHeaderText("");
         prova.setContentText(msg);
-        prova.showAndWait();
 
-        return prova.getEditor().getText();
+        prova.setResultConverter(dialogButton -> {
+            switch (dialogButton.getButtonData())
+            {
+                case OK_DONE:
+                    return prova.getEditor().getText();
+                default:
+                    System.out.println("Cancelled!");
+                    return null;
+            }
+        });
+
+        return prova;
     }
 
     /**
@@ -152,15 +173,20 @@ public class GUIutil {
             grid.add(field, 1, c);
         }
 
+        prompt.getDialogPane().lookupButton(ButtonType.OK).disableProperty().bind(new FieldsBounding(fields));
         prompt.getDialogPane().setContent(grid);
 
         prompt.setResultConverter(dialogButton -> {
-            if (dialogButton.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                ArrayList<String> returns = new ArrayList<>();
-                fields.forEach(textField -> returns.add(textField.getText()));
-                return returns;
+            switch (dialogButton.getButtonData())
+            {
+                case OK_DONE:
+                        ArrayList<String> returns = new ArrayList<>();
+                        fields.forEach(textField -> returns.add(textField.getText()));
+                        return returns;
+                default:
+                    System.out.println("Cancelled!");
+                    return null;
             }
-            return null;
         });
 
         return prompt;

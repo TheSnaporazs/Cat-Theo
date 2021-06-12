@@ -104,9 +104,14 @@ public class WorkController extends GenericController{
                         String[] items = {"Create Object"};
                         EventHandler[] actions = {
                             ((event1) -> {
-                                String name = GUIutil.spawnPrompt("Name: ", "Insert Object Name");
-                                scroll_wrap.fireEvent(new OBJECT_SPAWNED(event.getX(),
-                                        event.getY(), name));
+                                Optional<String> name = GUIutil.spawnPrompt("Name: ",
+                                        "Insert Object Name").showAndWait();
+
+                                name.ifPresent(n ->
+                                {
+                                    scroll_wrap.fireEvent(new OBJECT_SPAWNED(event.getX(),
+                                            event.getY(), n));
+                                });
                             })
                         };
                         try {
@@ -392,13 +397,22 @@ public class WorkController extends GenericController{
     @FXML
     private void objectFromMenu()
     {
-        //all of this GUI voodoo is to properly spawn the object on the center of the currently visible scrollpane
         Bounds bounds = pannable.getViewportBounds();
-        scroll_wrap.fireEvent(new OBJECT_SPAWNED(bounds.getCenterX(),
-                bounds.getCenterY(),
-                GUIutil.spawnPrompt("Name: ", "Insert Object Name")));
+
+        Optional<String> obj_name = GUIutil.spawnPrompt("Name: ", "Insert Object Name").showAndWait();
+        obj_name.ifPresent( n ->
+        {
+                scroll_wrap.fireEvent(new OBJECT_SPAWNED(bounds.getCenterX(),
+                        bounds.getCenterY(), n
+                ));
+        });
+
     }
 
+    /**
+     * Spawns a morphism between two objects from the context menus in the toolbar
+     *
+     */
     @FXML
     private void arrowFromMenu()
     {
@@ -407,15 +421,22 @@ public class WorkController extends GenericController{
 
         // The fact that I am using this is giving me an aneurysm the same way that seeing it is giving it to you
         Optional<ArrayList<String>> objects = prompt.showAndWait();
-        ArrayList<String> list = objects.orElseThrow(NullPointerException::new);
 
+        objects.ifPresent(list ->
+        {
+            scroll_wrap.fireEvent(new ARROW_SPAWNED_TARGET(
+                    (currCat.getObject(list.get(0))).getRepr(),   //Source object
+                    (currCat.getObject(list.get(1))).getRepr(),   //Target object
+                    list.get(2)));                              //Arrow  Name
+        });
 
-        scroll_wrap.fireEvent(new ARROW_SPAWNED_TARGET(
-                (currCat.getObject(list.get(0))).getRepr(),   //Source object
-                (currCat.getObject(list.get(1))).getRepr(),   //Target object
-                list.get(2)));                              //Arrow  Name
     }
 
+    /**
+     * Spawns a morphism that represent a composition of two morphisms from the
+     * context menus in the toolbar
+     *
+     */
     @FXML
     private void compositionFromMenu() {
         String[] msgs = {"Outer arrow", "Inner arrow"};
@@ -423,13 +444,21 @@ public class WorkController extends GenericController{
 
         // The fact that I am using this is giving me an aneurysm the same way that seeing it is giving it to you
         Optional<ArrayList<String>> objects = prompt.showAndWait();
-        ArrayList<String> list = objects.orElseThrow(NullPointerException::new);
 
-        scroll_wrap.fireEvent(new COMPOSITION_SPAWNED(
-                currCat.getArrow(list.get(0)),
-                currCat.getArrow(list.get(1))));
+        objects.ifPresent(list ->
+        {
+            scroll_wrap.fireEvent(new COMPOSITION_SPAWNED(
+                    currCat.getArrow(list.get(0)),
+                    currCat.getArrow(list.get(1))));                          //Arrow  Name
+        });
     }
 
+    /**
+     * Checks the commutativity of the current category
+     *
+     * A category commutes if all directed path from objects A to B lead to the same result
+     * (fall into the same space).
+     */
     @FXML
     private void checkCommutativity() {
         if(currCat.commutes()) {
@@ -445,6 +474,9 @@ public class WorkController extends GenericController{
         }
     }
 
+    /**
+     * Saves the category as a .JSON file.
+     */
     @FXML
     private void saveCategory() {
         // Not the best looking thing, but I mean
@@ -486,6 +518,9 @@ public class WorkController extends GenericController{
         }
     }
 
+    /**
+     * Loads the category from a .JSON file
+     */
     @FXML
     public void loadCategory() {
         // Not the best looking thing, same as above pretty much
@@ -520,6 +555,9 @@ public class WorkController extends GenericController{
 
     /**
      * Needed to interface the object with the inspector.
+     *
+     * @see ArrGUI
+     * @see app.categories.Arrow
      */
     public void getInp() {
         System.out.println(currObj.getObject().getName());
@@ -537,6 +575,8 @@ public class WorkController extends GenericController{
 
     /**
      * Needed to interface the arrow with the inspector.
+     *
+     * @see ArrGUI
      */
     public void getInp2() {
         System.out.println(currArr.getArrow().getName());
@@ -555,6 +595,9 @@ public class WorkController extends GenericController{
     /**
      * Sets the x coordinates of the current object to the
      * specified value.
+     *
+     * @see ObjectGUI
+     * @see app.categories.Obj
      */
     public void inpX() {
         currObj.setxCord(XField.getText());
@@ -563,6 +606,8 @@ public class WorkController extends GenericController{
     /**
      * Sets the y coordinates of the current object to the 
      * specified value.
+     *
+     * @see app.categories.Obj
      */
     public void inpY() {
         currObj.setyCord(YField.getText());
